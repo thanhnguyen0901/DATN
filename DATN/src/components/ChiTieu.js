@@ -1,223 +1,35 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Picker, Dimensions, TouchableOpacity, TextInput} from "react-native";
-import {Card, List, ListItem, Left, Right, DatePicker, Button} from "native-base";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { CalculatorInput } from 'react-native-calculator'
+import {
+  View,
+  Text,
+  StyleSheet
+} from "react-native";
+import { Container, Content, Header, Left, Right, Icon } from "native-base"
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-const width = Dimensions.get('window').width;
 
-export default class ChiTieu extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = { chosenDate: new Date() };
-    this.setDate = this.setDate.bind(this);
+export default class ChiTieuDemo extends React.Component {
+  export default class ChiTieuDemo extends React.Component{
+    constructor(props) {
+      super(props);
+      this.state = {
+        chosenDate: new Date(),
+        soTien: '0',
+        hangMuc: '',
+        moTa: '',
+        ngayChi: '',
+        taiKhoan: '',
+        nguoiChi: ''
+      };
+      this.setDate = this.setDate.bind(this);
+    }
+    setDate(newDate) {
+      this.setState({ chosenDate: newDate });
+    }
+    render(){
+      return();
+    }
   }
-  setDate(newDate) {
-    this.setState({ chosenDate: newDate });
-  }
-  render(){
-    return(
-      <View style={styles.total}>
-        <View style={styles.head}>
-          <TouchableOpacity style={{flex:1/4, textAlign: 'center', justifyContent:'center', alignItems:'center'}}>
-            <Icon name="flag" color="white" size={20}></Icon>
-            <Text style={{fontSize:10, color:'white'}}>Thống kê</Text>
-          </TouchableOpacity>
-          <Picker
-            style={[styles.picker]}
-            itemTextStyle={{ color: '#0081C7' }}
-            textStyle={{ color: '#0081C7' }}
-            mode="dropdown"
-          >
-              <Picker.Item label="Chi Tiêu" value="Chi Tiêu" />
-              <Picker.Item label="Thu Nhập" value="Thu Nhập" />
-              <Picker.Item label="Chuyển Khoản" value="Chuyển Khoản" />
-              <Picker.Item label="Điều Chỉnh Số Dư" value="Điều Chỉnh Số Dư" />
-          </Picker>
 
-          <TouchableOpacity style={{flex:1/4, textAlign: 'center', justifyContent:'center', alignItems:'center'}}>
-            <Icon name="check" color="white" size={20}></Icon>
-            <Text style={{fontSize:10, color:'white'}}>Ghi</Text>
-          </TouchableOpacity>
-        </View>
+  var styles = StyleSheet.create({
 
-        <View style={styles.center}>
-          <Card>
-            <View>
-              <Text> Số tiền </Text>
-              <View>
-                <CalculatorInput
-                  fieldTextStyle={{ fontSize: 24 }}
-                  fieldContainerStyle={{ height: 36 }}
-                  style={{displayTextAlign:'right'}}
-                />
-              </View>
-            </View>
-          </Card>
-
-          <Card>
-            <Text>Chọn hạng mục</Text>
-            <View style={[styles.inputWrap, {
-                alignItems: "center", borderColor: '#4267B2',
-                borderRadius: 4, justifyContent: "center", borderWidth: 1, marginLeft: 14, marginRight: 14
-            }]}>
-                <Picker
-                    style={{color: 'black', flex: 1, textAlign: 'center'}}
-                    itemTextStyle={{ color: 'black' }}
-                    textStyle={{ color: 'black' }}
-                    mode="dropdown"
-                    //iosIcon={<Icon name="ios-arrow-down-outline" style={{ color: '#0081C7' }} />}
-                    //selectedValue={this.state.loai_nha_thau}
-                    //onValueChange={(value) => this.set_state_loai_nha_thau(value)}
-                >
-                    <Picker.Item label="Chọn hạng mục" value="Chọn hạng mục" />
-                    <Picker.Item label="Ăn uống" value="Ăn uống" />
-                    <Picker.Item label="Khác" value="Khác" />
-                </Picker>
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor="#d3d3d3"
-              placeholder="Mô tả"
-              //onChangeText={(text) => this.setState({text})}
-              //value={this.state.text}
-            />
-
-            <DatePicker
-              locale={"vn"}
-              timeZoneOffsetInMinutes={undefined}
-              modalTransparent={false}
-              animationType={"fade"}
-              androidMode={"default"}
-              placeHolderText="Ngày chi: "
-              textStyle={{ color: "#4267B2" }}
-              placeHolderTextStyle={{ color: "#d3d3d3" }}
-              onDateChange={this.setDate}
-              disabled={false}
-            />
-            <Text>Tài khoản</Text>
-            <View style={[styles.inputWrap, {
-                alignItems: "center", borderColor: '#4267B2',
-                borderRadius: 4, justifyContent: "center", borderWidth: 1, marginLeft: 14, marginRight: 14
-            }]}>
-                <Picker
-                    style={{color: 'black', flex: 1, textAlign: 'center'}}
-                    itemTextStyle={{ color: 'black' }}
-                    textStyle={{ color: 'black' }}
-                    mode="dropdown"
-                    //iosIcon={<Icon name="ios-arrow-down-outline" style={{ color: '#0081C7' }} />}
-                    //selectedValue={this.state.loai_nha_thau}
-                    //onValueChange={(value) => this.set_state_loai_nha_thau(value)}
-                >
-                    <Picker.Item label="Chọn hạng mục" value="Chọn hạng mục" />
-                    <Picker.Item label="Ăn uống" value="Ăn uống" />
-                    <Picker.Item label="Khác" value="Khác" />
-                </Picker>
-            </View>
-            <Text>Người chi</Text>
-            <View style={[styles.inputWrap, {
-                alignItems: "center", borderColor: '#4267B2',
-                borderRadius: 4, justifyContent: "center", borderWidth: 1, marginLeft: 14, marginRight: 14
-            }]}>
-                <Picker
-                    style={{color: 'black', flex: 1, textAlign: 'center'}}
-                    itemTextStyle={{ color: 'black' }}
-                    textStyle={{ color: 'black' }}
-                    mode="dropdown"
-                    //iosIcon={<Icon name="ios-arrow-down-outline" style={{ color: '#0081C7' }} />}
-                    //selectedValue={this.state.loai_nha_thau}
-                    //onValueChange={(value) => this.set_state_loai_nha_thau(value)}
-                >
-                    <Picker.Item label="Chọn hạng mục" value="Chọn hạng mục" />
-                    <Picker.Item label="Ăn uống" value="Ăn uống" />
-                    <Picker.Item label="Khác" value="Khác" />
-                </Picker>
-            </View>
-          </Card>
-          <Button style={{height:30, width:60, justifyContent:'center', textAlign:'center', alignItems:'center', marginLeft:170}}>
-            <Text>Ghi</Text>
-          </Button>
-        </View>
-
-        <View style={styles.foot}>
-          <TouchableOpacity style={{flex:1, textAlign: 'center', justifyContent:'center', alignItems:'center'}}>
-            <Icon name="home" color="black" size={20}></Icon>
-            <Text style={{fontSize:10}}>Tổng quan</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{flex:1, textAlign: 'center', justifyContent:'center', alignItems:'center'}}>
-            <Icon name="money" color="black" size={20}></Icon>
-            <Text style={{fontSize:10}}>Tài khoản</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{justifyContent:'center'}}>
-            <Icon name="plus-circle" color="#4267B2" size={40} style={{textAlign: 'center'}}></Icon>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{flex:1, textAlign: 'center', justifyContent:'center', alignItems:'center'}}>
-            <Icon name="filter" color="black" size={20}></Icon>
-            <Text style={{fontSize:10}}>Hạn mức chi</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={{flex:1, textAlign: 'center', justifyContent:'center', alignItems:'center'}}>
-            <Icon name="ellipsis-h" color="black" size={20}></Icon>
-            <Text style={{fontSize:10}}>Khác</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-}
-
-var styles = StyleSheet.create({
-  total:{
-    flex: 1
-  },
-  head:{
-    flex: 1,
-    backgroundColor:"#4267B2",
-    flexDirection:'row',
-    paddingTop:5,
-    paddingLeft:5,
-    paddingRight:5,
-    alignItems: 'center',
-    textAlign:'center'
-  },
-  center:{
-    flex:14,
-    backgroundColor:"#dee5ef"
-  },
-  foot:{
-    flex:1,
-    backgroundColor:"white",
-    flexDirection:'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  picker: {
-    color: 'white',
-    flex: 2/4,
-    textAlign: 'center'
-    //backgroundColor: '#4267B2'
-  },
-  inputWrap: {
-    marginVertical: 5,
-    height: 45,
-    backgroundColor: "transparent",
-    paddingHorizontal: 15,
-  },
-  input: {
-      // paddingRight: 20,
-      // paddingLeft: 20,
-      // paddingHorizontal: 15,
-      borderRadius: 4,
-      borderWidth: 1,
-      margin:12,
-      height: 45,
-      paddingHorizontal: 15,
-      marginVertical: 5,
-      color: 'black',
-      borderColor: '#4267B2',
-    },
-});
+  });
