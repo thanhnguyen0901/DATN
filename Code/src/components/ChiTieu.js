@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import { Container, Content, Header, Footer, FooterTab, Button, Left, Right} from "native-base"
+import { Container, Content, Header, Footer, FooterTab, Button, Left, Body, Right, InputGroup, Input, Card, CardItem, Item, DatePicker} from "native-base"
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const {height, width} = Dimensions.get('window');
@@ -17,17 +17,17 @@ export default class ChiTieuDemo extends React.Component {
       this.state = {
         chosenDate: new Date(),
         soTien: '0',
-        hangMuc: '',
+        hangMuc: 'Chọn hạng mục',
         moTa: '',
         ngayChi: '',
-        taiKhoan: '',
-        nguoiChi: ''
+        taiKhoan: 'Chọn tài khoản',
+        nguoiChi: 'Chi cho ai'
       };
       this.setDate = this.setDate.bind(this);
     }
 
     setDate(newDate) {
-      this.setState({ chosenDate: newDate });
+      this.setState({ ngayChi: newDate });
     }
 
     render(){
@@ -46,8 +46,94 @@ export default class ChiTieuDemo extends React.Component {
             </Right>
           </Header>
 
-          <Content style={{ positon:'absolute', left: 0, right: 0, height:height-104, backgroundColor: 'white' }}>
-            
+          <Content style={{ positon:'absolute', left: 0, right: 0, height:height-104, backgroundColor: '#F1F1F1' }}>
+          <Card>
+            <CardItem header>
+              <Text style={{fontWeight:'bold', color:'black'}}>Số tiền</Text>
+            </CardItem>
+            <CardItem>
+              <InputGroup borderType="underline" >
+                  <Icon name="money" style={{color:'#3a455c', fontSize: 18, fontWeight:'bold'}}/>
+                  <Input placeholder="0" style={{fontSize:20, color:'red', textAlign:'right', fontWeight:'bold'}} placeholderTextColor='red' keyboardType="numeric"/>
+                  <Text style={{fontSize: 18, color:'#3a455c', fontWeight:'bold'}}>VNĐ</Text>
+              </InputGroup>
+            </CardItem>
+          </Card>
+
+          <Card>
+            <CardItem button onPress={() => alert("Chọn hạng mục")} style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
+              <Left style={{flex: 1}}>
+                <Icon name="question-circle" style={{fontSize: 18, color:'#3a455c'}}/>
+              </Left>
+              <Body style={{flex:8}}>
+                <Text style={{fontSize: 20, color: 'grey', fontFamily:'Roboto'}}>
+                  {this.state.hangMuc}
+                </Text>
+              </Body>
+              <Right style={{flex: 1}}>
+                <Icon name="chevron-circle-right" style={{fontSize: 18, color:'#3a455c'}} />
+              </Right>
+            </CardItem>
+
+            <CardItem style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
+              <Item>
+                <Icon active name='comments' style={{fontSize: 18, color:'#3a455c', flex: 1}} />
+                <Input placeholder='Mô tả' placeholderTextColor='grey' style={{flex: 9, borderBottomWidth: 0.1}}/>
+              </Item>
+            </CardItem>
+
+            <CardItem style={{borderColor:'grey', borderBottomWidth: 0.7}}>
+              <Left style={{flex: 1}}>
+                <Icon active name='calendar' style={{fontSize: 18, color:'#3a455c'}} />
+              </Left>
+              <Body style={{flex: 8}}>
+                <DatePicker
+                  animationType={"fade"}
+                  androidMode={"default"}
+                  placeHolderText="Chọn ngày"
+                  placeHolderTextStyle={{fontSize: 20, color:'grey'}}
+                  textStyle={{ color: "#3a455c", fontSize: 20}}
+                  placeHolderTextStyle={{ color: "#d3d3d3" }}
+                  onDateChange={this.setDate}
+                  disabled={false}
+                  />
+              </Body>
+              <Right style={{flex: 1}}></Right>
+            </CardItem>
+
+            <CardItem button onPress={() => alert("Chọn tài khoản")} style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
+              <Left style={{flex: 1}}>
+                <Icon name="credit-card" style={{fontSize: 18, color:'#3a455c'}}/>
+              </Left>
+              <Body style={{flex:8}}>
+                <Text style={{fontSize: 15, color: 'grey', fontFamily:'Roboto'}}>
+                  {this.state.taiKhoan}
+                </Text>
+              </Body>
+              <Right style={{flex: 1}}>
+                <Icon name="chevron-circle-right" style={{fontSize: 18, color:'#3a455c'}} />
+              </Right>
+            </CardItem>
+
+            <CardItem button onPress={() => alert("Chọn người chi")} style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
+              <Left style={{flex: 1}}>
+                <Icon name="user" style={{fontSize: 18, color:'#3a455c'}}/>
+              </Left>
+              <Body style={{flex:8}}>
+                <Text style={{fontSize: 15, color: 'grey', fontFamily:'Roboto'}}>
+                  {this.state.nguoiChi}
+                </Text>
+              </Body>
+              <Right style={{flex: 1}}>
+                <Icon name="chevron-circle-right" style={{fontSize: 18, color:'#3a455c'}} />
+              </Right>
+            </CardItem>
+
+            <Button block info style={{height:40, backgroundColor:'#3a455c'}}>
+              <Icon name="save" style={{fontSize:18, color:'white'}}/>
+              <Text style={{color:'white', marginLeft: 5}}>Ghi</Text>
+            </Button>
+          </Card>
           </Content>
 
           <Footer style={{ backgroundColor: '#3a455c', height: 40, color: 'white'}}>
@@ -57,7 +143,7 @@ export default class ChiTieuDemo extends React.Component {
                 <Text style={{color:'white', fontSize:10, fontFamily:'Times New Roman'}}>Tổng quan</Text>
               </Button>
               <Button vertical>
-                <Icon name="money" style={{color:'white', fontSize: 18}}/>
+                <Icon name="credit-card" style={{color:'white', fontSize: 18}}/>
                 <Text style={{color:'white', fontSize:10, fontFamily:'Times New Roman'}}>Tài khoản</Text>
               </Button>
               <Button vertical>
