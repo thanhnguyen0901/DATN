@@ -11,23 +11,22 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const {height, width} = Dimensions.get('window');
 
-export default class ChiTieu extends React.Component {
+export default class ThuNhap extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        chosenDate: new Date(),
         soTien: '0',
         hangMuc: 'Chọn hạng mục',
         moTa: '',
-        ngayChi: '',
+        ngayThu: new Date(),
         taiKhoan: 'Chọn tài khoản',
-        nguoiChi: 'Chi cho ai'
+        nguoiThu: 'Chi cho ai'
       };
       this.setDate = this.setDate.bind(this);
     }
 
     setDate(newDate) {
-      this.setState({ ngayChi: newDate });
+      this.setState({ ngaythu: newDate });
     }
 
     render(){
@@ -115,13 +114,13 @@ export default class ChiTieu extends React.Component {
               </Right>
             </CardItem>
 
-            <CardItem button onPress={() => alert("Chọn người chi")} style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
+            <CardItem button onPress={() => alert("Chọn người thu")} style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
               <Left style={{flex: 1}}>
                 <Icon name="user" style={{fontSize: 18, color:'#3a455c'}}/>
               </Left>
               <Body style={{flex:8}}>
                 <Text style={{fontSize: 15, color: 'grey'}}>
-                  {this.state.nguoiChi}
+                  {this.state.nguoiThu}
                 </Text>
               </Body>
               <Right style={{flex: 1}}>
