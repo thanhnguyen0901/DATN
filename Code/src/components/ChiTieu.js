@@ -11,6 +11,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const {height, width} = Dimensions.get('window');
 
+let SQLite = require('react-native-sqlite-storage')
+let db = SQLite.openDatabase ({name: 'test.db', createFromLocation: '~qltc.db'}, this.openCB, this.errorCB);
+
 export default class ChiTieu extends React.Component {
     constructor(props) {
       super(props);
@@ -23,10 +26,27 @@ export default class ChiTieu extends React.Component {
         nguoiChi: 'Chi cho ai'
       };
       this.setDate = this.setDate.bind(this);
+      this.buttonOnClick = this.buttonOnClick.bind(this);
+    }
+
+    errorCB(err) {
+      console.log("SQL Error: " + err);
+    }
+  
+    successCB() {
+      console.log("SQL executed fine");
+    }
+  
+    openCB() {
+      console.log("Database OPENED");
     }
 
     setDate(newDate) {
       this.setState({ ngayChi: newDate });
+    }
+
+    buttonOnClick(){
+      console.log(this.state);
     }
 
     render(){
@@ -53,7 +73,11 @@ export default class ChiTieu extends React.Component {
             <CardItem>
               <InputGroup borderType="underline" >
                   <Icon name="money" style={{color:'#3a455c', fontSize: 18, fontWeight:'bold'}}/>
-                  <Input placeholder="0" style={{fontSize:20, color:'red', textAlign:'right', fontWeight:'bold'}} placeholderTextColor='red' keyboardType="numeric"/>
+                  <Input placeholder="0" style={{fontSize:20, color:'red', textAlign:'right', fontWeight:'bold'}} 
+                    placeholderTextColor='red' 
+                    keyboardType="numeric" 
+                    onChangeText={soTien => this.setState({soTien})}
+                  />
                   <Text style={{fontSize: 18, color:'#3a455c', fontWeight:'bold'}}>VNĐ</Text>
               </InputGroup>
             </CardItem>
@@ -77,7 +101,7 @@ export default class ChiTieu extends React.Component {
             <CardItem style={{borderColor:'grey', borderBottomWidth: 0.7, height: 50}}>
               <Item>
                 <Icon active name='comments' style={{fontSize: 18, color:'#3a455c', flex: 1}} />
-                <Input placeholder='Mô tả' placeholderTextColor='grey' style={{flex: 9, borderBottomWidth: 0.1}}/>
+                <Input placeholder="Mô tả" placeholderTextColor='grey' style={{flex: 9, borderBottomWidth: 0.1}} onChangeText={moTa => this.setState({moTa})}/>
               </Item>
             </CardItem>
 
@@ -128,7 +152,7 @@ export default class ChiTieu extends React.Component {
               </Right>
             </CardItem>
 
-            <Button block info style={{height:40, backgroundColor:'#3a455c'}}>
+            <Button block info style={{height:40, backgroundColor:'#3a455c'}} onPress={this.buttonOnClick}>
               <Icon name="save" style={{fontSize:18, color:'white'}}/>
               <Text style={{color:'white', marginLeft: 5}}>Ghi</Text>
             </Button>

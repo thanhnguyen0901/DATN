@@ -9,7 +9,7 @@ import DieuChinhSoDu from "./src/components/DieuChinhSoDu.js"
 export default class DATN extends Component{
   render(){
     return(
-      <DieuChinhSoDu />
+      <ChiTieu />
     );
   }
 }
