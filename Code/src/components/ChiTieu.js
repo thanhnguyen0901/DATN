@@ -15,11 +15,10 @@ export default class ChiTieu extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        chosenDate: new Date(),
-        soTien: '0',
+        soTien: 0,
         hangMuc: 'Chọn hạng mục',
         moTa: '',
-        ngayChi: '',
+        ngayChi: new Date(),
         taiKhoan: 'Chọn tài khoản',
         nguoiChi: 'Chi cho ai'
       };

@@ -15,12 +15,12 @@ export default class ThuNhap extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        soTien: '0',
+        soTien: 0,
         hangMuc: 'Chọn hạng mục',
         moTa: '',
         ngayThu: new Date(),
         taiKhoan: 'Chọn tài khoản',
-        nguoiThu: 'Chi cho ai'
+        nguoiThu: 'Nguồn thu'
       };
       this.setDate = this.setDate.bind(this);
     }
@@ -53,7 +53,7 @@ export default class ThuNhap extends React.Component {
             <CardItem>
               <InputGroup borderType="underline" >
                   <Icon name="money" style={{color:'#3a455c', fontSize: 18, fontWeight:'bold'}}/>
-                  <Input placeholder="0" style={{fontSize:20, color:'red', textAlign:'right', fontWeight:'bold'}} placeholderTextColor='red' keyboardType="numeric"/>
+                  <Input placeholder="0" style={{fontSize:20, color:'green', textAlign:'right', fontWeight:'bold'}} placeholderTextColor='green' keyboardType="numeric"/>
                   <Text style={{fontSize: 18, color:'#3a455c', fontWeight:'bold'}}>VNĐ</Text>
               </InputGroup>
             </CardItem>
