@@ -3,9 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  ToastAndroid,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import { Container, Content, Header, Footer, FooterTab, Button, Left, Body, Right, InputGroup, Input, Card, CardItem, Item, DatePicker} from "native-base"
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -20,7 +19,6 @@ export default class ChiTieu extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        ma_chi_tieu: 'testtttt',
         soTien: '',
         hangMuc: 'Chọn hạng mục',
         moTa: '',
@@ -31,6 +29,7 @@ export default class ChiTieu extends React.Component {
       this.setDate = this.setDate.bind(this);
       this.buttonOnClick = this.buttonOnClick.bind(this);
       this.formatMoney = this.formatMoney.bind(this);
+      this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
     }
 
     formatMoney(money){
@@ -56,31 +55,49 @@ export default class ChiTieu extends React.Component {
       this.setState({ ngayChi: newDate });
     }
 
-    buttonOnClick(){
-      var moneyTmp = this.state.soTien.replace(/,/g, "");
-      var money = Number(moneyTmp);
-      var date = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
-      var sql = 'INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien,ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta)';
-      sql = sql + 'VALUES(\'' + this.state.ma_chi_tieu + '\'';
-      sql = sql + ', \'' + '1\'';
-      sql = sql + ', ' + money;
-      sql = sql + ', \'1\'';
-      sql = sql + ', \'' + date + '\'';
-      sql = sql + ', \'' + this.state.nguoiChi + '\'';
-      sql = sql + ', \'' + this.state.moTa + '\')'
+    phatSinhMaChiTieu = () => {
+      var soDong;
       db.transaction((tx) => {
-        tx.executeSql(sql, [], (tx, results) => {
-            var len = results.rows.length;
-            if(len == 0)
-              ToastAndroid.show('Thêm thất bại', ToastAndroid.SHORT);
-            else 
-              ToastAndroid.show('Thêm thành công', ToastAndroid.SHORT);
-          });
+        tx.executeSql('SELECT * FROM chitieu', [], (tx, results) => {
+          soDong = results.rows.length;
+          if(soDong == 0)
+          {
+            return 'ct0001';
+          }
+          else{
+            var soHienTai;
+            var data;
+            var maCT = 'ct';
+            db.transaction((tx) => {
+              tx.executeSql('SELECT ma_chi_tieu FROM chitieu WHERE ma_chi_tieu like (SELECT MAX(ma_chi_tieu) FROM CHITIEU)', [], (tx, results) => {
+                data = results.rows.item(0).ma_chi_tieu;
+                soHienTai = parseInt(data.slice(2, 6), 10) + 1;
+                var str = "" + soHienTai;
+                var pad = "0000";
+                maCT = maCT + pad.substring(0, pad.length - str.length) + str;
+                return maCT;
+              });
+            });
+          }
+        });
       });
-      console.log(date);
-      console.log(money);
-      console.log(sql);
-      console.log(this.state);
+    };
+
+    buttonOnClick(){
+      var machitieu = this.phatSinhMaChiTieu;
+      console.log(1, machitieu);
+      // var mataikhoan = 1;
+      // var moneyTmp = this.state.soTien.replace(/,/g, "");
+      // var sotien = Number(moneyTmp);
+      // var mahangmucchi = this.state.hangMuc;
+      // var ngay = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
+      // var manguoichi = this.state.nguoiChi;
+      // var mota = this.state.moTa;
+      // console.log(machitieu, mataikhoan, sotien, mahangmucchi, ngay, manguoichi, mota);
+      // db.transaction(function(tx) {
+      //   tx.executeSql('INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta) VALUES (?,?,?,?,?,?,?)', [machitieu, mataikhoan, sotien, mahangmucchi, ngay, manguoichi, mota]);
+      //   console.log('them');
+      // });
     }
 
     render(){
