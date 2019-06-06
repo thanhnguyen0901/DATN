@@ -10,7 +10,7 @@ import ChonHangMuc from "./src/components/ChonHangMuc"
 export default class DATN extends Component{
   render(){
     return(
-      <ChonHangMuc />
+      <ChiTieu />
     );
   }
 }

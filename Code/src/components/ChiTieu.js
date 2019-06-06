@@ -4,10 +4,12 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ToastAndroid,
   Dimensions
 } from "react-native";
 import { Container, Content, Header, Footer, FooterTab, Button, Left, Body, Right, InputGroup, Input, Card, CardItem, Item, DatePicker} from "native-base"
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from "moment";
 
 const {height, width} = Dimensions.get('window');
 
@@ -18,7 +20,8 @@ export default class ChiTieu extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        soTien: 0,
+        ma_chi_tieu: 'testtttt',
+        soTien: '',
         hangMuc: 'Chọn hạng mục',
         moTa: '',
         ngayChi: new Date(),
@@ -27,7 +30,15 @@ export default class ChiTieu extends React.Component {
       };
       this.setDate = this.setDate.bind(this);
       this.buttonOnClick = this.buttonOnClick.bind(this);
+      this.formatMoney = this.formatMoney.bind(this);
     }
+
+    formatMoney(money){
+      var x = money.replace(/,/g, "");
+      var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+      this.setState({soTien: y});
+      return y;
+    } 
 
     errorCB(err) {
       console.log("SQL Error: " + err);
@@ -46,6 +57,29 @@ export default class ChiTieu extends React.Component {
     }
 
     buttonOnClick(){
+      var moneyTmp = this.state.soTien.replace(/,/g, "");
+      var money = Number(moneyTmp);
+      var date = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
+      var sql = 'INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien,ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta)';
+      sql = sql + 'VALUES(\'' + this.state.ma_chi_tieu + '\'';
+      sql = sql + ', \'' + '1\'';
+      sql = sql + ', ' + money;
+      sql = sql + ', \'1\'';
+      sql = sql + ', \'' + date + '\'';
+      sql = sql + ', \'' + this.state.nguoiChi + '\'';
+      sql = sql + ', \'' + this.state.moTa + '\')'
+      db.transaction((tx) => {
+        tx.executeSql(sql, [], (tx, results) => {
+            var len = results.rows.length;
+            if(len == 0)
+              ToastAndroid.show('Thêm thất bại', ToastAndroid.SHORT);
+            else 
+              ToastAndroid.show('Thêm thành công', ToastAndroid.SHORT);
+          });
+      });
+      console.log(date);
+      console.log(money);
+      console.log(sql);
       console.log(this.state);
     }
 
@@ -76,7 +110,8 @@ export default class ChiTieu extends React.Component {
                   <Input placeholder="0" style={{fontSize:20, color:'red', textAlign:'right', fontWeight:'bold'}} 
                     placeholderTextColor='red' 
                     keyboardType="numeric" 
-                    onChangeText={soTien => this.setState({soTien})}
+                    onChangeText={this.formatMoney}
+                    value={this.state.soTien}
                   />
                   <Text style={{fontSize: 18, color:'#3a455c', fontWeight:'bold'}}>VNĐ</Text>
               </InputGroup>
