@@ -115,7 +115,7 @@ export default class ChiTieu extends React.Component {
     let machitieu = "";
     machitieu = await this.phatSinhMaChiTieu();
     console.log('Mã chi tiêu: ',  machitieu);
-    let mataikhoan = 1;
+    let mataikhoan = 'test';
     let moneyTmp = this.state.soTien.replace(/,/g, "");
     let sotien = Number(moneyTmp);
     let mahangmucchi = this.state.hangMuc;
@@ -146,12 +146,13 @@ export default class ChiTieu extends React.Component {
 
     // Thêm tiền vào ví.
     let soTienTrongVi = 0;
-    db.transaction(function(tx){
-      tx.executeSql('SELECT so_tien FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan],
-      (tx, results) => {
-        console.log('results', results);
-      }
-      );
+    console.log('Tien trong vi: ', soTienTrongVi);
+
+    db.transaction((tx) => {
+      tx.executeSql('SELECT so_tien FROM taikhoan WHERE ma_tai_khoan = \'' + mataikhoan + '\'',  [], (tx, results) => {
+          var len = results.rows.length;
+          console.log('len: ', len);
+        });
     });
   }
 
