@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Dimensions, Alert } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
 import { Button, Body, Card, CardItem, Container, Content, DatePicker, Footer, FooterTab, Header, Input, InputGroup, Item, Left, Right } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
@@ -8,10 +8,10 @@ import moment from "moment";
 // Database:
 let SQLite = require("react-native-sqlite-storage");
 // iOS
-const db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
+// const db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
 // Android
-//const db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
-
+// const db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
+var db;
 // Const:
 const { height, width } = Dimensions.get("window");
 export default class ChiTieu extends React.Component {
@@ -22,7 +22,7 @@ export default class ChiTieu extends React.Component {
       hangMuc: "Chọn hạng mục",
       moTa: "",
       ngayChi: new Date(),
-      taiKhoan: "Chọn tài khoản",
+      taiKhoan: "test",
       nguoiChi: "Chi cho ai"
     };
     this.setDate = this.setDate.bind(this);
@@ -30,6 +30,12 @@ export default class ChiTieu extends React.Component {
     this.formatMoney = this.formatMoney.bind(this);
     this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
     this.showDB = this.showDB.bind(this);
+  }
+  componentDidMount(){
+    if(Platform.OS === 'ios')
+      db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
+    else
+      db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
   }
 
   formatMoney(money) {
@@ -105,6 +111,7 @@ export default class ChiTieu extends React.Component {
   }
 
   async buttonOnClick() {
+    // Thêm chi tiêu vào bảng chitieu
     let machitieu = "";
     machitieu = await this.phatSinhMaChiTieu();
     console.log('Mã chi tiêu: ',  machitieu);
@@ -136,6 +143,16 @@ export default class ChiTieu extends React.Component {
           }
           });
       });
+
+    // Thêm tiền vào ví.
+    let soTienTrongVi = 0;
+    db.transaction(function(tx){
+      tx.executeSql('SELECT so_tien FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan],
+      (tx, results) => {
+        console.log('results', results);
+      }
+      );
+    });
   }
 
   render() {
