@@ -262,10 +262,11 @@ export default class ChiTieu extends React.Component {
                 <DatePicker
                   animationType={"fade"}
                   androidMode={"default"}
-                  placeHolderText="Chọn ngày"
-                  placeHolderTextStyle={{ fontSize: 20, color: "grey" }}
-                  textStyle={{ color: "#3a455c", fontSize: 20 }}
-                  placeHolderTextStyle={{ color: "#d3d3d3" }}
+                  defaultDate={this.state.ngayChi}
+                  // placeHolderText="Chọn ngày"
+                  // placeHolderTextStyle={{ fontSize: 20, color: "grey" }}
+                  // textStyle={{ color: "#3a455c", fontSize: 20 }}
+                  // placeHolderTextStyle={{ color: "#d3d3d3" }}
                   onDateChange={this.setDate}
                   disabled={false}
                 />
