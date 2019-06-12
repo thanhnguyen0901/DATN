@@ -23,7 +23,8 @@ export default class ChiTieu extends React.Component {
       moTa: "",
       ngayChi: new Date(),
       taiKhoan: "test",
-      nguoiChi: "Chi cho ai"
+      nguoiChi: "Chi cho ai", 
+      sotientrongvi: 0
     };
     this.setDate = this.setDate.bind(this);
     this.buttonOnClick = this.buttonOnClick.bind(this);
@@ -92,7 +93,7 @@ export default class ChiTieu extends React.Component {
   }
 
   showDB(){
-    var query = "SELECT * FROM chitieu";
+    let query = "SELECT * FROM chitieu";
     db.transaction((tx) => {
       tx.executeSql(query, [], (tx, results) => {
         var len = results.rows.length;
@@ -108,6 +109,26 @@ export default class ChiTieu extends React.Component {
         }
       });
     });
+
+    let moneyTmp = this.state.soTien.replace(/,/g, "");
+    let sotien = Number(moneyTmp);
+    db.transaction((tx) => {
+      tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
+          let len = results.rows.length;
+          // console.log('len: ', len);
+          // console.log(results.rows.item(0));
+          let soTienTrongVi = results.rows.item(0).so_tien;
+          this.setState({sotientrongvi: soTienTrongVi});
+        });
+    });
+    sotien = sotien + this.state.sotientrongvi;
+    console.log('So tien: ', sotien);
+    console.log('So tien trong vi: ', this.state.sotientrongvi);
+
+    // db.transaction((tx)=> {
+    //   tx.executeSql(
+    //     'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
+    //     [this.state.soTienTrongVi, this.state.taiKhoan])});
   }
 
   async buttonOnClick() {
@@ -139,21 +160,22 @@ export default class ChiTieu extends React.Component {
               { cancelable: false }
             );
           } else {
-            alert('Bạn đã thất bại tiếp rồi');
+            alert('Bạn đã thêm không thành công');
           }
           });
       });
 
     // Thêm tiền vào ví.
     let soTienTrongVi = 0;
-    console.log('Tien trong vi: ', soTienTrongVi);
-
     db.transaction((tx) => {
-      tx.executeSql('SELECT so_tien FROM taikhoan WHERE ma_tai_khoan = \'' + mataikhoan + '\'',  [], (tx, results) => {
+      tx.executeSql('SELECT so_tien FROM taikhoan WHERE ma_tai_khoan like ?',  [mataikhoan], (tx, results) => {
           var len = results.rows.length;
           console.log('len: ', len);
+          console.log('result: ', results.rows.item(0));
+          soTienTrongVi = results.rows.item(0);
         });
     });
+    console.log('So tien trong vi: ', soTienTrongVi);
   }
 
   render() {
