@@ -31,6 +31,7 @@ export default class ChiTieu extends React.Component {
     this.formatMoney = this.formatMoney.bind(this);
     this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
     this.showDB = this.showDB.bind(this);
+    this.testSoTien = this.testSoTien.bind(this);
   }
   componentDidMount(){
     if(Platform.OS === 'ios')
@@ -92,7 +93,7 @@ export default class ChiTieu extends React.Component {
     );
   }
 
-  showDB(){
+  async showDB(){
     let query = "SELECT * FROM chitieu";
     db.transaction((tx) => {
       tx.executeSql(query, [], (tx, results) => {
@@ -109,30 +110,29 @@ export default class ChiTieu extends React.Component {
         }
       });
     });
+  };
 
-    let moneyTmp = this.state.soTien.replace(/,/g, "");
-    let sotien = Number(moneyTmp);
+  testSoTien() {
     db.transaction((tx) => {
       tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
-          let len = results.rows.length;
-          // console.log('len: ', len);
-          // console.log(results.rows.item(0));
-          let soTienTrongVi = results.rows.item(0).so_tien;
-          this.setState({sotientrongvi: soTienTrongVi});
+          //console.log('result 111111: ', results.rows.item(0).so_tien);
+          Alert.alert(
+            'Thông báo',
+            'Số tiền trong ví hiện tại là: ',
+            [
+              {
+                text: results.rows.item(0).so_tien,
+              },
+            ],
+            { cancelable: false }
+          );
         });
     });
-    sotien = sotien + this.state.sotientrongvi;
-    console.log('So tien: ', sotien);
-    console.log('So tien trong vi: ', this.state.sotientrongvi);
 
-    // db.transaction((tx)=> {
-    //   tx.executeSql(
-    //     'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
-    //     [this.state.soTienTrongVi, this.state.taiKhoan])});
+
   }
 
   async buttonOnClick() {
-    // Thêm chi tiêu vào bảng chitieu
     let machitieu = "";
     machitieu = await this.phatSinhMaChiTieu();
     console.log('Mã chi tiêu: ',  machitieu);
@@ -143,6 +143,7 @@ export default class ChiTieu extends React.Component {
     let ngay = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
     let manguoichi = this.state.nguoiChi;
     let mota = this.state.moTa;
+    // Thêm chi tiêu vào bảng chitieu
     db.transaction(function(tx) {
       tx.executeSql(
         "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta) VALUES (?,?,?,?,?,?,?)",
@@ -166,19 +167,35 @@ export default class ChiTieu extends React.Component {
       });
 
     // Thêm tiền vào ví.
-    let soTienTrongVi = 0;
-    db.transaction((tx) => {
-      tx.executeSql('SELECT so_tien FROM taikhoan WHERE ma_tai_khoan like ?',  [mataikhoan], (tx, results) => {
-          var len = results.rows.length;
-          console.log('len: ', len);
-          console.log('result: ', results.rows.item(0));
-          soTienTrongVi = results.rows.item(0);
+    let duLieu = await new Promise((resolve, reject) =>{
+      db.transaction((tx) => {
+      tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
+          let soTienTrongVi = results.rows.item(0).so_tien;
+          resolve(soTienTrongVi);
         });
+      });
     });
-    console.log('So tien trong vi: ', soTienTrongVi);
+    duLieu -= sotien;
+    this.setState({sotientrongvi: duLieu});
+    db.transaction((tx)=> {
+      tx.executeSql(
+        'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
+        [duLieu, this.state.taiKhoan])});
+
+    Alert.alert(
+      'Thông báo',
+      'Số tiền trong ví hiện tại là: ',
+      [
+        {
+          text: this.state.sotientrongvi,
+        },
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
+    console.log(this.state.sotientrongvi);
     return (
       <Container>
         <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
@@ -299,7 +316,7 @@ export default class ChiTieu extends React.Component {
                 Tổng quan
               </Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={this.testSoTien}>
               <Icon name="credit-card" style={{ color: "white", fontSize: 18 }}/>
               <Text style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman"}}>
                 Tài khoản
