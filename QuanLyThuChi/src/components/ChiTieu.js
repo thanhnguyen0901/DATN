@@ -15,6 +15,10 @@ var db;
 // Const:
 const { height, width } = Dimensions.get("window");
 export default class ChiTieu extends React.Component {
+  static navigationOptions = {
+    title: 'Chi Tiêu',
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -204,6 +208,8 @@ export default class ChiTieu extends React.Component {
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
             </Button>
           </Left>
+          <Body>
+          </Body>
           <Right>
             <Button transparent>
               <Icon name="check" style={{ color: "white", fontSize: 18 }} />

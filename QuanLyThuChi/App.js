@@ -1,16 +1,13 @@
+// Import
 import React, {Component} from 'react';
-import {Platform, Text, StyleSheet, View} from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import AppNavigator from './AppNavigator';
 
-import ChiTieu from "./src/components/ChiTieu";
-import ThuNhap from "./src/components/ThuNhap";
-import ChuyenKhoan from "./src/components/ChuyenKhoan"
-import DieuChinhSoDu from "./src/components/DieuChinhSoDu"
-import ChonHangMuc from "./src/components/ChonHangMuc"
+// Const
+const AppContainer = createAppContainer(AppNavigator);
 
 export default class DATN extends Component{
   render(){
-    return(
-      <ChiTieu />
-    );
+    return <AppContainer/>;
   }
 }
