@@ -1,24 +1,22 @@
 // Import thư viện
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
 import { Button, Body, Card, CardItem, Container, Content, DatePicker, Footer, FooterTab, Header, Input, InputGroup, Item, Left, Right } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
-// iOS
-// const db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
-// Android
-// const db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
-var db;
+
 // Const:
 const { height, width } = Dimensions.get("window");
+var db;
+
 export default class ChiTieu extends React.Component {
+  // Title Navigation:
   static navigationOptions = {
     title: 'Chi Tiêu',
   }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -37,20 +35,15 @@ export default class ChiTieu extends React.Component {
     this.showDB = this.showDB.bind(this);
     this.testSoTien = this.testSoTien.bind(this);
   }
+
+  // Function
   componentDidMount(){
     if(Platform.OS === 'ios')
       db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
     else
       db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
   }
-
-  formatMoney(money) {
-    var x = money.replace(/,/g, "");
-    var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    this.setState({ soTien: y });
-    return y;
-  }
-
+  
   errorCB(err) {
     console.log("SQL Error: " + err);
   }
@@ -61,6 +54,13 @@ export default class ChiTieu extends React.Component {
 
   openCB() {
     console.log("Database OPENED");
+  }
+
+  formatMoney(money) {
+    var x = money.replace(/,/g, "");
+    var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    this.setState({ soTien: y });
+    return y;
   }
 
   setDate(newDate) {
@@ -119,7 +119,6 @@ export default class ChiTieu extends React.Component {
   testSoTien() {
     db.transaction((tx) => {
       tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
-          //console.log('result 111111: ', results.rows.item(0).so_tien);
           Alert.alert(
             'Thông báo',
             'Số tiền trong ví hiện tại là: ',
@@ -185,21 +184,10 @@ export default class ChiTieu extends React.Component {
       tx.executeSql(
         'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
         [duLieu, this.state.taiKhoan])});
-
-    Alert.alert(
-      'Thông báo',
-      'Số tiền trong ví hiện tại là: ',
-      [
-        {
-          text: this.state.sotientrongvi,
-        },
-      ],
-      { cancelable: false }
-    );
   }
 
   render() {
-    console.log(this.state.sotientrongvi);
+    const { navigation } = this.props;
     return (
       <Container>
         <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
@@ -239,7 +227,7 @@ export default class ChiTieu extends React.Component {
           </Card>
 
           <Card>
-            <CardItem button onPress={() => alert("Chọn hạng mục")} style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50}}>
+            <CardItem button onPress={ () => navigation.navigate('ChonHangMuc') } style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50}}>
               <Left style={{ flex: 1 }}>
                 <Icon name="question-circle" style={{ fontSize: 18, color: "#3a455c" }}/>
               </Left>
@@ -280,7 +268,7 @@ export default class ChiTieu extends React.Component {
               <Right style={{ flex: 1 }} />
             </CardItem>
 
-            <CardItem button onPress={() => alert("Chọn tài khoản")} style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50 }}>
+            <CardItem button onPress={() => navigation.navigate('ChonTaiKhoan')} style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50 }}>
               <Left style={{ flex: 1 }}>
                 <Icon name="credit-card" style={{ fontSize: 18, color: "#3a455c" }} />
               </Left>
@@ -294,7 +282,7 @@ export default class ChiTieu extends React.Component {
               </Right>
             </CardItem>
 
-            <CardItem button onPress={() => alert("Chọn người chi")} style={{borderColor: "grey",borderBottomWidth: 0.7,height: 50}}>
+            <CardItem button onPress={() => navigation.navigate('ChonNguoiTuongTac')} style={{borderColor: "grey",borderBottomWidth: 0.7,height: 50}}>
               <Left style={{ flex: 1 }}>
                 <Icon name="user" style={{ fontSize: 18, color: "#3a455c" }} />
               </Left>

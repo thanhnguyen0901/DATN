@@ -12,6 +12,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const {height, width} = Dimensions.get('window');
 
 export default class ThuNhap extends React.Component {
+    // Title Navigation:
+    static navigationOptions = {
+      title: 'Thu Nhập',
+    }
     constructor(props) {
       super(props);
       this.state = {

@@ -12,6 +12,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const {height, width} = Dimensions.get('window');
 
 export default class ChuyenKhoan extends React.Component {
+    // Title Navigation:
+    static navigationOptions = {
+      title: 'Chuyển Khoản',
+    }
+
     constructor(props) {
       super(props);
       this.state = {

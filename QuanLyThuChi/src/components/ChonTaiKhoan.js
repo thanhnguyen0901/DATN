@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Container, Header, Content, Icon } from 'native-base';
 
-export default class ChonHangMuc extends Component {
+export default class ChonTaiKhoan extends Component {
   // Title Navigation:
   static navigationOptions = {
-    title: 'Chọn Hạng Mục',
+    title: 'Chọn Tài Khoản',
   }
 
   render() {
@@ -13,7 +13,7 @@ export default class ChonHangMuc extends Component {
       <Container>
         <View>
           <Text>
-            Chọn hạng mục.
+            Chọn tài khoản.
           </Text>
         </View>
       </Container>
