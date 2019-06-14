@@ -8,6 +8,11 @@ import ChonHangMuc from "./src/components/ChonHangMuc"
 import ChiChoAi from "./src/components/ChiChoAi";
 import ThuTuAi from "./src/components/ThuTuAi";
 import ChonTaiKhoan from "./src/components/ChonTaiKhoan";
+import HanMucChi from "./src/components/HanMucChi";
+import Khac from "./src/components/Khac";
+import TaiKhoan from "./src/components/TaiKhoan";
+import ThemMoi from "./src/components/ThemMoi";
+import TongQuan from "./src/components/TongQuan";
 
 const AppNavigator = createStackNavigator({
     ChiTieu: { screen: ChiTieu },
@@ -16,8 +21,13 @@ const AppNavigator = createStackNavigator({
     DieuChinhSoDu: { screen: DieuChinhSoDu },
     ChonHangMuc: { screen: ChonHangMuc },
     ChiChoAi: { screen: ChiChoAi },
+    ThuTuAi: { screen: ThuTuAi },
     ChonTaiKhoan : { screen: ChonTaiKhoan },
-    ThuTuAi: { screen: ThuTuAi }
+    HanMucChi: { screen: HanMucChi },
+    Khac: { screen: Khac },
+    TaiKhoan: { screen: TaiKhoan },
+    ThemMoi: { screen: ThemMoi },
+    TongQuan: { screen: TongQuan }
 },
 {
     headerMode: 'none'

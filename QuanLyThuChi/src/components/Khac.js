@@ -12,10 +12,10 @@ let SQLite = require("react-native-sqlite-storage");
 const { height, width } = Dimensions.get("window");
 var db;
 
-export default class ThuTuAi extends Component {
+export default class KHAC extends Component {
   render() {
     const { navigation } = this.props;
-    return (
+    return(
       <Container>
         <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
           <Left style={{flex:2}}>
@@ -24,13 +24,13 @@ export default class ThuTuAi extends Component {
             </Button>
           </Left>
           <Body style={{flex:8}}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>VỚI AI</Text>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>KHÁC</Text>
           </Body>
           <Right style={{flex:2}}></Right>
         </Header>
 
         <Content style={{ positon: "absolute", left: 0, right: 0, height: height - 104, backgroundColor: "#F1F1F1" }}>
-
+          
         </Content>
 
         <Footer style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>

@@ -302,28 +302,28 @@ export default class ChiTieu extends React.Component {
 
         <Footer style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
           <FooterTab style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
-            <Button vertical onPress={this.showDB}>
+            <Button vertical onPress={() => navigation.navigate('TongQuan')}>
               <Icon name="home" style={{ color: "white", fontSize: 18 }} />
               <Text style={{color: "white",fontSize: 10,fontFamily: "Times New Roman"}}>
                 Tổng quan
               </Text>
             </Button>
-            <Button vertical onPress={this.testSoTien}>
+            <Button vertical onPress={() => navigation.navigate('TaiKhoan')}>
               <Icon name="credit-card" style={{ color: "white", fontSize: 18 }}/>
               <Text style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman"}}>
                 Tài khoản
               </Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('ThemMoi')}>
               <Icon name="plus-circle" style={{ color: "white", fontSize: 30 }} />
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('HanMucChi')}>
               <Icon name="filter" style={{ color: "white", fontSize: 18 }} />
               <Text style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman" }}>
                 Hạn mức chi
               </Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('Khac')}>
               <Icon name="ellipsis-h" style={{ color: "white", fontSize: 18 }}/>
               <Text
                 style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman" }}>

@@ -14,6 +14,7 @@ var db;
 
 export default class ChiChoAi extends Component {
   render() {
+    const { navigation } = this.props;
     return (
       <Container>
         <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
@@ -34,28 +35,28 @@ export default class ChiChoAi extends Component {
 
         <Footer style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
           <FooterTab style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('TongQuan')}>
               <Icon name="home" style={{ color: "white", fontSize: 18 }} />
               <Text style={{color: "white",fontSize: 10,fontFamily: "Times New Roman"}}>
                 Tổng quan
               </Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('TaiKhoan')}>
               <Icon name="credit-card" style={{ color: "white", fontSize: 18 }}/>
               <Text style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman"}}>
                 Tài khoản
               </Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('ThemMoi')}>
               <Icon name="plus-circle" style={{ color: "white", fontSize: 30 }} />
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('HanMucChi')}>
               <Icon name="filter" style={{ color: "white", fontSize: 18 }} />
               <Text style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman" }}>
                 Hạn mức chi
               </Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => navigation.navigate('Khac')}>
               <Icon name="ellipsis-h" style={{ color: "white", fontSize: 18 }}/>
               <Text
                 style={{ color: "white", fontSize: 10, fontFamily: "Times New Roman" }}>
