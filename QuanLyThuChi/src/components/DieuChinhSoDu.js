@@ -12,11 +12,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const {height, width} = Dimensions.get('window');
 
 export default class DieuChinhSoDu extends React.Component {
-    // Title Navigation:
-    static navigationOptions = {
-      title: 'Điều Chỉnh Số Dư',
-    }
-
     constructor(props) {
       super(props);
       this.state = {

@@ -1,5 +1,5 @@
 // Import thư viện
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
 import { Button, Body, Card, CardItem, Container, Content, DatePicker, Footer, FooterTab, Header, Input, InputGroup, Item, Left, Right } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -8,15 +8,11 @@ import moment from "moment";
 // Database:
 let SQLite = require("react-native-sqlite-storage");
 
-// Const:
+// Const & Variable:
 const { height, width } = Dimensions.get("window");
 var db;
 
 export default class ChiTieu extends React.Component {
-  // Title Navigation:
-  static navigationOptions = {
-    title: 'Chi Tiêu',
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +64,7 @@ export default class ChiTieu extends React.Component {
   }
 
   phatSinhMaChiTieu() {
-    query = "SELECT * FROM chitieu;";
+    let query = "SELECT * FROM chitieu;";
     return new Promise((resolve, reject) =>
       db.transaction(tx => {tx.executeSql(query,[],(tx, results) => {
         var soDong = results.rows.length;
@@ -131,8 +127,6 @@ export default class ChiTieu extends React.Component {
           );
         });
     });
-
-
   }
 
   async buttonOnClick() {
@@ -191,14 +185,17 @@ export default class ChiTieu extends React.Component {
     return (
       <Container>
         <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
-          <Left style={{ flexDirection: "row" }}>
+          <Left style={{flex: 2}}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
             </Button>
           </Left>
-          <Body>
+          <Body style={{flex: 8}}>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>
+              THÊM CHI TIÊU
+            </Text>
           </Body>
-          <Right>
+          <Right style={{flex: 2}}>
             <Button transparent>
               <Icon name="check" style={{ color: "white", fontSize: 18 }} />
             </Button>
@@ -282,7 +279,7 @@ export default class ChiTieu extends React.Component {
               </Right>
             </CardItem>
 
-            <CardItem button onPress={() => navigation.navigate('ChonNguoiTuongTac')} style={{borderColor: "grey",borderBottomWidth: 0.7,height: 50}}>
+            <CardItem button onPress={() => navigation.navigate('ChiChoAi')} style={{borderColor: "grey",borderBottomWidth: 0.7,height: 50}}>
               <Left style={{ flex: 1 }}>
                 <Icon name="user" style={{ fontSize: 18, color: "#3a455c" }} />
               </Left>

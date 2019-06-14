@@ -12,7 +12,7 @@ let SQLite = require("react-native-sqlite-storage");
 const { height, width } = Dimensions.get("window");
 var db;
 
-export default class ChonTaiKhoan extends Component {
+export default class ThuTuAi extends Component {
   render() {
     return (
       <Container>
@@ -23,7 +23,7 @@ export default class ChonTaiKhoan extends Component {
             </Button>
           </Left>
           <Body style={{flex:8}}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>CHỌN TÀI KHOẢN</Text>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>VỚI AI</Text>
           </Body>
           <Right style={{flex:2}}></Right>
         </Header>

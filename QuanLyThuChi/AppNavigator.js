@@ -5,7 +5,8 @@ import ThuNhap from "./src/components/ThuNhap";
 import ChuyenKhoan from "./src/components/ChuyenKhoan"
 import DieuChinhSoDu from "./src/components/DieuChinhSoDu"
 import ChonHangMuc from "./src/components/ChonHangMuc"
-import ChonNguoiTuongTac from "./src/components/ChonNguoiTuongTac";
+import ChiChoAi from "./src/components/ChiChoAi";
+import ThuTuAi from "./src/components/ThuTuAi";
 import ChonTaiKhoan from "./src/components/ChonTaiKhoan";
 
 const AppNavigator = createStackNavigator({
@@ -14,8 +15,12 @@ const AppNavigator = createStackNavigator({
     ChuyenKhoan: { screen: ChuyenKhoan },
     DieuChinhSoDu: { screen: DieuChinhSoDu },
     ChonHangMuc: { screen: ChonHangMuc },
-    ChonNguoiTuongTac: { screen: ChonNguoiTuongTac },
-    ChonTaiKhoan : { screen: ChonTaiKhoan }
+    ChiChoAi: { screen: ChiChoAi },
+    ChonTaiKhoan : { screen: ChonTaiKhoan },
+    ThuTuAi: { screen: ThuTuAi }
+},
+{
+    headerMode: 'none'
 });
 
 export default AppNavigator;
