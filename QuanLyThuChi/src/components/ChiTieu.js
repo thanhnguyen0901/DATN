@@ -17,11 +17,15 @@ export default class ChiTieu extends React.Component {
     super(props);
     this.state = {
       soTien: "",
-      hangMuc: "Chọn hạng mục",
+      iconHangMuc: "question-circle",
+      hangMuc: "",
+      tenHangMuc: "Chọn hạng mục",
       moTa: "",
       ngayChi: new Date(),
-      taiKhoan: "test",
-      nguoiChi: "Chi cho ai", 
+      taiKhoan: "",
+      tenTaiKhoan: "Chọn tài khoản",
+      nguoiChi: "",
+      tenNguoiChi: "Chi cho ai",
       sotientrongvi: 0
     };
     this.setDate = this.setDate.bind(this);
@@ -130,58 +134,108 @@ export default class ChiTieu extends React.Component {
   }
 
   async buttonOnClick() {
-    let machitieu = "";
-    machitieu = await this.phatSinhMaChiTieu();
-    console.log('Mã chi tiêu: ',  machitieu);
-    let mataikhoan = 'test';
-    let moneyTmp = this.state.soTien.replace(/,/g, "");
-    let sotien = Number(moneyTmp);
-    let mahangmucchi = this.state.hangMuc;
-    let ngay = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
-    let manguoichi = this.state.nguoiChi;
-    let mota = this.state.moTa;
-    // Thêm chi tiêu vào bảng chitieu
-    db.transaction(function(tx) {
-      tx.executeSql(
-        "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta) VALUES (?,?,?,?,?,?,?)",
-        [machitieu, mataikhoan, sotien, mahangmucchi, ngay, manguoichi, mota],
-        (tx, results) => {
-          if (results.rowsAffected > 0) {
-            Alert.alert(
-              'Thành công',
-              'Bạn đã thêm thành công',
-              [
-                {
-                  text: 'Ok',
-                },
-              ],
-              { cancelable: false }
-            );
-          } else {
-            alert('Bạn đã thêm không thành công');
-          }
+    // Kiểm tra đầy đủ:
+    if(this.state.soTien == ""){
+      Alert.alert(
+        'Thông báo',
+        'Bạn chưa nhập số tiền!',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      );
+    }else if(this.state.hangMuc == ""){
+      Alert.alert(
+        'Thông báo',
+        'Bạn chưa chọn hạng mục chi!',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      );
+    }else if(this.state.taiKhoan == ""){
+      Alert.alert(
+        'Thông báo',
+        'Bạn chưa chọn tài khoản!',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      );
+    }else{
+      let machitieu = "";
+      machitieu = await this.phatSinhMaChiTieu();
+      console.log('Mã chi tiêu: ',  machitieu);
+      let mataikhoan = 'test';
+      let moneyTmp = this.state.soTien.replace(/,/g, "");
+      let sotien = Number(moneyTmp);
+      let mahangmucchi = this.state.hangMuc;
+      let ngay = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
+      let manguoichi = this.state.nguoiChi;
+      let mota = this.state.moTa;
+      // Thêm chi tiêu vào bảng chitieu
+      db.transaction(function(tx) {
+        tx.executeSql(
+          "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta) VALUES (?,?,?,?,?,?,?)",
+          [machitieu, mataikhoan, sotien, mahangmucchi, ngay, manguoichi, mota],
+          (tx, results) => {
+            if (results.rowsAffected > 0) {
+              Alert.alert(
+                'Thành công',
+                'Bạn đã thêm thành công',
+                [
+                  {
+                    text: 'Ok',
+                  },
+                ],
+                { cancelable: false }
+              );
+            } else {
+              alert('Bạn đã thêm không thành công');
+            }
+            });
+        });
+  
+      // Trừ tiền trong ví.
+      let duLieu = await new Promise((resolve, reject) =>{
+        db.transaction((tx) => {
+        tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
+            let soTienTrongVi = results.rows.item(0).so_tien;
+            resolve(soTienTrongVi);
           });
-      });
-
-    // Thêm tiền vào ví.
-    let duLieu = await new Promise((resolve, reject) =>{
-      db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
-          let soTienTrongVi = results.rows.item(0).so_tien;
-          resolve(soTienTrongVi);
         });
       });
-    });
-    duLieu -= sotien;
-    this.setState({sotientrongvi: duLieu});
-    db.transaction((tx)=> {
-      tx.executeSql(
-        'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
-        [duLieu, this.state.taiKhoan])});
+      duLieu -= sotien;
+      this.setState({sotientrongvi: duLieu});
+      db.transaction((tx)=> {
+        tx.executeSql(
+          'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
+          [duLieu, this.state.taiKhoan])});
+    }
+    this.forceUpdate();
+  }
+
+  returnDataHangMuc(iconHangMuc, hangMuc, tenHangMuc) {
+    this.setState({iconHangMuc: iconHangMuc, hangMuc: hangMuc, tenHangMuc: tenHangMuc});
+  }
+
+  returnDataTaiKhoan(taiKhoan, tenTaiKhoan) {
+    this.setState({taiKhoan: taiKhoan, tenTaiKhoan: tenTaiKhoan});
+  }
+
+  returnDataNguoiChi(nguoiChi, tenNguoiChi) {
+    this.setState({nguoiChi: nguoiChi, tenNguoiChi: tenNguoiChi});
   }
 
   render() {
     const { navigation } = this.props;
+    const { params } = this.props.navigation.state;
     return (
       <Container>
         <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
@@ -224,13 +278,14 @@ export default class ChiTieu extends React.Component {
           </Card>
 
           <Card>
-            <CardItem button onPress={ () => navigation.navigate('ChonHangMuc') } style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50}}>
+            <CardItem button onPress={ () => navigation.navigate('ChonHangMucChi', {returnDataHangMuc: this.returnDataHangMuc.bind(this)}) } 
+                      style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50}}>
               <Left style={{ flex: 1 }}>
-                <Icon name="question-circle" style={{ fontSize: 18, color: "#3a455c" }}/>
+                <Icon name={this.state.iconHangMuc} style={{ fontSize: 18, color: "#3a455c" }}/>
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 20, color: "grey" }}>
-                  {this.state.hangMuc}
+                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10}}>
+                  {this.state.tenHangMuc}
                 </Text>
               </Body>
               <Right style={{ flex: 1 }}>
@@ -238,14 +293,14 @@ export default class ChiTieu extends React.Component {
               </Right>
             </CardItem>
 
-            <CardItem style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50 }}>
+            <CardItem style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50, marginTop: 5 }}>
               <Item>
                 <Icon active name="comments" style={{ fontSize: 18, color: "#3a455c", flex: 1 }}/>
-                <Input placeholder="Mô tả" placeholderTextColor="grey" style={{ flex: 9, borderBottomWidth: 0.1 }} onChangeText={moTa => this.setState({ moTa })} />
+                <Input placeholder="Mô tả" placeholderTextColor="black" style={{ flex: 9, borderBottomWidth: 0.1, fontSize:18, color:'black', paddingLeft: 12 }} onChangeText={moTa => this.setState({ moTa })} />
               </Item>
             </CardItem>
 
-            <CardItem style={{ borderColor: "grey", borderBottomWidth: 0.7 }}>
+            <CardItem style={{ borderColor: "grey", borderBottomWidth: 0.7, marginTop: 5 }}>
               <Left style={{ flex: 1 }}>
                 <Icon active name="calendar" style={{ fontSize: 18, color: "#3a455c" }}/>
               </Left>
@@ -254,10 +309,6 @@ export default class ChiTieu extends React.Component {
                   animationType={"fade"}
                   androidMode={"default"}
                   defaultDate={this.state.ngayChi}
-                  // placeHolderText="Chọn ngày"
-                  // placeHolderTextStyle={{ fontSize: 20, color: "grey" }}
-                  // textStyle={{ color: "#3a455c", fontSize: 20 }}
-                  // placeHolderTextStyle={{ color: "#d3d3d3" }}
                   onDateChange={this.setDate}
                   disabled={false}
                 />
@@ -265,13 +316,14 @@ export default class ChiTieu extends React.Component {
               <Right style={{ flex: 1 }} />
             </CardItem>
 
-            <CardItem button onPress={() => navigation.navigate('ChonTaiKhoan')} style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50 }}>
+            <CardItem button onPress={ () => navigation.navigate('ChonTaiKhoan', {returnDataTaiKhoan: this.returnDataTaiKhoan.bind(this)}) } 
+                      style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50 }}>
               <Left style={{ flex: 1 }}>
                 <Icon name="credit-card" style={{ fontSize: 18, color: "#3a455c" }} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 15, color: "grey" }}>
-                  {this.state.taiKhoan}
+                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10 }}>
+                  {this.state.tenTaiKhoan}
                 </Text>
               </Body>
               <Right style={{ flex: 1 }}>
@@ -279,13 +331,14 @@ export default class ChiTieu extends React.Component {
               </Right>
             </CardItem>
 
-            <CardItem button onPress={() => navigation.navigate('ChiChoAi')} style={{borderColor: "grey",borderBottomWidth: 0.7,height: 50}}>
+            <CardItem button onPress={ () => navigation.navigate('ChiChoAi', {returnDataNguoiChi: this.returnDataNguoiChi.bind(this)}) } 
+                      style={{borderColor: "grey",borderBottomWidth: 0.7,height: 50}}>
               <Left style={{ flex: 1 }}>
                 <Icon name="user" style={{ fontSize: 18, color: "#3a455c" }} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 15, color: "grey" }}>
-                  {this.state.nguoiChi}
+                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10 }}>
+                  {this.state.tenNguoiChi}
                 </Text>
               </Body>
               <Right style={{ flex: 1 }}>

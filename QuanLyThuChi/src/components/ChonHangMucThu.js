@@ -12,7 +12,14 @@ let SQLite = require("react-native-sqlite-storage");
 const { height, width } = Dimensions.get("window");
 var db;
 
-export default class ChonHangMuc extends Component {
+export default class ChonHangMucThu extends Component {
+  // Function
+  componentDidMount(){
+    if(Platform.OS === 'ios')
+      db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
+    else
+      db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
+  }
   render() {
     const { navigation } = this.props;
     return(
@@ -26,7 +33,11 @@ export default class ChonHangMuc extends Component {
           <Body style={{flex:8}}>
             <Text style={{color: 'white', fontWeight: 'bold'}}>CHỌN HẠNG MỤC</Text>
           </Body>
-          <Right style={{flex:2}}></Right>
+          <Right style={{flex:2}}>
+            <Button transparent>
+              <Icon name="plus" style={{ color: "white", fontSize: 18 }} />
+            </Button>
+          </Right>
         </Header>
 
         <Content style={{ positon: "absolute", left: 0, right: 0, height: height - 104, backgroundColor: "#F1F1F1" }}>
