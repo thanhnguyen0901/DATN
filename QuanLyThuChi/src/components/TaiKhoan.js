@@ -17,7 +17,7 @@ export default class TaiKhoan extends Component {
     const { navigation } = this.props;
     return(
       <Container>
-        <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
+        <Header style={{backgroundColor: "rgb(76,171,242)",height: 40,borderBottomColor: "#757575"}}>
           <Left style={{flex:2}}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
@@ -33,8 +33,8 @@ export default class TaiKhoan extends Component {
           
         </Content>
 
-        <Footer style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
-          <FooterTab style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
+        <Footer style={{ backgroundColor: "rgb(76,171,242)", height: 40, color: "white" }}>
+          <FooterTab style={{ backgroundColor: "rgb(76,171,242)", height: 40, color: "white" }}>
             <Button vertical onPress={() => navigation.navigate('TongQuan')}>
               <Icon name="home" style={{ color: "white", fontSize: 18 }} />
               <Text style={{color: "white",fontSize: 10,fontFamily: "Times New Roman"}}>

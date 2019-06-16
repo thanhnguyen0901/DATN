@@ -45,7 +45,7 @@ export default class ChonTaiKhoan extends Component {
     const { goBack } = this.props.navigation;
     return (
       <Container>
-        <Header style={{backgroundColor: "#3a455c",height: 40,borderBottomColor: "#757575"}}>
+        <Header style={{backgroundColor: "rgb(76,171,242)",height: 40,borderBottomColor: "#757575"}}>
           <Left style={{flex:2}}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
@@ -63,7 +63,7 @@ export default class ChonTaiKhoan extends Component {
               <CardItem key={i} button onPress={ () => {
                 params.returnDataTaiKhoan(item.ma_tai_khoan,item.ten_tai_khoan);
                 goBack();
-              } } style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50, marginTop: 5, backgroundColor:'#3a455c'}}>
+              } } style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50, marginTop: 5, backgroundColor:'rgb(76,171,242)'}}>
               <Left style={{ flex: 1 }}>
                 <Icon name= 'credit-card' style={{ fontSize: 18, color: "white" }}/>
               </Left>
@@ -82,8 +82,8 @@ export default class ChonTaiKhoan extends Component {
           </Card>
         </Content>
 
-        <Footer style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
-          <FooterTab style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
+        <Footer style={{ backgroundColor: "rgb(76,171,242)", height: 40, color: "white" }}>
+          <FooterTab style={{ backgroundColor: "rgb(76,171,242)", height: 40, color: "white" }}>
             <Button vertical onPress={() => navigation.navigate('TongQuan')}>
               <Icon name="home" style={{ color: "white", fontSize: 18 }} />
               <Text style={{color: "white",fontSize: 10,fontFamily: "Times New Roman"}}>
