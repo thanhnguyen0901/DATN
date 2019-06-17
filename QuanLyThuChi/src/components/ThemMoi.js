@@ -60,25 +60,42 @@ export default class ThemMoi extends Component {
             backgroundColor: "#F1F1F1"
           }}
         >
-          <Button onPress={() => navigation.navigate("ChiTieu")}>
-            <Text>Chi tiêu</Text>
+          <Button onPress={() => navigation.navigate("ChiTieu")}
+           block
+           info
+           style={{ height: 40, backgroundColor: "rgb(76,171,242)",marginBottom:2,borderBottomEndRadius:20 }}
+          >
+          <Text style={{ color: "white", marginLeft: 5 }}>Chi tiêu</Text>
           </Button>
-          <Button onPress={() => navigation.navigate("ThuNhap")}>
-            <Text>Thu nhập</Text>
+
+          <Button onPress={() => navigation.navigate("ThuNhap")}
+          block
+          info
+          style={{ height: 40, backgroundColor: "rgb(76,171,242)",marginBottom:2,borderBottomEndRadius:20 }}>
+            <Text style={{ color: "white", marginLeft: 5 }}>Thu nhập</Text>
           </Button>
-          <Button onPress={() => navigation.navigate("ChuyenKhoan")}>
-            <Text>Chuyển khoản</Text>
+
+          <Button onPress={() => navigation.navigate("ChuyenKhoan")}
+          block
+          info
+          style={{ height: 40, backgroundColor: "rgb(76,171,242)",marginBottom:2,borderBottomEndRadius:20 }}>
+            <Text style={{ color: "white", marginLeft: 5 }}>Chuyển khoản</Text>
           </Button>
-          <Button onPress={() => navigation.navigate("DieuChinhSoDu")}>
-            <Text>Điều chỉnh số dư</Text>
+
+          <Button onPress={() => navigation.navigate("DieuChinhSoDu")}
+          block
+          info
+          style={{ height: 40, backgroundColor: "rgb(76,171,242)",marginBottom:2,borderBottomEndRadius:20 }}>
+            <Text style={{ color: "white", marginLeft: 5 }}>Điều chỉnh số dư</Text>
           </Button>
+
         </Content>
 
         <Footer
-          style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}
+          style={{ backgroundColor: "rgb(76,171,242)", height: 40, color: "white" }}
         >
           <FooterTab
-            style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}
+            style={{ backgroundColor: "rgb(76,171,242)", height: 40, color: "white" }}
           >
             <Button vertical onPress={() => navigation.navigate("TongQuan")}>
               <Icon name="home" style={{ color: "white", fontSize: 18 }} />
