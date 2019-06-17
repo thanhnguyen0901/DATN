@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from 'react';
-import { Text, StyleSheet, Dimensions, Alert, Platform, View } from "react-native";
+import { Text, Dimensions, Alert, Platform } from "react-native";
 import { Button, Body, Card, CardItem, Container, Content, DatePicker, Footer, FooterTab, Header, Input, InputGroup, Item, Left, Right } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -11,16 +11,16 @@ let SQLite = require("react-native-sqlite-storage");
 const { height, width } = Dimensions.get("window");
 var db;
 
-export default class ChonHangMucChi extends Component {
+export default class ChonTaiKhoanDCSD extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      danhSachChi: [],
-      soNguoiChi: 0
+      taiKhoan: [],
+      soTaiKhoan: 0
     };
   }
-
   // Function
+
   componentDidMount(){
     if(Platform.OS === 'ios')
       db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~www/myDB.db', location: 'Library'}, this.openCB, this.errorCB);
@@ -28,14 +28,14 @@ export default class ChonHangMucChi extends Component {
       db = SQLite.openDatabase({name: '_myDB.db', createFromLocation :'~myDB.db'}, this.openCB, this.errorCB);
     let array = [];
     db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM danhsachchi', [], (tx, results) => {
+      tx.executeSql('SELECT * FROM taikhoan', [], (tx, results) => {
           var len = results.rows.length;
-          this.setState({soNguoiChi: len});
+          this.setState({soTaiKhoan: len});
           for (let i = 0; i < len; i++) {
             let row = results.rows.item(i);
             array.push(row);
           }
-          this.setState({danhSachChi: array});
+          this.setState({taiKhoan: array});
         });
     })
   }
@@ -52,27 +52,30 @@ export default class ChonHangMucChi extends Component {
             </Button>
           </Left>
           <Body style={{flex:8}}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>VỚI AI</Text>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>CHỌN TÀI KHOẢN</Text>
           </Body>
           <Right style={{flex:2}}></Right>
         </Header>
 
         <Content style={{ positon: "absolute", left: 0, right: 0, height: height - 104, backgroundColor: "#F1F1F1" }}>
           <Card style={{marginLeft: 5, marginRight: 5}}>
-            {this.state.danhSachChi.map((item,i)=>(
+            {this.state.taiKhoan.map((item,i)=>(
               <CardItem key={i} button onPress={ () => {
-                params.returnDataNguoiChi(item.ma_nguoi_chi, item.ten);
+                params.returnDataTaiKhoanDieuChinh(item.ma_tai_khoan,item.ten_tai_khoan, item.so_tien);
                 goBack();
               } } style={{ borderColor: "grey", borderBottomWidth: 0.7, height: 50, marginTop: 5, backgroundColor:'rgb(76,171,242)'}}>
               <Left style={{ flex: 1 }}>
-                <Icon name= 'user' style={{ fontSize: 18, color: "white" }}/>
+                <Icon name= 'credit-card' style={{ fontSize: 18, color: "white" }}/>
               </Left>
-              <Body style={{ flex: 8 }}>
+              <Body style={{ flex: 5 }}>
                 <Text style={{ fontSize: 20, color: "white", fontWeight:'bold' }}>
-                  { item.ten }
+                  { item.ten_tai_khoan }
                 </Text>
               </Body>
-              <Right style={{ flex: 1 }}>
+              <Right style={{ flex: 4 }}>
+                <Text style={{ fontSize: 20, color: "white" }}>
+                  { item.so_tien } VNĐ  
+                </Text>
               </Right>
             </CardItem>
             ))}

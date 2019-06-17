@@ -26,14 +26,12 @@ export default class ChiTieu extends React.Component {
       tenTaiKhoan: "Chọn tài khoản",
       nguoiChi: "",
       tenNguoiChi: "Chi cho ai",
-      sotientrongvi: 0
+      soTienTrongVi: 0
     };
     this.setDate = this.setDate.bind(this);
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
     this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
-    this.showDB = this.showDB.bind(this);
-    this.testSoTien = this.testSoTien.bind(this);
   }
 
   // Function
@@ -80,7 +78,7 @@ export default class ChiTieu extends React.Component {
             let data;
             let maCT = "ct";
             db.transaction(tx => {
-              tx.executeSql("SELECT ma_chi_tieu FROM chitieu WHERE ma_chi_tieu like (SELECT MAX(ma_chi_tieu) FROM CHITIEU)", [], (tx, results) => {
+              tx.executeSql("SELECT ma_chi_tieu FROM chitieu WHERE ma_chi_tieu like (SELECT MAX(ma_chi_tieu) FROM chitieu)", [], (tx, results) => {
                 data = results.rows.item(0).ma_chi_tieu;
                 soHienTai = parseInt(data.slice(2, 6), 10) + 1;
                 let str = "" + soHienTai;
@@ -96,42 +94,6 @@ export default class ChiTieu extends React.Component {
           });
       })
     );
-  }
-
-  async showDB() {
-    let query = "SELECT * FROM chitieu";
-    db.transaction((tx) => {
-      tx.executeSql(query, [], (tx, results) => {
-        var len = results.rows.length;
-        if (len == 0) {
-          console.log('Không có dòng nào trong DB');
-        }
-        else {
-          console.log('Có ', len, ' dòng trong DB');
-          for (let i = 0; i < len; i++) {
-            let row = results.rows.item(i);
-            console.log(row);
-          }
-        }
-      });
-    });
-  };
-
-  testSoTien() {
-    db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM taikhoan WHERE ma_tai_khoan like ?', [this.state.taiKhoan], (tx, results) => {
-        Alert.alert(
-          'Thông báo',
-          'Số tiền trong ví hiện tại là: ',
-          [
-            {
-              text: results.rows.item(0).so_tien,
-            },
-          ],
-          { cancelable: false }
-        );
-      });
-    });
   }
 
   async buttonOnClick() {
@@ -172,8 +134,7 @@ export default class ChiTieu extends React.Component {
     } else {
       let machitieu = "";
       machitieu = await this.phatSinhMaChiTieu();
-      console.log('Mã chi tiêu: ', machitieu);
-      let mataikhoan = 'test';
+      let mataikhoan = this.state.taiKhoan;
       let moneyTmp = this.state.soTien.replace(/,/g, "");
       let sotien = Number(moneyTmp);
       let mahangmucchi = this.state.hangMuc;
@@ -213,7 +174,7 @@ export default class ChiTieu extends React.Component {
         });
       });
       duLieu -= sotien;
-      this.setState({ sotientrongvi: duLieu });
+      this.setState({ soTienTrongVi: duLieu });
       db.transaction((tx) => {
         tx.executeSql(
           'UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?',
@@ -269,10 +230,10 @@ export default class ChiTieu extends React.Component {
               <InputGroup borderType="underline">
                 <Icon name="money" style={{ color: "#3a455c", fontSize: 18, fontWeight: "bold" }} />
                 <Input placeholder="0" style={{ fontSize: 20, color: "red", textAlign: "right", fontWeight: "bold" }}
-                  placeholderTextColor="red"
-                  keyboardType="numeric"
-                  onChangeText={this.formatMoney}
-                  value={this.state.soTien}
+                       placeholderTextColor="red"
+                       keyboardType="numeric"
+                       onChangeText={this.formatMoney}
+                       value={this.state.soTien}
                 />
                 <Text style={{ fontSize: 18, color: "#3a455c", fontWeight: "bold" }}>VNĐ</Text>
               </InputGroup>

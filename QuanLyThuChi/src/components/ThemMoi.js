@@ -30,7 +30,18 @@ export default class ThemMoi extends Component {
         </Header>
 
         <Content style={{ positon: "absolute", left: 0, right: 0, height: height - 104, backgroundColor: "#F1F1F1" }}>
-          
+          <Button onPress={() => navigation.navigate('ChiTieu')}>
+            <Text>Chi tiêu</Text>
+          </Button>
+          <Button onPress={() => navigation.navigate('ThuNhap')}>
+            <Text>Thu nhập</Text>
+          </Button>
+          <Button onPress={() => navigation.navigate('ChuyenKhoan')}>
+            <Text>Chuyển khoản</Text> 
+          </Button>
+          <Button onPress={() => navigation.navigate('DieuChinhSoDu')}>
+            <Text>Điều chỉnh số dư</Text>
+          </Button>
         </Content>
 
         <Footer style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}>
