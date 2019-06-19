@@ -52,8 +52,6 @@ export default class DieuChinhSoDu extends React.Component {
     this.formatMoneySoTienTaiKhoan = this.formatMoneySoTienTaiKhoan.bind(this);
     this.formatMoneySoDu = this.formatMoneySoDu.bind(this);
     this.phatSinhMaDieuChinh = this.phatSinhMaDieuChinh.bind(this);
-    // this.formatNumberToComma = this.formatNumberToComma.bind(this);
-    // this.formatCommatoNumber = this.formatCommatoNumber.bind(this);
   }
 
   // Function
@@ -328,7 +326,7 @@ export default class DieuChinhSoDu extends React.Component {
 
         <Content
           style={{
-            positon: "absolute",
+            // position: 'absolute',
             left: 0,
             right: 0,
             height: height - 104,

@@ -53,7 +53,7 @@ export default class KHAC extends Component {
 
         <Content
           style={{
-            positon: "absolute",
+            // position: 'absolute',
             left: 0,
             right: 0,
             height: height - 104,

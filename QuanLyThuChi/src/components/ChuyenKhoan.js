@@ -122,7 +122,7 @@ export default class ChuyenKhoan extends React.Component {
                   "SELECT ma_chuyen_khoan FROM chuyenkhoan WHERE ma_chuyen_khoan like (SELECT MAX(ma_chuyen_khoan) FROM chuyenkhoan)",
                   [],
                   (tx, results) => {
-                    data = results.rows.item(0).ma_chi_tieu;
+                    data = results.rows.item(0).ma_chuyen_khoan;
                     soHienTai = parseInt(data.slice(2, 6), 10) + 1;
                     let str = "" + soHienTai;
                     let pad = "0000";
@@ -413,7 +413,7 @@ export default class ChuyenKhoan extends React.Component {
 
         <Content
           style={{
-            positon: "absolute",
+            // position: 'absolute',
             left: 0,
             right: 0,
             height: height - 104,
@@ -540,6 +540,7 @@ export default class ChuyenKhoan extends React.Component {
                   placeholder="Mô tả"
                   placeholderTextColor="grey"
                   style={{ flex: 9, borderBottomWidth: 0.1 }}
+                  onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>
             </CardItem>

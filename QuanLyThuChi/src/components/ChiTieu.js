@@ -248,69 +248,39 @@ export default class ChiTieu extends React.Component {
     const { params } = this.props.navigation.state;
     return (
       <Container>
-        <Header
-          style={{
-            backgroundColor: "rgb(76,171,242)",
-            height: 40,
-            borderBottomColor: "rgb(76,171,242)"
-          }}
-        >
+        <Header style={styles.header}>
           <Left style={{ flex: 2 }}>
             <Button transparent>
-              <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
+              <Icon name="bars" style={styles.iconHeader} />
             </Button>
           </Left>
           <Body style={{ flex: 8 }}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              THÊM CHI TIÊU
-            </Text>
+            <Text style={styles.textHeader}>THÊM CHI TIÊU</Text>
           </Body>
           <Right style={{ flex: 2 }}>
             <Button transparent>
-              <Icon name="check" style={{ color: "white", fontSize: 18 }} />
+              <Icon name="check" style={styles.iconHeader} />
             </Button>
           </Right>
         </Header>
 
-        <Content
-          style={{
-            positon: "absolute",
-            left: 0,
-            right: 0,
-            height: height - 104,
-            backgroundColor: "#F1F1F1"
-          }}
-        >
+        <Content style={styles.content}>
           <Card>
             <CardItem header>
-              <Text style={{ fontWeight: "bold", color: "black" }}>
-                Số tiền
-              </Text>
+              <Text style={styles.titleContent}>Số tiền</Text>
             </CardItem>
             <CardItem>
               <InputGroup borderType="underline">
-                <Icon
-                  name="money"
-                  style={{ color: "#3a455c", fontSize: 18, fontWeight: "bold" }}
-                />
+                <Icon name="money" style={styles.icon} />
                 <Input
                   placeholder="0"
-                  style={{
-                    fontSize: 20,
-                    color: "red",
-                    textAlign: "right",
-                    fontWeight: "bold"
-                  }}
+                  style={{ ...styles.input, color: "red" }}
                   placeholderTextColor="red"
                   keyboardType="numeric"
                   onChangeText={this.formatMoney}
                   value={this.state.soTien}
                 />
-                <Text
-                  style={{ fontSize: 18, color: "#3a455c", fontWeight: "bold" }}
-                >
-                  VNĐ
-                </Text>
+                <Text style={styles.textContent}>VNĐ</Text>
               </InputGroup>
             </CardItem>
           </Card>
@@ -323,73 +293,34 @@ export default class ChiTieu extends React.Component {
                   returnDataHangMuc: this.returnDataHangMuc.bind(this)
                 })
               }
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50
-              }}
+              style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon
-                  name={this.state.iconHangMuc}
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name={this.state.iconHangMuc} style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10 }}>
-                  {this.state.tenHangMuc}
-                </Text>
+                <Text style={styles.textContent}>{this.state.tenHangMuc}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon
-                  name="chevron-circle-right"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="chevron-circle-right" style={styles.icon} />
               </Right>
             </CardItem>
 
-            <CardItem
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50,
-                marginTop: 5
-              }}
-            >
+            <CardItem style={styles.cardItem}>
               <Item>
-                <Icon
-                  active
-                  name="comments"
-                  style={{ fontSize: 18, color: "#3a455c", flex: 1 }}
-                />
+                <Icon active name="comments" style={styles.icon} />
                 <Input
                   placeholder="Mô tả"
-                  placeholderTextColor="black"
-                  style={{
-                    flex: 9,
-                    borderBottomWidth: 0.1,
-                    fontSize: 18,
-                    color: "black",
-                    paddingLeft: 12
-                  }}
+                  placeholderTextColor="#3a455c"
+                  style={{ ...styles.textContent, paddingLeft: 22 }}
                   onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>
             </CardItem>
 
-            <CardItem
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                marginTop: 5
-              }}
-            >
+            <CardItem style={styles.cardItem}>
               <Left style={{ flex: 1 }}>
-                <Icon
-                  active
-                  name="calendar"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon active name="calendar" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
                 <DatePicker
@@ -410,28 +341,16 @@ export default class ChiTieu extends React.Component {
                   returnDataTaiKhoan: this.returnDataTaiKhoan.bind(this)
                 })
               }
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50
-              }}
+              style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon
-                  name="credit-card"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="credit-card" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10 }}>
-                  {this.state.tenTaiKhoan}
-                </Text>
+                <Text style={styles.textContent}>{this.state.tenTaiKhoan}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon
-                  name="chevron-circle-right"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="chevron-circle-right" style={styles.icon} />
               </Right>
             </CardItem>
 
@@ -442,113 +361,55 @@ export default class ChiTieu extends React.Component {
                   returnDataNguoiChi: this.returnDataNguoiChi.bind(this)
                 })
               }
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50
-              }}
+              style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon name="user" style={{ fontSize: 18, color: "#3a455c" }} />
+                <Icon name="user" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10 }}>
-                  {this.state.tenNguoiChi}
-                </Text>
+                <Text style={styles.textContent}>{this.state.tenNguoiChi}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon
-                  name="chevron-circle-right"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="chevron-circle-right" style={styles.icon} />
               </Right>
             </CardItem>
 
             <Button
               block
               info
-              style={{ height: 40, backgroundColor: "rgb(76,171,242)" }}
+              style={{ height: 40, backgroundColor: "#3a455c" }}
               onPress={this.buttonOnClick}
             >
-              <Icon name="save" style={{ fontSize: 18, color: "white" }} />
-              <Text style={{ color: "white", marginLeft: 5 }}>Ghi</Text>
+              <Icon name="save" style={styles.iconHeader} />
+              <Text
+                style={{ color: "white", marginLeft: 10, fontWeight: "bold" }}
+              >
+                GHI
+              </Text>
             </Button>
           </Card>
         </Content>
 
-        <Footer
-          style={{
-            backgroundColor: "rgb(76,171,242)",
-            height: 40,
-            color: "white"
-          }}
-        >
-          <FooterTab
-            style={{
-              backgroundColor: "rgb(76,171,242)",
-              height: 40,
-              color: "white"
-            }}
-          >
+        <Footer style={styles.footer}>
+          <FooterTab style={styles.footer}>
             <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tổng quan
-              </Text>
+              <Icon name="home" style={styles.iconHeader} />
+              <Text style={styles.textFooter}>Tổng quan</Text>
             </Button>
             <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon
-                name="credit-card"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tài khoản
-              </Text>
+              <Icon name="credit-card" style={styles.iconHeader} />
+              <Text style={styles.textFooter}>Tài khoản</Text>
             </Button>
             <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon
-                name="plus-circle"
-                style={{ color: "white", fontSize: 30 }}
-              />
+              <Icon name="plus-circle" style={styles.iconPlusCircle} />
             </Button>
             <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Hạn mức chi
-              </Text>
+              <Icon name="filter" style={styles.iconHeader} />
+              <Text style={styles.textFooter}>Hạn mức chi</Text>
             </Button>
             <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon
-                name="ellipsis-h"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Khác
-              </Text>
+              <Icon name="ellipsis-h" style={styles.iconHeader} />
+              <Text style={styles.textFooter}>Khác</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -558,9 +419,77 @@ export default class ChiTieu extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+  buttonCardItem: {
+    backgroundColor: "#3a455c",
+    borderBottomWidth: 0.7,
+    borderColor: "grey",
+    height: 50,
+    marginTop: 5
+  },
+  card: {
+    marginLeft: 5,
+    marginRight: 5
+  },
+  cardItem: {
+    borderColor: "grey",
+    borderBottomWidth: 1,
+    height: 50,
+    marginTop: 5
+  },
+  content: {
+    backgroundColor: "#F1F1F1",
+    height: height - 104,
+    left: 0,
+    // position: "absolute",
+    right: 0
+  },
+  footer: {
+    backgroundColor: "#3a455c",
+    color: "white",
+    height: 40
+  },
+  header: {
+    backgroundColor: "#3a445c",
+    borderBottomColor: "#757575",
+    height: 40
+  },
+  icon: {
+    color: "#3a455c",
+    fontSize: 18
+  },
+  iconHeader: {
+    color: "white",
+    fontSize: 18
+  },
+  iconPlusCircle: {
+    color: "white",
+    fontSize: 30
+  },
+  input: {
+    color: "#3a455c",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "right"
+  },
+  textContent: {
+    color: "#3a455c",
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 10
+  },
+  textContentMoney: {
+    color: "white",
+    fontSize: 20
+  },
+  textHeader: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  textFooter: {
+    color: "white",
+    fontSize: 10,
+    fontFamily: "Times New Roman"
+  },
+  titleContent: { fontWeight: "bold", color: "black" }
 });

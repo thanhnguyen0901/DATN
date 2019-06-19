@@ -267,7 +267,7 @@ export default class ThuNhap extends React.Component {
 
         <Content
           style={{
-            positon: "absolute",
+            // position: 'absolute',
             left: 0,
             right: 0,
             height: height - 104,
@@ -364,6 +364,7 @@ export default class ThuNhap extends React.Component {
                     color: "black",
                     paddingLeft: 12
                   }}
+                  onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>
             </CardItem>

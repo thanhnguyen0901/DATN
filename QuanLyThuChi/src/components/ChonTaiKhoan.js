@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, Dimensions, Alert, Platform } from "react-native";
+import { Text, Dimensions, Platform, StyleSheet } from "react-native";
 import {
   Button,
   Body,
@@ -8,18 +8,13 @@ import {
   CardItem,
   Container,
   Content,
-  DatePicker,
   Footer,
   FooterTab,
   Header,
-  Input,
-  InputGroup,
-  Item,
   Left,
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-
 // Database:
 let SQLite = require("react-native-sqlite-storage");
 
@@ -34,8 +29,8 @@ export default class ChonTaiKhoan extends Component {
       taiKhoan: [],
       soTaiKhoan: 0
     };
+    this.formatMoney = this.formatMoney.bind(this);
   }
-  // Function
 
   componentDidMount() {
     if (Platform.OS === "ios")
@@ -67,42 +62,35 @@ export default class ChonTaiKhoan extends Component {
       });
     });
   }
+
+  // Function
+  formatMoney(money) {
+    money = money + "";
+    var x = money.replace(/,/g, "");
+    var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return y;
+  }
+
   render() {
     const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     const { goBack } = this.props.navigation;
     return (
       <Container>
-        <Header
-          style={{
-            backgroundColor: "rgb(76,171,242)",
-            height: 40,
-            borderBottomColor: "#757575"
-          }}
-        >
+        <Header style={styles.header}>
           <Left style={{ flex: 2 }}>
             <Button transparent>
-              <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
+              <Icon name="bars" style={styles.icon} />
             </Button>
           </Left>
           <Body style={{ flex: 8 }}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              CHỌN TÀI KHOẢN
-            </Text>
+            <Text style={styles.textHeader}>CHỌN TÀI KHOẢN</Text>
           </Body>
           <Right style={{ flex: 2 }} />
         </Header>
 
-        <Content
-          style={{
-            positon: "absolute",
-            left: 0,
-            right: 0,
-            height: height - 104,
-            backgroundColor: "#F1F1F1"
-          }}
-        >
-          <Card style={{ marginLeft: 5, marginRight: 5 }}>
+        <Content style={styles.content}>
+          <Card style={styles.card}>
             {this.state.taiKhoan.map((item, i) => (
               <CardItem
                 key={i}
@@ -114,30 +102,17 @@ export default class ChonTaiKhoan extends Component {
                   );
                   goBack();
                 }}
-                style={{
-                  borderColor: "grey",
-                  borderBottomWidth: 0.7,
-                  height: 50,
-                  marginTop: 5,
-                  backgroundColor: "rgb(76,171,242)"
-                }}
+                style={styles.cardItem}
               >
                 <Left style={{ flex: 1 }}>
-                  <Icon
-                    name="credit-card"
-                    style={{ fontSize: 18, color: "white" }}
-                  />
+                  <Icon name="credit-card" style={styles.icon} />
                 </Left>
-                <Body style={{ flex: 5 }}>
-                  <Text
-                    style={{ fontSize: 20, color: "white", fontWeight: "bold" }}
-                  >
-                    {item.ten_tai_khoan}
-                  </Text>
+                <Body style={{ flex: 6 }}>
+                  <Text style={styles.textContent}>{item.ten_tai_khoan}</Text>
                 </Body>
-                <Right style={{ flex: 4 }}>
-                  <Text style={{ fontSize: 20, color: "white" }}>
-                    {item.so_tien} VNĐ
+                <Right style={{ flex: 6 }}>
+                  <Text style={styles.textContentMoney}>
+                    {this.formatMoney(item.so_tien)} VNĐ
                   </Text>
                 </Right>
               </CardItem>
@@ -145,79 +120,26 @@ export default class ChonTaiKhoan extends Component {
           </Card>
         </Content>
 
-        <Footer
-          style={{
-            backgroundColor: "rgb(76,171,242)",
-            height: 40,
-            color: "white"
-          }}
-        >
-          <FooterTab
-            style={{
-              backgroundColor: "rgb(76,171,242)",
-              height: 40,
-              color: "white"
-            }}
-          >
+        <Footer style={styles.footer}>
+          <FooterTab style={styles.footer}>
             <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tổng quan
-              </Text>
+              <Icon name="home" style={styles.icon} />
+              <Text style={styles.textFooter}>Tổng quan</Text>
             </Button>
             <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon
-                name="credit-card"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tài khoản
-              </Text>
+              <Icon name="credit-card" style={styles.icon} />
+              <Text style={styles.textFooter}>Tài khoản</Text>
             </Button>
             <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon
-                name="plus-circle"
-                style={{ color: "white", fontSize: 30 }}
-              />
+              <Icon name="plus-circle" style={styles.iconPlusCircle} />
             </Button>
             <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Hạn mức chi
-              </Text>
+              <Icon name="filter" style={styles.icon} />
+              <Text style={styles.textFooter}>Hạn mức chi</Text>
             </Button>
             <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon
-                name="ellipsis-h"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Khác
-              </Text>
+              <Icon name="ellipsis-h" style={styles.icon} />
+              <Text style={styles.textFooter}>Khác</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -225,3 +147,68 @@ export default class ChonTaiKhoan extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  buttonCardItem: {
+    backgroundColor: "#3a455c",
+    borderBottomWidth: 0.7,
+    borderColor: "grey",
+    height: 50,
+    marginTop: 5
+  },
+  card: {
+    marginLeft: 5,
+    marginRight: 5
+  },
+  cardItem: {
+    borderColor: "grey",
+    borderBottomWidth: 1,
+    height: 50,
+    marginTop: 5,
+    backgroundColor: "#3a455c"
+  },
+  content: {
+    backgroundColor: "#F1F1F1",
+    height: height - 104,
+    left: 0,
+    // position: "absolute",
+    right: 0
+  },
+  footer: {
+    backgroundColor: "#3a455c",
+    color: "white",
+    height: 40
+  },
+  header: {
+    backgroundColor: "#3a445c",
+    borderBottomColor: "#757575",
+    height: 40
+  },
+  icon: {
+    color: "white",
+    fontSize: 18
+  },
+  iconPlusCircle: {
+    color: "white",
+    fontSize: 30
+  },
+  textContent: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  textContentMoney: {
+    color: "white",
+    fontSize: 20
+  },
+  textHeader: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  textFooter: {
+    color: "white",
+    fontSize: 10,
+    fontFamily: "Times New Roman"
+  }
+});

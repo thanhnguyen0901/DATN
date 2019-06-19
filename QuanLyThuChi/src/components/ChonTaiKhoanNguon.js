@@ -35,7 +35,6 @@ export default class ChonTaiKhoanNguon extends Component {
       soTaiKhoan: 0
     };
   }
-  // Function
 
   componentDidMount() {
     if (Platform.OS === "ios")
@@ -67,6 +66,14 @@ export default class ChonTaiKhoanNguon extends Component {
       });
     });
   }
+  // Function
+  formatMoney(money) {
+    money = money + "";
+    var x = money.replace(/,/g, "");
+    var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return y;
+  }
+
   render() {
     const { navigation } = this.props;
     const { params } = this.props.navigation.state;
@@ -95,7 +102,7 @@ export default class ChonTaiKhoanNguon extends Component {
 
         <Content
           style={{
-            positon: "absolute",
+            // position: 'absolute',
             left: 0,
             right: 0,
             height: height - 104,
@@ -137,7 +144,7 @@ export default class ChonTaiKhoanNguon extends Component {
                 </Body>
                 <Right style={{ flex: 4 }}>
                   <Text style={{ fontSize: 20, color: "white" }}>
-                    {item.so_tien} VNĐ
+                    {this.formatMoney(item.so_tien)} VNĐ
                   </Text>
                 </Right>
               </CardItem>
