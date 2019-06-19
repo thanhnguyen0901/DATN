@@ -1,5 +1,5 @@
-import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import React from "react";
+import { createStackNavigator } from "react-navigation";
 import ChiTieu from "./src/components/ChiTieu";
 import ThuNhap from "./src/components/ThuNhap";
 import ChuyenKhoan from "./src/components/ChuyenKhoan";
@@ -18,7 +18,9 @@ import TaiKhoan from "./src/components/TaiKhoan";
 import ThemMoi from "./src/components/ThemMoi";
 import TongQuan from "./src/components/TongQuan";
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = createStackNavigator(
+  {
+    ThemMoi: { screen: ThemMoi },
     ChiTieu: { screen: ChiTieu },
     ThuNhap: { screen: ThuNhap },
     ChuyenKhoan: { screen: ChuyenKhoan },
@@ -27,18 +29,18 @@ const AppNavigator = createStackNavigator({
     ChonHangMucThu: { screen: ChonHangMucThu },
     ChiChoAi: { screen: ChiChoAi },
     ThuTuAi: { screen: ThuTuAi },
-    ChonTaiKhoan : { screen: ChonTaiKhoan },
+    ChonTaiKhoan: { screen: ChonTaiKhoan },
     HanMucChi: { screen: HanMucChi },
     Khac: { screen: Khac },
     TaiKhoan: { screen: TaiKhoan },
-    ThemMoi: { screen: ThemMoi },
     TongQuan: { screen: TongQuan },
     ChonTaiKhoanDich: { screen: ChonTaiKhoanDich },
     ChonTaiKhoanNguon: { screen: ChonTaiKhoanNguon },
     ChonTaiKhoanDCSD: { screen: ChonTaiKhoanDCSD }
-},
-{
-    headerMode: 'none'
-});
+  },
+  {
+    headerMode: "none"
+  }
+);
 
 export default AppNavigator;
