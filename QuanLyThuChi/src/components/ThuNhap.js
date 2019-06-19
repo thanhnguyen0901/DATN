@@ -296,6 +296,7 @@ export default class ThuNhap extends React.Component {
                   }}
                   placeholderTextColor="green"
                   keyboardType="numeric"
+                  selectTextOnFocus
                   onChangeText={this.formatMoney}
                   value={this.state.soTien}
                 />
@@ -364,6 +365,7 @@ export default class ThuNhap extends React.Component {
                     color: "black",
                     paddingLeft: 12
                   }}
+                  selectTextOnFocus
                   onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>

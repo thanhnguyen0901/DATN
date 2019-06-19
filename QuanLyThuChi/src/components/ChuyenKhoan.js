@@ -440,6 +440,7 @@ export default class ChuyenKhoan extends React.Component {
                     textAlign: "right",
                     fontWeight: "bold"
                   }}
+                  selectTextOnFocus
                   placeholderTextColor="#3a455c"
                   keyboardType="numeric"
                   onChangeText={this.formatMoney}
@@ -539,6 +540,7 @@ export default class ChuyenKhoan extends React.Component {
                 <Input
                   placeholder="Mô tả"
                   placeholderTextColor="grey"
+                  selectTextOnFocus
                   style={{ flex: 9, borderBottomWidth: 0.1 }}
                   onChangeText={moTa => this.setState({ moTa })}
                 />
@@ -585,6 +587,7 @@ export default class ChuyenKhoan extends React.Component {
                   }}
                   placeholderTextColor="red"
                   keyboardType="numeric"
+                  selectTextOnFocus
                   onChangeText={this.formatPhiChuyenKhoan}
                   value={this.state.phiChuyenKhoan}
                 />

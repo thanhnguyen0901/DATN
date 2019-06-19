@@ -427,6 +427,7 @@ export default class DieuChinhSoDu extends React.Component {
                   }}
                   placeholderTextColor="#3a455c"
                   keyboardType="numeric"
+                  selectTextOnFocus
                   onChangeText={text => this.formatMoney(text)}
                   value={this.state.soTienThucTe}
                 />
@@ -512,8 +513,8 @@ export default class DieuChinhSoDu extends React.Component {
                   style={{ fontSize: 18, color: "#3a455c", flex: 1 }}
                 />
                 <Input
-                  placeholder={this.state.moTa}
-                  placeholderTextColor="black"
+                  value={this.state.moTa}
+                  selectTextOnFocus
                   style={{ flex: 9, borderBottomWidth: 0.1 }}
                   onChangeText={moTa => this.setState({ moTa })}
                 />

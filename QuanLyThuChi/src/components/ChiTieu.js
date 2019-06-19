@@ -20,6 +20,7 @@ import {
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
+import NumberFormat from "react-number-format";
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -274,9 +275,10 @@ export default class ChiTieu extends React.Component {
                 <Icon name="money" style={styles.icon} />
                 <Input
                   placeholder="0"
-                  style={{ ...styles.input, color: "red" }}
+                  style={{ ...styles.input, color: "red", fontWeight: "bold" }}
                   placeholderTextColor="red"
                   keyboardType="numeric"
+                  selectTextOnFocus
                   onChangeText={this.formatMoney}
                   value={this.state.soTien}
                 />
@@ -312,6 +314,7 @@ export default class ChiTieu extends React.Component {
                 <Input
                   placeholder="Mô tả"
                   placeholderTextColor="#3a455c"
+                  selectTextOnFocus
                   style={{ ...styles.textContent, paddingLeft: 22 }}
                   onChangeText={moTa => this.setState({ moTa })}
                 />
@@ -384,7 +387,7 @@ export default class ChiTieu extends React.Component {
               <Text
                 style={{ color: "white", marginLeft: 10, fontWeight: "bold" }}
               >
-                GHI
+                Ghi
               </Text>
             </Button>
           </Card>
@@ -468,13 +471,11 @@ const styles = StyleSheet.create({
   input: {
     color: "#3a455c",
     fontSize: 20,
-    fontWeight: "bold",
     textAlign: "right"
   },
   textContent: {
     color: "#3a455c",
     fontSize: 20,
-    fontWeight: "bold",
     paddingLeft: 10
   },
   textContentMoney: {
