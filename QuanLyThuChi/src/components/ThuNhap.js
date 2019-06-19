@@ -50,6 +50,7 @@ export default class ThuNhap extends React.Component {
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
     this.phatSinhMaThuNhap = this.phatSinhMaThuNhap.bind(this);
+    this.resetNguoiThu = this.resetNguoiThu.bind(this);
   }
 
   componentDidMount() {
@@ -89,7 +90,12 @@ export default class ThuNhap extends React.Component {
     this.setState({ soTien: y });
     return y;
   }
-
+  resetNguoiThu() {
+    this.setState({
+      nguoiThu: "",
+      tenNguoiThu: "Thu từ ai"
+    });
+  }
   hideDateTimePicker = datetime => {
     this.setState({ isDateTimePickerVisible: false });
     this.setState({ ngayThu: datetime });
@@ -466,10 +472,22 @@ export default class ThuNhap extends React.Component {
                 </Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon
-                  name="chevron-circle-right"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Button
+                  style={{
+                    ...styles.buttonCardItem,
+                    backgroundColor: "white",
+                    marginTop: 0
+                  }}
+                  onPress={this.resetNguoiThu}
+                >
+                  <Icon
+                    name="times"
+                    style={{
+                      ...styles.icon,
+                      color: "red"
+                    }}
+                  />
+                </Button>
               </Right>
             </CardItem>
 
@@ -559,9 +577,75 @@ export default class ThuNhap extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+  buttonCardItem: {
+    backgroundColor: "#3a455c",
+    borderBottomWidth: 0.7,
+    borderColor: "grey",
+    height: 50,
+    marginTop: 5
+  },
+  card: {
+    marginLeft: 5,
+    marginRight: 5
+  },
+  cardItem: {
+    borderColor: "grey",
+    borderBottomWidth: 1,
+    height: 50,
+    marginTop: 5
+  },
+  content: {
+    backgroundColor: "#F1F1F1",
+    height: height - 104,
+    left: 0,
+    // position: "absolute",
+    right: 0
+  },
+  footer: {
+    backgroundColor: "#3a455c",
+    color: "white",
+    height: 40
+  },
+  header: {
+    backgroundColor: "#3a445c",
+    borderBottomColor: "#757575",
+    height: 40
+  },
+  icon: {
+    color: "#3a455c",
+    fontSize: 18
+  },
+  iconHeader: {
+    color: "white",
+    fontSize: 18
+  },
+  iconPlusCircle: {
+    color: "white",
+    fontSize: 30
+  },
+  input: {
+    color: "#3a455c",
+    fontSize: 20,
+    textAlign: "right"
+  },
+  textContent: {
+    color: "#3a455c",
+    fontSize: 20,
+    paddingLeft: 10
+  },
+  textContentMoney: {
+    color: "white",
+    fontSize: 20
+  },
+  textHeader: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  textFooter: {
+    color: "white",
+    fontSize: 10,
+    fontFamily: "Times New Roman"
+  },
+  titleContent: { fontWeight: "bold", color: "black" }
 });

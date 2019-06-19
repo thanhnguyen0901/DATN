@@ -50,6 +50,7 @@ export default class ChiTieu extends React.Component {
     this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
     this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
     this.showDateTimePicker = this.showDateTimePicker.bind(this);
+    this.resetNguoiChi = this.resetNguoiChi.bind(this);
   }
 
   // Function
@@ -140,7 +141,12 @@ export default class ChiTieu extends React.Component {
       })
     );
   }
-
+  resetNguoiChi() {
+    this.setState({
+      nguoiChi: "",
+      tenNguoiChi: "Chi cho ai"
+    });
+  }
   async buttonOnClick() {
     // Kiểm tra đầy đủ:
     if (this.state.soTien == "") {
@@ -389,7 +395,7 @@ export default class ChiTieu extends React.Component {
                   returnDataNguoiChi: this.returnDataNguoiChi.bind(this)
                 })
               }
-              style={styles.cardItem}
+              style={{ ...styles.cardItem, marginRight: 0 }}
             >
               <Left style={{ flex: 1 }}>
                 <Icon name="user" style={styles.icon} />
@@ -398,7 +404,22 @@ export default class ChiTieu extends React.Component {
                 <Text style={styles.textContent}>{this.state.tenNguoiChi}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon name="chevron-circle-right" style={styles.icon} />
+                <Button
+                  style={{
+                    ...styles.buttonCardItem,
+                    backgroundColor: "white",
+                    marginTop: 0
+                  }}
+                  onPress={this.resetNguoiChi}
+                >
+                  <Icon
+                    name="times"
+                    style={{
+                      ...styles.icon,
+                      color: "red"
+                    }}
+                  />
+                </Button>
               </Right>
             </CardItem>
 
