@@ -8,7 +8,6 @@ import {
   CardItem,
   Container,
   Content,
-  DatePicker,
   Footer,
   FooterTab,
   Header,
@@ -20,7 +19,7 @@ import {
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
-import NumberFormat from "react-number-format";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -43,12 +42,14 @@ export default class ChiTieu extends React.Component {
       tenTaiKhoan: "Chọn tài khoản",
       nguoiChi: "",
       tenNguoiChi: "Chi cho ai",
-      soTienTrongVi: 0
+      soTienTrongVi: 0,
+      isDateTimePickerVisible: false
     };
-    this.setDate = this.setDate.bind(this);
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
     this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
+    this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
+    this.showDateTimePicker = this.showDateTimePicker.bind(this);
   }
 
   // Function
@@ -83,15 +84,21 @@ export default class ChiTieu extends React.Component {
     console.log("Database OPENED");
   }
 
+  hideDateTimePicker = datetime => {
+    this.setState({ isDateTimePickerVisible: false });
+    this.setState({ ngayChi: datetime });
+    moment(this.state.ngayChi).format("YYYY/MM/DD HH:mm:ss");
+  };
+
+  showDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: true });
+  };
+
   formatMoney(money) {
     var x = money.replace(/,/g, "");
     var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     this.setState({ soTien: y });
     return y;
-  }
-
-  setDate(newDate) {
-    this.setState({ ngayChi: newDate });
   }
 
   phatSinhMaChiTieu() {
@@ -176,7 +183,7 @@ export default class ChiTieu extends React.Component {
       let moneyTmp = this.state.soTien.replace(/,/g, "");
       let sotien = Number(moneyTmp);
       let mahangmucchi = this.state.hangMuc;
-      let ngay = moment(this.state.ngayChi).format("YYYY-MM-DD HH:mm:ss");
+      let ngay = moment(this.state.ngayChi).format("YYYY/MM/DD HH:mm:ss");
       let manguoichi = this.state.nguoiChi;
       let mota = this.state.moTa;
       // Thêm chi tiêu vào bảng chitieu
@@ -321,18 +328,36 @@ export default class ChiTieu extends React.Component {
               </Item>
             </CardItem>
 
-            <CardItem style={styles.cardItem}>
+            <CardItem
+              button
+              onPress={() => this.setState({ isDateTimePickerVisible: true })}
+              style={styles.cardItem}
+            >
               <Left style={{ flex: 1 }}>
                 <Icon active name="calendar" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <DatePicker
-                  animationType={"fade"}
-                  androidMode={"default"}
-                  defaultDate={this.state.ngayChi}
-                  onDateChange={this.setDate}
-                  disabled={false}
+                <DateTimePicker
+                  isVisible={this.state.isDateTimePickerVisible}
+                  onConfirm={this.hideDateTimePicker}
+                  onCancel={this.hideDateTimePicker}
+                  mode={"datetime"}
+                  is24Hour={true}
+                  titleIOS={"Chọn ngày chi"}
+                  titleStyle={{ color: "#3a455c", fontSize: 20 }}
+                  locale={"vie"}
+                  customConfirmButtonIOS={
+                    <Text
+                      style={{ ...styles.textContent, textAlign: "center" }}
+                    >
+                      Xác nhận
+                    </Text>
+                  }
+                  cancelTextIOS={"Hủy"}
                 />
+                <Text style={styles.textContent}>
+                  {moment(this.state.ngayChi).format("DD/MM/YYYY HH:mm:ss")}
+                </Text>
               </Body>
               <Right style={{ flex: 1 }} />
             </CardItem>

@@ -8,7 +8,6 @@ import {
   CardItem,
   Container,
   Content,
-  DatePicker,
   Footer,
   FooterTab,
   Header,
@@ -20,6 +19,7 @@ import {
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -44,9 +44,11 @@ export default class DieuChinhSoDu extends React.Component {
       ngayDieuChinh: new Date(),
       taiKhoan: "",
       tenTaiKhoan: "Chọn tài khoản",
-      chenhLech: "Chênh lệch"
+      chenhLech: "Chênh lệch",
+      isDateTimePickerVisible: false
     };
-    this.setDate = this.setDate.bind(this);
+    this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
+    this.showDateTimePicker = this.showDateTimePicker.bind(this);
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
     this.formatMoneySoTienTaiKhoan = this.formatMoneySoTienTaiKhoan.bind(this);
@@ -138,9 +140,15 @@ export default class DieuChinhSoDu extends React.Component {
     return y;
   }
 
-  setDate(newDate) {
-    this.setState({ ngayDieuChinh: newDate });
-  }
+  hideDateTimePicker = datetime => {
+    this.setState({ isDateTimePickerVisible: false });
+    this.setState({ ngayDieuChinh: datetime });
+    moment(this.state.ngayDieuChinh).format("YYYY/MM/DD HH:mm:ss");
+  };
+
+  showDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: true });
+  };
 
   phatSinhMaDieuChinh() {
     let query = "SELECT * FROM dieuchinhsodu;";
@@ -368,7 +376,11 @@ export default class DieuChinhSoDu extends React.Component {
               </Right>
             </CardItem>
 
-            <CardItem style={{ borderColor: "grey", borderBottomWidth: 0.7 }}>
+            <CardItem
+              button
+              onPress={() => this.setState({ isDateTimePickerVisible: true })}
+              style={{ borderColor: "grey", borderBottomWidth: 0.7 }}
+            >
               <Left style={{ flex: 1 }}>
                 <Icon
                   active
@@ -377,13 +389,29 @@ export default class DieuChinhSoDu extends React.Component {
                 />
               </Left>
               <Body style={{ flex: 8 }}>
-                <DatePicker
-                  animationType={"fade"}
-                  androidMode={"default"}
-                  defaultDate={this.state.ngayDieuChinh}
-                  onDateChange={this.setDate}
-                  disabled={false}
+                <DateTimePicker
+                  isVisible={this.state.isDateTimePickerVisible}
+                  onConfirm={this.hideDateTimePicker}
+                  onCancel={this.hideDateTimePicker}
+                  mode={"datetime"}
+                  is24Hour={true}
+                  titleIOS={"Chọn ngày chi"}
+                  titleStyle={{ color: "#3a455c", fontSize: 20 }}
+                  locale={"vie"}
+                  customConfirmButtonIOS={
+                    <Text
+                      style={{ ...styles.textContent, textAlign: "center" }}
+                    >
+                      Xác nhận
+                    </Text>
+                  }
+                  cancelTextIOS={"Hủy"}
                 />
+                <Text style={styles.textContent}>
+                  {moment(this.state.ngayDieuChinh).format(
+                    "DD/MM/YYYY HH:mm:ss"
+                  )}
+                </Text>
               </Body>
               <Right style={{ flex: 1 }} />
             </CardItem>
