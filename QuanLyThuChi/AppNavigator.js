@@ -18,6 +18,7 @@ import TaiKhoan from "./src/components/TaiKhoan";
 import ThemMoi from "./src/components/ThemMoi";
 import TongQuan from "./src/components/TongQuan";
 import ThemTaiKhoan from "./src/components/ThemTaiKhoan";
+import ChinhSuaTaiKhoan from "./src/components/ChinhSuaTaiKhoan";
 
 const AppNavigator = createStackNavigator(
   {
@@ -38,7 +39,8 @@ const AppNavigator = createStackNavigator(
     ChonTaiKhoanDich: { screen: ChonTaiKhoanDich },
     ChonTaiKhoanNguon: { screen: ChonTaiKhoanNguon },
     ChonTaiKhoanDCSD: { screen: ChonTaiKhoanDCSD },
-    ThemTaiKhoan: { screen: ThemTaiKhoan }
+    ThemTaiKhoan: { screen: ThemTaiKhoan },
+    ChinhSuaTaiKhoan: { screen: ChinhSuaTaiKhoan }
   },
   {
     headerMode: "none"
