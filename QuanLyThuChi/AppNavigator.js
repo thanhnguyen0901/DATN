@@ -17,6 +17,11 @@ import Khac from "./src/components/Khac";
 import TaiKhoan from "./src/components/TaiKhoan";
 import ThemMoi from "./src/components/ThemMoi";
 import TongQuan from "./src/components/TongQuan";
+<<<<<<< HEAD
+=======
+import ThemTaiKhoan from "./src/components/ThemTaiKhoan";
+import ChinhSuaTaiKhoan from "./src/components/ChinhSuaTaiKhoan";
+>>>>>>> 6b12dc65ac0802ef57e3b1ad53f28d6570cf09c6
 
 const AppNavigator = createStackNavigator(
   {
@@ -36,7 +41,13 @@ const AppNavigator = createStackNavigator(
     TongQuan: { screen: TongQuan },
     ChonTaiKhoanDich: { screen: ChonTaiKhoanDich },
     ChonTaiKhoanNguon: { screen: ChonTaiKhoanNguon },
+<<<<<<< HEAD
     ChonTaiKhoanDCSD: { screen: ChonTaiKhoanDCSD }
+=======
+    ChonTaiKhoanDCSD: { screen: ChonTaiKhoanDCSD },
+    ThemTaiKhoan: { screen: ThemTaiKhoan },
+    ChinhSuaTaiKhoan: { screen: ChinhSuaTaiKhoan }
+>>>>>>> 6b12dc65ac0802ef57e3b1ad53f28d6570cf09c6
   },
   {
     headerMode: "none"
