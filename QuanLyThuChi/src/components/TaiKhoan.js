@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Platform } from "react-native";
 import {
   Button,
   Body,
@@ -11,9 +11,6 @@ import {
   Footer,
   FooterTab,
   Header,
-  Input,
-  InputGroup,
-  Item,
   Left,
   Right
 } from "native-base";
@@ -40,6 +37,7 @@ export default class TaiKhoan extends Component {
     this.formatMoney = this.formatMoney.bind(this);
   }
   componentDidMount() {
+    console.log("renderTaiKhoan");
     if (Platform.OS === "ios")
       db = SQLite.openDatabase(
         {
@@ -56,47 +54,50 @@ export default class TaiKhoan extends Component {
         this.openCB,
         this.errorCB
       );
-    let taiKhoanDangSuDung = [];
-    let taiKhoanNgungSuDung = [];
-    db.transaction(tx => {
-      tx.executeSql(
-        "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
-        [],
-        (tx, results) => {
-          var len = results.rows.length;
-          this.setState({ soTaiKhoanDangSuDung: len });
-          for (let i = 0; i < len; i++) {
-            let row = results.rows.item(i);
-            let tongTienTaiKhoanDangSuDung =
-              this.state.tongTienTaiKhoanDangSuDung + row.so_tien;
-            this.setState({
-              tongTienTaiKhoanDangSuDung: tongTienTaiKhoanDangSuDung
-            });
-            taiKhoanDangSuDung.push(row);
+    this.props.navigation.addListener("didFocus", payload => {
+      console.log("Focus_Taikhoan");
+      let taiKhoanDangSuDung = [];
+      let taiKhoanNgungSuDung = [];
+      db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
+          [],
+          (tx, results) => {
+            var len = results.rows.length;
+            this.setState({ soTaiKhoanDangSuDung: len });
+            for (let i = 0; i < len; i++) {
+              let row = results.rows.item(i);
+              let tongTienTaiKhoanDangSuDung =
+                this.state.tongTienTaiKhoanDangSuDung + row.so_tien;
+              this.setState({
+                tongTienTaiKhoanDangSuDung: tongTienTaiKhoanDangSuDung
+              });
+              taiKhoanDangSuDung.push(row);
+            }
+            this.setState({ taiKhoanDangSuDung: taiKhoanDangSuDung });
           }
-          this.setState({ taiKhoanDangSuDung: taiKhoanDangSuDung });
-        }
-      );
-    });
-    db.transaction(tx => {
-      tx.executeSql(
-        "SELECT * FROM taikhoan WHERE dang_su_dung like 'n' and xoa like 'n'",
-        [],
-        (tx, results) => {
-          var len = results.rows.length;
-          this.setState({ soTaiKhoanNgungSuDung: len });
-          for (let i = 0; i < len; i++) {
-            let row = results.rows.item(i);
-            let tongTienTaiKhoanNgungSuDung =
-              this.state.tongTienTaiKhoanNgungSuDung + row.so_tien;
-            this.setState({
-              tongTienTaiKhoanNgungSuDung: tongTienTaiKhoanNgungSuDung
-            });
-            taiKhoanNgungSuDung.push(row);
+        );
+      });
+      db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM taikhoan WHERE dang_su_dung like 'n' and xoa like 'n'",
+          [],
+          (tx, results) => {
+            var len = results.rows.length;
+            this.setState({ soTaiKhoanNgungSuDung: len });
+            for (let i = 0; i < len; i++) {
+              let row = results.rows.item(i);
+              let tongTienTaiKhoanNgungSuDung =
+                this.state.tongTienTaiKhoanNgungSuDung + row.so_tien;
+              this.setState({
+                tongTienTaiKhoanNgungSuDung: tongTienTaiKhoanNgungSuDung
+              });
+              taiKhoanNgungSuDung.push(row);
+            }
+            this.setState({ taiKhoanNgungSuDung: taiKhoanNgungSuDung });
           }
-          this.setState({ taiKhoanNgungSuDung: taiKhoanNgungSuDung });
-        }
-      );
+        );
+      });
     });
   }
 
@@ -119,7 +120,7 @@ export default class TaiKhoan extends Component {
             <Text style={styles.textHeader}>TÀI KHOẢN</Text>
           </Body>
           <Right style={{ flex: 2 }}>
-            <Button transparent>
+            <Button transparent onPress={() => navigation.push("ThemTaiKhoan")}>
               <Icon name="plus" style={styles.iconHeader} />
             </Button>
           </Right>

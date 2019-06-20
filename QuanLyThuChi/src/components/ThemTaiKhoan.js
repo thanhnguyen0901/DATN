@@ -15,11 +15,10 @@ import {
   InputGroup,
   Item,
   Left,
+  Picker,
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import moment from "moment";
-import DateTimePicker from "react-native-modal-datetime-picker";
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -28,29 +27,19 @@ let SQLite = require("react-native-sqlite-storage");
 const { height, width } = Dimensions.get("window");
 var db;
 
-export default class ChiTieu extends React.Component {
+export default class ThemTaiKhoan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       soTien: "",
-      iconHangMuc: "question-circle",
-      hangMuc: "",
-      tenHangMuc: "Chọn hạng mục",
       moTa: "",
-      ngayChi: new Date(),
-      taiKhoan: "",
-      tenTaiKhoan: "Chọn tài khoản",
-      nguoiChi: "",
-      tenNguoiChi: "Chi cho ai",
-      soTienTrongVi: 0,
-      isDateTimePickerVisible: false
+      tenTaiKhoan: "Tên tài khoản",
+      loaiTaiKhoan: ""
     };
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
-    this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
-    this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
-    this.showDateTimePicker = this.showDateTimePicker.bind(this);
-    this.resetNguoiChi = this.resetNguoiChi.bind(this);
+    this.phatSinhMaTaiKhoan = this.phatSinhMaTaiKhoan.bind(this);
+    this.chonLoaiTaiKhoan = this.chonLoaiTaiKhoan.bind(this);
   }
 
   // Function
@@ -85,16 +74,6 @@ export default class ChiTieu extends React.Component {
     console.log("Database OPENED");
   }
 
-  hideDateTimePicker = datetime => {
-    this.setState({ isDateTimePickerVisible: false });
-    this.setState({ ngayChi: datetime });
-    moment(this.state.ngayChi).format("YYYY/MM/DD HH:mm:ss");
-  };
-
-  showDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: true });
-  };
-
   formatMoney(money) {
     var x = money.replace(/,/g, "");
     var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -102,8 +81,8 @@ export default class ChiTieu extends React.Component {
     return y;
   }
 
-  phatSinhMaChiTieu() {
-    let query = "SELECT * FROM chitieu;";
+  phatSinhMaTaiKhoan() {
+    let query = "SELECT * FROM taikhoan;";
     return new Promise((resolve, reject) =>
       db.transaction(tx => {
         tx.executeSql(
@@ -112,17 +91,17 @@ export default class ChiTieu extends React.Component {
           (tx, results) => {
             var soDong = results.rows.length;
             if (soDong == 0) {
-              resolve("ct0001");
+              resolve("tk0001");
             } else {
               let soHienTai;
               let data;
-              let maCT = "ct";
+              let maCT = "tk";
               db.transaction(tx => {
                 tx.executeSql(
-                  "SELECT ma_chi_tieu FROM chitieu WHERE ma_chi_tieu like (SELECT MAX(ma_chi_tieu) FROM chitieu)",
+                  "SELECT ma_tai_khoan FROM taikhoan WHERE ma_tai_khoan like (SELECT MAX(ma_tai_khoan) FROM taikhoan)",
                   [],
                   (tx, results) => {
-                    data = results.rows.item(0).ma_chi_tieu;
+                    data = results.rows.item(0).ma_tai_khoan;
                     soHienTai = parseInt(data.slice(2, 6), 10) + 1;
                     let str = "" + soHienTai;
                     let pad = "0000";
@@ -142,19 +121,13 @@ export default class ChiTieu extends React.Component {
     );
   }
 
-  resetNguoiChi() {
-    this.setState({
-      nguoiChi: "",
-      tenNguoiChi: "Chi cho ai"
-    });
-  }
-
   async buttonOnClick() {
     // Kiểm tra đầy đủ:
+    const { goBack } = this.props.navigation;
     if (this.state.soTien == "") {
       Alert.alert(
         "Thông báo",
-        "Bạn chưa nhập số tiền!",
+        "Bạn chưa nhập số dư tài khoản!",
         [
           {
             text: "Ok"
@@ -162,10 +135,10 @@ export default class ChiTieu extends React.Component {
         ],
         { cancelable: false }
       );
-    } else if (this.state.hangMuc == "") {
+    } else if (this.state.tenTaiKhoan == "Tên tài khoản") {
       Alert.alert(
         "Thông báo",
-        "Bạn chưa chọn hạng mục chi!",
+        "Bạn chưa nhập tên tài khoản!",
         [
           {
             text: "Ok"
@@ -173,10 +146,10 @@ export default class ChiTieu extends React.Component {
         ],
         { cancelable: false }
       );
-    } else if (this.state.taiKhoan == "") {
+    } else if (this.state.loaiTaiKhoan == "") {
       Alert.alert(
         "Thông báo",
-        "Bạn chưa chọn tài khoản!",
+        "Bạn chưa chọn loại tài khoản!",
         [
           {
             text: "Ok"
@@ -185,20 +158,19 @@ export default class ChiTieu extends React.Component {
         { cancelable: false }
       );
     } else {
-      let machitieu = "";
-      machitieu = await this.phatSinhMaChiTieu();
-      let mataikhoan = this.state.taiKhoan;
+      let mataikhoan = "";
+      mataikhoan = await this.phatSinhMaTaiKhoan();
+      let tentaikhoan = this.state.tenTaiKhoan;
       let moneyTmp = this.state.soTien.replace(/,/g, "");
       let sotien = Number(moneyTmp);
-      let mahangmucchi = this.state.hangMuc;
-      let ngay = moment(this.state.ngayChi).format("YYYY/MM/DD HH:mm:ss");
-      let manguoichi = this.state.nguoiChi;
+      let loaitaikhoan = this.state.loaiTaiKhoan;
       let mota = this.state.moTa;
+      console.log(mataikhoan, tentaikhoan, sotien, loaitaikhoan, mota);
       // Thêm chi tiêu vào bảng chitieu
       db.transaction(function(tx) {
         tx.executeSql(
-          "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta) VALUES (?,?,?,?,?,?,?)",
-          [machitieu, mataikhoan, sotien, mahangmucchi, ngay, manguoichi, mota],
+          "INSERT INTO taikhoan(ma_tai_khoan, ten_tai_khoan, so_tien, loai_tai_khoan, mo_ta, dang_su_dung, xoa) VALUES (?,?,?,?,?,?,?)",
+          [mataikhoan, tentaikhoan, sotien, loaitaikhoan, mota, "y", "n"],
           (tx, results) => {
             if (results.rowsAffected > 0) {
               Alert.alert(
@@ -217,46 +189,13 @@ export default class ChiTieu extends React.Component {
           }
         );
       });
-
-      // Trừ tiền trong ví.
-      let duLieu = await new Promise((resolve, reject) => {
-        db.transaction(tx => {
-          tx.executeSql(
-            "SELECT * FROM taikhoan WHERE ma_tai_khoan like ?",
-            [this.state.taiKhoan],
-            (tx, results) => {
-              let soTienTrongVi = results.rows.item(0).so_tien;
-              resolve(soTienTrongVi);
-            }
-          );
-        });
-      });
-      duLieu -= sotien;
-      this.setState({ soTienTrongVi: duLieu });
-      db.transaction(tx => {
-        tx.executeSql(
-          "UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?",
-          [duLieu, this.state.taiKhoan]
-        );
-      });
     }
-    this.forceUpdate();
+    console.log("renderThemTaiKhoan");
+    goBack();
   }
 
-  returnDataHangMuc(iconHangMuc, hangMuc, tenHangMuc) {
-    this.setState({
-      iconHangMuc: iconHangMuc,
-      hangMuc: hangMuc,
-      tenHangMuc: tenHangMuc
-    });
-  }
-
-  returnDataTaiKhoan(taiKhoan, tenTaiKhoan) {
-    this.setState({ taiKhoan: taiKhoan, tenTaiKhoan: tenTaiKhoan });
-  }
-
-  returnDataNguoiChi(nguoiChi, tenNguoiChi) {
-    this.setState({ nguoiChi: nguoiChi, tenNguoiChi: tenNguoiChi });
+  chonLoaiTaiKhoan(value) {
+    this.setState({ loaiTaiKhoan: value });
   }
 
   render() {
@@ -271,7 +210,7 @@ export default class ChiTieu extends React.Component {
             </Button>
           </Left>
           <Body style={{ flex: 8 }}>
-            <Text style={styles.textHeader}>THÊM CHI TIÊU</Text>
+            <Text style={styles.textHeader}>THÊM TÀI KHOẢN</Text>
           </Body>
           <Right style={{ flex: 2 }}>
             <Button transparent>
@@ -283,15 +222,19 @@ export default class ChiTieu extends React.Component {
         <Content style={styles.content}>
           <Card>
             <CardItem header>
-              <Text style={styles.titleContent}>Số tiền</Text>
+              <Text style={styles.titleContent}>Số dư</Text>
             </CardItem>
             <CardItem>
               <InputGroup borderType="underline">
                 <Icon name="money" style={styles.icon} />
                 <Input
                   placeholder="0"
-                  style={{ ...styles.input, color: "red", fontWeight: "bold" }}
-                  placeholderTextColor="red"
+                  style={{
+                    ...styles.input,
+                    color: "#3a455c",
+                    fontWeight: "bold"
+                  }}
+                  placeholderTextColor="#3a455c"
                   keyboardType="numeric"
                   selectTextOnFocus
                   onChangeText={this.formatMoney}
@@ -303,128 +246,58 @@ export default class ChiTieu extends React.Component {
           </Card>
 
           <Card>
-            <CardItem
-              button
-              onPress={() =>
-                navigation.navigate("ChonHangMucChi", {
-                  returnDataHangMuc: this.returnDataHangMuc.bind(this)
-                })
-              }
-              style={styles.cardItem}
-            >
-              <Left style={{ flex: 1 }}>
-                <Icon name={this.state.iconHangMuc} style={styles.icon} />
-              </Left>
-              <Body style={{ flex: 8 }}>
-                <Text style={styles.textContent}>{this.state.tenHangMuc}</Text>
-              </Body>
-              <Right style={{ flex: 1 }}>
-                <Icon name="chevron-circle-right" style={styles.icon} />
-              </Right>
+            <CardItem style={styles.cardItem}>
+              <Item>
+                <Icon active name="credit-card" style={styles.icon} />
+                <Input
+                  placeholder="Tên tài khoản"
+                  placeholderTextColor="#3a455c"
+                  style={{ ...styles.textContent, paddingLeft: 28 }}
+                  onChangeText={tenTaiKhoan => this.setState({ tenTaiKhoan })}
+                />
+              </Item>
             </CardItem>
 
+            <CardItem style={styles.cardItem}>
+              <Icon
+                active
+                name="credit-card"
+                style={{ ...styles.icon, marginLeft: 4 }}
+              />
+              <Item picker>
+                <Picker
+                  mode="dropdown"
+                  iosIcon={<Icon name="arrow-down" />}
+                  style={{ paddingLeft: 12 }}
+                  placeholder="Chọn loại tài khoản"
+                  placeholderStyle={{ color: "#3a455c" }}
+                  placeholderIconColor="#3a455c"
+                  selectedValue={this.state.loaiTaiKhoan}
+                  onValueChange={this.chonLoaiTaiKhoan}
+                  valueStyle={{
+                    color: "#3a455c",
+                    fontSize: 20,
+                    fontWeight: "bold"
+                  }}
+                >
+                  <Picker.Item label="Tiền mặt" value="tien_mat" />
+                  <Picker.Item label="Thẻ ngân hàng" value="the_ngan_hang" />
+                  <Picker.Item label="Đầu tư" value="dau_tu" />
+                  <Picker.Item label="Khác" value="khac" />
+                </Picker>
+              </Item>
+            </CardItem>
             <CardItem style={styles.cardItem}>
               <Item>
                 <Icon active name="comments" style={styles.icon} />
                 <Input
                   placeholder="Mô tả"
                   placeholderTextColor="#3a455c"
-                  selectTextOnFocus
-                  style={{ ...styles.textContent, paddingLeft: 22 }}
+                  style={{ ...styles.textContent, paddingLeft: 34 }}
                   onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>
             </CardItem>
-
-            <CardItem
-              button
-              onPress={() => this.setState({ isDateTimePickerVisible: true })}
-              style={styles.cardItem}
-            >
-              <Left style={{ flex: 1 }}>
-                <Icon active name="calendar" style={styles.icon} />
-              </Left>
-              <Body style={{ flex: 8 }}>
-                <DateTimePicker
-                  isVisible={this.state.isDateTimePickerVisible}
-                  onConfirm={this.hideDateTimePicker}
-                  onCancel={this.hideDateTimePicker}
-                  mode={"datetime"}
-                  is24Hour={true}
-                  titleIOS={"Chọn ngày chi"}
-                  titleStyle={{ color: "#3a455c", fontSize: 20 }}
-                  locale={"vie"}
-                  customConfirmButtonIOS={
-                    <Text
-                      style={{ ...styles.textContent, textAlign: "center" }}
-                    >
-                      Xác nhận
-                    </Text>
-                  }
-                  cancelTextIOS={"Hủy"}
-                />
-                <Text style={styles.textContent}>
-                  {moment(this.state.ngayChi).format("DD/MM/YYYY HH:mm:ss")}
-                </Text>
-              </Body>
-              <Right style={{ flex: 1 }} />
-            </CardItem>
-
-            <CardItem
-              button
-              onPress={() =>
-                navigation.navigate("ChonTaiKhoan", {
-                  returnDataTaiKhoan: this.returnDataTaiKhoan.bind(this)
-                })
-              }
-              style={styles.cardItem}
-            >
-              <Left style={{ flex: 1 }}>
-                <Icon name="credit-card" style={styles.icon} />
-              </Left>
-              <Body style={{ flex: 8 }}>
-                <Text style={styles.textContent}>{this.state.tenTaiKhoan}</Text>
-              </Body>
-              <Right style={{ flex: 1 }}>
-                <Icon name="chevron-circle-right" style={styles.icon} />
-              </Right>
-            </CardItem>
-
-            <CardItem
-              button
-              onPress={() =>
-                navigation.navigate("ChiChoAi", {
-                  returnDataNguoiChi: this.returnDataNguoiChi.bind(this)
-                })
-              }
-              style={{ ...styles.cardItem, marginRight: 0 }}
-            >
-              <Left style={{ flex: 1 }}>
-                <Icon name="user" style={styles.icon} />
-              </Left>
-              <Body style={{ flex: 8 }}>
-                <Text style={styles.textContent}>{this.state.tenNguoiChi}</Text>
-              </Body>
-              <Right style={{ flex: 1 }}>
-                <Button
-                  style={{
-                    ...styles.buttonCardItem,
-                    backgroundColor: "white",
-                    marginTop: 0
-                  }}
-                  onPress={this.resetNguoiChi}
-                >
-                  <Icon
-                    name="times"
-                    style={{
-                      ...styles.icon,
-                      color: "red"
-                    }}
-                  />
-                </Button>
-              </Right>
-            </CardItem>
-
             <Button
               block
               info
@@ -522,8 +395,8 @@ const styles = StyleSheet.create({
     textAlign: "right"
   },
   textContent: {
-    color: "#3a455c",
-    fontSize: 20,
+    color: "black",
+    fontSize: 15,
     paddingLeft: 10
   },
   textContentMoney: {
