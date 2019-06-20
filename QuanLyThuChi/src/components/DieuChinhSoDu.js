@@ -428,7 +428,7 @@ export default class DieuChinhSoDu extends React.Component {
                 <Body style={{ flex: 0 }} />
                 <Right style={{ flex: 6 }}>
                   <Text style={{ fontWeight: "bold", color: "black" }}>
-                    {this.state.soTienTaiKhoan} VNĐ
+                    {this.state.soTienTaiKhoan} đ
                   </Text>
                 </Right>
               </Item>
@@ -462,7 +462,7 @@ export default class DieuChinhSoDu extends React.Component {
                 <Text
                   style={{ fontSize: 18, color: "#3a455c", fontWeight: "bold" }}
                 >
-                  VNĐ
+                  đ
                 </Text>
               </InputGroup>
             </CardItem>
@@ -484,7 +484,7 @@ export default class DieuChinhSoDu extends React.Component {
                     }}
                   >
                     {" "}
-                    {this.state.soDu} VNĐ
+                    {this.state.soDu} đ
                   </Text>
                 </Right>
               </Item>

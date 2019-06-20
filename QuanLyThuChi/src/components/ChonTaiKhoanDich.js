@@ -56,15 +56,19 @@ export default class ChonTaiKhoanDich extends Component {
       );
     let array = [];
     db.transaction(tx => {
-      tx.executeSql("SELECT * FROM taikhoan", [], (tx, results) => {
-        var len = results.rows.length;
-        this.setState({ soTaiKhoan: len });
-        for (let i = 0; i < len; i++) {
-          let row = results.rows.item(i);
-          array.push(row);
+      tx.executeSql(
+        "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
+        [],
+        (tx, results) => {
+          var len = results.rows.length;
+          this.setState({ soTaiKhoan: len });
+          for (let i = 0; i < len; i++) {
+            let row = results.rows.item(i);
+            array.push(row);
+          }
+          this.setState({ taiKhoan: array });
         }
-        this.setState({ taiKhoan: array });
-      });
+      );
     });
   }
   // Function
@@ -144,7 +148,7 @@ export default class ChonTaiKhoanDich extends Component {
                 </Body>
                 <Right style={{ flex: 4 }}>
                   <Text style={{ fontSize: 20, color: "white" }}>
-                    {this.formatMoney(item.so_tien)} VNĐ
+                    {this.formatMoney(item.so_tien)} đ
                   </Text>
                 </Right>
               </CardItem>

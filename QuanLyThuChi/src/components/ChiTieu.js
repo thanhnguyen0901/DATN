@@ -295,7 +295,7 @@ export default class ChiTieu extends React.Component {
                   onChangeText={this.formatMoney}
                   value={this.state.soTien}
                 />
-                <Text style={styles.textContent}>VNĐ</Text>
+                <Text style={styles.textContent}>đ</Text>
               </InputGroup>
             </CardItem>
           </Card>

@@ -317,7 +317,7 @@ export default class ThuNhap extends React.Component {
                 <Text
                   style={{ fontSize: 18, color: "#3a455c", fontWeight: "bold" }}
                 >
-                  VNĐ
+                  đ
                 </Text>
               </InputGroup>
             </CardItem>
