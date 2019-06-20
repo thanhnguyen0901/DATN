@@ -18,8 +18,10 @@ import {
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
+import MateIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import MyFooter from './../MyFooter';
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -33,7 +35,7 @@ export default class ChiTieu extends React.Component {
     super(props);
     this.state = {
       soTien: "",
-      iconHangMuc: "question-circle",
+      iconHangMuc: "comment-question",
       hangMuc: "",
       tenHangMuc: "Chọn hạng mục",
       moTa: "",
@@ -141,14 +143,12 @@ export default class ChiTieu extends React.Component {
       })
     );
   }
-
   resetNguoiChi() {
     this.setState({
       nguoiChi: "",
       tenNguoiChi: "Chi cho ai"
     });
   }
-
   async buttonOnClick() {
     // Kiểm tra đầy đủ:
     if (this.state.soTien == "") {
@@ -313,7 +313,7 @@ export default class ChiTieu extends React.Component {
               style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon name={this.state.iconHangMuc} style={styles.icon} />
+                <MateIcon name={this.state.iconHangMuc} style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
                 <Text style={styles.textContent}>{this.state.tenHangMuc}</Text>
@@ -440,30 +440,7 @@ export default class ChiTieu extends React.Component {
             </Button>
           </Card>
         </Content>
-
-        <Footer style={styles.footer}>
-          <FooterTab style={styles.footer}>
-            <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Tổng quan</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon name="credit-card" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Tài khoản</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon name="plus-circle" style={styles.iconPlusCircle} />
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Hạn mức chi</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon name="ellipsis-h" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Khác</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+       <MyFooter navigation={this.props.navigation}></MyFooter>
       </Container>
     );
   }

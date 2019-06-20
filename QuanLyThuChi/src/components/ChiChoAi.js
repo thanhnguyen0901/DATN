@@ -15,6 +15,7 @@ import {
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
+import MyFooter from './../MyFooter'
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -107,29 +108,7 @@ export default class ChonHangMucChi extends Component {
           </Card>
         </Content>
 
-        <Footer style={styles.footer}>
-          <FooterTab style={styles.footer}>
-            <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={styles.icon} />
-              <Text style={styles.textFooter}>Tổng quan</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon name="credit-card" style={styles.icon} />
-              <Text style={styles.textFooter}>Tài khoản</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon name="plus-circle" style={styles.iconPlusCircle} />
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={styles.icon} />
-              <Text style={styles.textFooter}>Hạn mức chi</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon name="ellipsis-h" style={styles.icon} />
-              <Text style={styles.textFooter}>Khác</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+       <MyFooter navigation={this.props.navigation}></MyFooter>
       </Container>
     );
   }

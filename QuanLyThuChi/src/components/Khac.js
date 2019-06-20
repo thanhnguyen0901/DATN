@@ -20,7 +20,7 @@ import {
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
-
+import MyFooter from './../MyFooter';
 // Database:
 let SQLite = require("react-native-sqlite-storage");
 
@@ -50,7 +50,6 @@ export default class KHAC extends Component {
           </Body>
           <Right style={{ flex: 2 }} />
         </Header>
-
         <Content
           style={{
             // position: 'absolute',
@@ -61,74 +60,7 @@ export default class KHAC extends Component {
           }}
         />
 
-        <Footer
-          style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}
-        >
-          <FooterTab
-            style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}
-          >
-            <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tổng quan
-              </Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon
-                name="credit-card"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tài khoản
-              </Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon
-                name="plus-circle"
-                style={{ color: "white", fontSize: 30 }}
-              />
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Hạn mức chi
-              </Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon
-                name="ellipsis-h"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Khác
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+       <MyFooter navigation={this.props.navigation}></MyFooter>
       </Container>
     );
   }

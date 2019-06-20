@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
 import {
   Button,
   Body,
@@ -11,10 +11,14 @@ import {
   Footer,
   FooterTab,
   Header,
+  Input,
+  InputGroup,
+  Item,
   Left,
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
+import MyFooter from "../MyFooter";
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -37,7 +41,6 @@ export default class TaiKhoan extends Component {
     this.formatMoney = this.formatMoney.bind(this);
   }
   componentDidMount() {
-    console.log("renderTaiKhoan");
     if (Platform.OS === "ios")
       db = SQLite.openDatabase(
         {
@@ -54,50 +57,47 @@ export default class TaiKhoan extends Component {
         this.openCB,
         this.errorCB
       );
-    this.props.navigation.addListener("didFocus", payload => {
-      console.log("Focus_Taikhoan");
-      let taiKhoanDangSuDung = [];
-      let taiKhoanNgungSuDung = [];
-      db.transaction(tx => {
-        tx.executeSql(
-          "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
-          [],
-          (tx, results) => {
-            var len = results.rows.length;
-            this.setState({ soTaiKhoanDangSuDung: len });
-            for (let i = 0; i < len; i++) {
-              let row = results.rows.item(i);
-              let tongTienTaiKhoanDangSuDung =
-                this.state.tongTienTaiKhoanDangSuDung + row.so_tien;
-              this.setState({
-                tongTienTaiKhoanDangSuDung: tongTienTaiKhoanDangSuDung
-              });
-              taiKhoanDangSuDung.push(row);
-            }
-            this.setState({ taiKhoanDangSuDung: taiKhoanDangSuDung });
+    let taiKhoanDangSuDung = [];
+    let taiKhoanNgungSuDung = [];
+    db.transaction(tx => {
+      tx.executeSql(
+        "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
+        [],
+        (tx, results) => {
+          var len = results.rows.length;
+          this.setState({ soTaiKhoanDangSuDung: len });
+          for (let i = 0; i < len; i++) {
+            let row = results.rows.item(i);
+            let tongTienTaiKhoanDangSuDung =
+              this.state.tongTienTaiKhoanDangSuDung + row.so_tien;
+            this.setState({
+              tongTienTaiKhoanDangSuDung: tongTienTaiKhoanDangSuDung
+            });
+            taiKhoanDangSuDung.push(row);
           }
-        );
-      });
-      db.transaction(tx => {
-        tx.executeSql(
-          "SELECT * FROM taikhoan WHERE dang_su_dung like 'n' and xoa like 'n'",
-          [],
-          (tx, results) => {
-            var len = results.rows.length;
-            this.setState({ soTaiKhoanNgungSuDung: len });
-            for (let i = 0; i < len; i++) {
-              let row = results.rows.item(i);
-              let tongTienTaiKhoanNgungSuDung =
-                this.state.tongTienTaiKhoanNgungSuDung + row.so_tien;
-              this.setState({
-                tongTienTaiKhoanNgungSuDung: tongTienTaiKhoanNgungSuDung
-              });
-              taiKhoanNgungSuDung.push(row);
-            }
-            this.setState({ taiKhoanNgungSuDung: taiKhoanNgungSuDung });
+          this.setState({ taiKhoanDangSuDung: taiKhoanDangSuDung });
+        }
+      );
+    });
+    db.transaction(tx => {
+      tx.executeSql(
+        "SELECT * FROM taikhoan WHERE dang_su_dung like 'n' and xoa like 'n'",
+        [],
+        (tx, results) => {
+          var len = results.rows.length;
+          this.setState({ soTaiKhoanNgungSuDung: len });
+          for (let i = 0; i < len; i++) {
+            let row = results.rows.item(i);
+            let tongTienTaiKhoanNgungSuDung =
+              this.state.tongTienTaiKhoanNgungSuDung + row.so_tien;
+            this.setState({
+              tongTienTaiKhoanNgungSuDung: tongTienTaiKhoanNgungSuDung
+            });
+            taiKhoanNgungSuDung.push(row);
           }
-        );
-      });
+          this.setState({ taiKhoanNgungSuDung: taiKhoanNgungSuDung });
+        }
+      );
     });
   }
 
@@ -120,7 +120,7 @@ export default class TaiKhoan extends Component {
             <Text style={styles.textHeader}>TÀI KHOẢN</Text>
           </Body>
           <Right style={{ flex: 2 }}>
-            <Button transparent onPress={() => navigation.push("ThemTaiKhoan")}>
+            <Button transparent>
               <Icon name="plus" style={styles.iconHeader} />
             </Button>
           </Right>
@@ -262,30 +262,7 @@ export default class TaiKhoan extends Component {
             ))}
           </Card>
         </Content>
-
-        <Footer style={styles.footer}>
-          <FooterTab style={styles.footer}>
-            <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Tổng quan</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon name="credit-card" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Tài khoản</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon name="plus-circle" style={styles.iconPlusCircle} />
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Hạn mức chi</Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon name="ellipsis-h" style={styles.iconHeader} />
-              <Text style={styles.textFooter}>Khác</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        <MyFooter navigation={this.props.navigation}></MyFooter>    
       </Container>
     );
   }
@@ -363,4 +340,24 @@ const styles = StyleSheet.create({
     fontFamily: "Times New Roman"
   },
   titleContent: { fontWeight: "bold", color: "black" }
+});
+const stylesFooter = StyleSheet.create({
+  iconHeader: {
+    color: "white",
+    fontSize: 18
+  },
+  iconPlusCircle: {
+    color: "white",
+    fontSize: 30
+  },
+  footer: {
+    backgroundColor: "#3a455c",
+    color: "white",
+    height: 40
+  },
+  textFooter: {
+    color: "white",
+    fontSize: 10,
+    fontFamily: "Times New Roman"
+  }
 });

@@ -26,7 +26,7 @@ import {
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import MateIcon from "react-native-vector-icons/MaterialCommunityIcons";
 // Database:
 let SQLite = require("react-native-sqlite-storage");
 
@@ -42,7 +42,6 @@ export default class ChonHangMucChi extends Component {
       soHangMuc: 0
     };
   }
-
   // Function
   componentDidMount() {
     if (Platform.OS === "ios")
@@ -131,7 +130,7 @@ export default class ChonHangMucChi extends Component {
                 }}
               >
                 <Left style={{ flex: 1 }}>
-                  <Icon
+                  <MateIcon
                     name={item.icon}
                     style={{ fontSize: 18, color: "white" }}
                   />

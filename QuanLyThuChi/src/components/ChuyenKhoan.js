@@ -20,6 +20,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import MyFooter from './../MyFooter';
 
 // Database:
 let SQLite = require("react-native-sqlite-storage");
@@ -142,7 +143,7 @@ export default class ChuyenKhoan extends React.Component {
               });
             }
           },
-          function(tx, error) {
+          function (tx, error) {
             reject(error);
           }
         );
@@ -182,7 +183,7 @@ export default class ChuyenKhoan extends React.Component {
               });
             }
           },
-          function(tx, error) {
+          function (tx, error) {
             reject(error);
           }
         );
@@ -248,7 +249,7 @@ export default class ChuyenKhoan extends React.Component {
       );
       let mota = this.state.moTa;
       // Thêm chuyển khoản vào bảng chuyển khoản
-      db.transaction(function(tx) {
+      db.transaction(function (tx) {
         tx.executeSql(
           "INSERT INTO chuyenkhoan(ma_chuyen_khoan, ma_tai_khoan_nguon, ma_tai_khoan_dich, so_tien, ngay, mo_ta) VALUES (?,?,?,?,?,?)",
           [machuyenkhoan, mataikhoannguon, mataikhoandich, sotien, ngay, mota],
@@ -342,7 +343,7 @@ export default class ChuyenKhoan extends React.Component {
           " đến tài khoản " +
           this.state.tenTaiKhoanDich;
 
-        db.transaction(function(tx) {
+        db.transaction(function (tx) {
           tx.executeSql(
             "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi, ngay, mo_ta, ma_chuyen_khoan) VALUES (?,?,?,?,?,?,?)",
             [
@@ -638,75 +639,7 @@ export default class ChuyenKhoan extends React.Component {
             </Button>
           </Card>
         </Content>
-
-        <Footer
-          style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}
-        >
-          <FooterTab
-            style={{ backgroundColor: "#3a455c", height: 40, color: "white" }}
-          >
-            <Button vertical onPress={() => navigation.navigate("TongQuan")}>
-              <Icon name="home" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tổng quan
-              </Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
-              <Icon
-                name="credit-card"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Tài khoản
-              </Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("ThemMoi")}>
-              <Icon
-                name="plus-circle"
-                style={{ color: "white", fontSize: 30 }}
-              />
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
-              <Icon name="filter" style={{ color: "white", fontSize: 18 }} />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Hạn mức chi
-              </Text>
-            </Button>
-            <Button vertical onPress={() => navigation.navigate("Khac")}>
-              <Icon
-                name="ellipsis-h"
-                style={{ color: "white", fontSize: 18 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 10,
-                  fontFamily: "Times New Roman"
-                }}
-              >
-                Khác
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        <MyFooter navigation={this.props.navigation}></MyFooter>
       </Container>
     );
   }
