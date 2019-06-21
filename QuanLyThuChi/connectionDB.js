@@ -33,9 +33,3 @@ else
   );
 
 export default db;
-/// fỏ mat lai ban
-// format nè forr mat coi gi ?
-// ne
-// ham gì ?
-// vo 1 trang di mình ví dụ 1 trang
-// ne ban chi can save la format do, gay
