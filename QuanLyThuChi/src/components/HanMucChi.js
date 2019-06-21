@@ -1,41 +1,27 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions } from "react-native";
 import {
   Button,
   Body,
-  Card,
-  CardItem,
   Container,
   Content,
-  DatePicker,
-  Footer,
-  FooterTab,
   Header,
-  Input,
-  InputGroup,
-  Item,
   Left,
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import moment from "moment";
-import MyFooter from './../MyFooter';
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import MyFooter from "./../MyFooter";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class HanMucChi extends Component {
   render() {
     const { navigation } = this.props;
     return (
       <Container>
-        <Header
-          style={styles.header}
-        >
+        <Header style={styles.header}>
           <Left style={{ flex: 2 }}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
@@ -58,7 +44,7 @@ export default class HanMucChi extends Component {
             backgroundColor: "#F1F1F1"
           }}
         />
-        <MyFooter navigation={this.props.navigation}></MyFooter>
+        <MyFooter navigation={this.props.navigation} />
       </Container>
     );
   }

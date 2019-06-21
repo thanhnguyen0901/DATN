@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Alert } from "react-native";
 import {
   Button,
   Body,
@@ -8,8 +8,6 @@ import {
   CardItem,
   Container,
   Content,
-  Footer,
-  FooterTab,
   Header,
   Input,
   InputGroup,
@@ -20,14 +18,11 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import MyFooter from './../MyFooter';
-
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import MyFooter from "./../MyFooter";
+import db from "../../connectionDB";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class ChuyenKhoan extends React.Component {
   constructor(props) {
@@ -56,36 +51,7 @@ export default class ChuyenKhoan extends React.Component {
   }
 
   // Function
-  componentDidMount() {
-    if (Platform.OS === "ios")
-      db = SQLite.openDatabase(
-        {
-          name: "_myDB.db",
-          createFromLocation: "~www/myDB.db",
-          location: "Library"
-        },
-        this.openCB,
-        this.errorCB
-      );
-    else
-      db = SQLite.openDatabase(
-        { name: "_myDB.db", createFromLocation: "~myDB.db" },
-        this.openCB,
-        this.errorCB
-      );
-  }
-
-  errorCB(err) {
-    console.log("SQL Error: " + err);
-  }
-
-  successCB() {
-    console.log("SQL executed fine");
-  }
-
-  openCB() {
-    console.log("Database OPENED");
-  }
+  componentDidMount() {}
 
   formatMoney(money) {
     var x = money.replace(/,/g, "");
@@ -143,7 +109,7 @@ export default class ChuyenKhoan extends React.Component {
               });
             }
           },
-          function (tx, error) {
+          function(tx, error) {
             reject(error);
           }
         );
@@ -183,7 +149,7 @@ export default class ChuyenKhoan extends React.Component {
               });
             }
           },
-          function (tx, error) {
+          function(tx, error) {
             reject(error);
           }
         );
@@ -249,7 +215,7 @@ export default class ChuyenKhoan extends React.Component {
       );
       let mota = this.state.moTa;
       // Thêm chuyển khoản vào bảng chuyển khoản
-      db.transaction(function (tx) {
+      db.transaction(function(tx) {
         tx.executeSql(
           "INSERT INTO chuyenkhoan(ma_chuyen_khoan, ma_tai_khoan_nguon, ma_tai_khoan_dich, so_tien, ngay, mo_ta) VALUES (?,?,?,?,?,?)",
           [machuyenkhoan, mataikhoannguon, mataikhoandich, sotien, ngay, mota],
@@ -343,7 +309,7 @@ export default class ChuyenKhoan extends React.Component {
           " đến tài khoản " +
           this.state.tenTaiKhoanDich;
 
-        db.transaction(function (tx) {
+        db.transaction(function(tx) {
           tx.executeSql(
             "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi, ngay, mo_ta, ma_chuyen_khoan) VALUES (?,?,?,?,?,?,?)",
             [
@@ -401,9 +367,7 @@ export default class ChuyenKhoan extends React.Component {
     const { params } = this.props.navigation.state;
     return (
       <Container>
-        <Header
-          style={styles.header}
-        >
+        <Header style={styles.header}>
           <Left style={{ flexDirection: "row" }}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
@@ -416,9 +380,7 @@ export default class ChuyenKhoan extends React.Component {
           </Right>
         </Header>
 
-        <Content
-          style={styles.content}
-        >
+        <Content style={styles.content}>
           <Card>
             <CardItem header>
               <Text style={{ fontWeight: "bold", color: "black" }}>
@@ -629,7 +591,7 @@ export default class ChuyenKhoan extends React.Component {
             </Button>
           </Card>
         </Content>
-        <MyFooter navigation={this.props.navigation}></MyFooter>
+        <MyFooter navigation={this.props.navigation} />
       </Container>
     );
   }
@@ -663,8 +625,7 @@ const styles = StyleSheet.create({
     height: height - 104,
     left: 0,
     // position: "absolute",
-    right: 0,
-    
+    right: 0
   },
   footer: {
     backgroundColor: "#3a455c",

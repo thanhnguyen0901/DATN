@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Alert } from "react-native";
 import {
   Button,
   Body,
@@ -19,13 +19,10 @@ import {
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import db from "../../connectionDB";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class ThemTaiKhoan extends React.Component {
   constructor(props) {
@@ -43,36 +40,7 @@ export default class ThemTaiKhoan extends React.Component {
   }
 
   // Function
-  componentDidMount() {
-    if (Platform.OS === "ios")
-      db = SQLite.openDatabase(
-        {
-          name: "_myDB.db",
-          createFromLocation: "~www/myDB.db",
-          location: "Library"
-        },
-        this.openCB,
-        this.errorCB
-      );
-    else
-      db = SQLite.openDatabase(
-        { name: "_myDB.db", createFromLocation: "~myDB.db" },
-        this.openCB,
-        this.errorCB
-      );
-  }
-
-  errorCB(err) {
-    console.log("SQL Error: " + err);
-  }
-
-  successCB() {
-    console.log("SQL executed fine");
-  }
-
-  openCB() {
-    console.log("Database OPENED");
-  }
+  componentDidMount() {}
 
   formatMoney(money) {
     var x = money.replace(/,/g, "");

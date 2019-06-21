@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Alert } from "react-native";
 import {
   Button,
   Body,
@@ -19,13 +19,10 @@ import {
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import db from "../../connectionDB";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class ChinhSuaTaiKhoan extends React.Component {
   constructor(props) {
@@ -49,22 +46,6 @@ export default class ChinhSuaTaiKhoan extends React.Component {
   // Function
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    if (Platform.OS === "ios")
-      db = SQLite.openDatabase(
-        {
-          name: "_myDB.db",
-          createFromLocation: "~www/myDB.db",
-          location: "Library"
-        },
-        this.openCB,
-        this.errorCB
-      );
-    else
-      db = SQLite.openDatabase(
-        { name: "_myDB.db", createFromLocation: "~myDB.db" },
-        this.openCB,
-        this.errorCB
-      );
     this.setState({
       soTien: this.formatMoney(params.so_tien + ""),
       moTa: params.mo_ta,
@@ -73,18 +54,6 @@ export default class ChinhSuaTaiKhoan extends React.Component {
       loaiTaiKhoan: params.loai_tai_khoan,
       dangSuDung: params.dang_su_dung
     });
-  }
-
-  errorCB(err) {
-    console.log("SQL Error: " + err);
-  }
-
-  successCB() {
-    console.log("SQL executed fine");
-  }
-
-  openCB() {
-    console.log("Database OPENED");
   }
 
   formatMoney(money) {
@@ -298,7 +267,6 @@ export default class ChinhSuaTaiKhoan extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    console.log(this.state);
     return (
       <Container>
         <Header style={styles.header}>

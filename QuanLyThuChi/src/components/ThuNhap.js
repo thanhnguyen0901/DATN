@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Alert } from "react-native";
 import {
   Button,
   Body,
@@ -8,8 +8,6 @@ import {
   CardItem,
   Container,
   Content,
-  Footer,
-  FooterTab,
   Header,
   Input,
   InputGroup,
@@ -21,14 +19,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import MateIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import MyFooter from './../MyFooter'
-
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import MyFooter from "./../MyFooter";
+import db from "../../connectionDB";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class ThuNhap extends React.Component {
   constructor(props) {
@@ -55,36 +50,7 @@ export default class ThuNhap extends React.Component {
     this.resetNguoiThu = this.resetNguoiThu.bind(this);
   }
 
-  componentDidMount() {
-    if (Platform.OS === "ios")
-      db = SQLite.openDatabase(
-        {
-          name: "_myDB.db",
-          createFromLocation: "~www/myDB.db",
-          location: "Library"
-        },
-        this.openCB,
-        this.errorCB
-      );
-    else
-      db = SQLite.openDatabase(
-        { name: "_myDB.db", createFromLocation: "~myDB.db" },
-        this.openCB,
-        this.errorCB
-      );
-  }
-
-  errorCB(err) {
-    console.log("SQL Error: " + err);
-  }
-
-  successCB() {
-    console.log("SQL executed fine");
-  }
-
-  openCB() {
-    console.log("Database OPENED");
-  }
+  componentDidMount() {}
 
   formatMoney(money) {
     var x = money.replace(/,/g, "");
@@ -262,9 +228,7 @@ export default class ThuNhap extends React.Component {
     const { navigation } = this.props;
     return (
       <Container>
-        <Header
-          style={styles.header}
-        >
+        <Header style={styles.header}>
           <Left style={{ flexDirection: "row" }}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
@@ -501,7 +465,7 @@ export default class ThuNhap extends React.Component {
           </Card>
         </Content>
 
-       <MyFooter navigation={this.props.navigation}></MyFooter>
+        <MyFooter navigation={this.props.navigation} />
       </Container>
     );
   }

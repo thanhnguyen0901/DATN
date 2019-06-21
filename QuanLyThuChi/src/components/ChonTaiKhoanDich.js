@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, Dimensions, Alert, Platform } from "react-native";
+import { Text, Dimensions } from "react-native";
 import {
   Button,
   Body,
@@ -8,24 +8,16 @@ import {
   CardItem,
   Container,
   Content,
-  DatePicker,
-  Footer,
-  FooterTab,
   Header,
-  Input,
-  InputGroup,
-  Item,
   Left,
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import MyFooter from './../MyFooter';
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import MyFooter from "./../MyFooter";
+import db from "../../connectionDB";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class ChonTaiKhoanDich extends Component {
   constructor(props) {
@@ -38,22 +30,6 @@ export default class ChonTaiKhoanDich extends Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === "ios")
-      db = SQLite.openDatabase(
-        {
-          name: "_myDB.db",
-          createFromLocation: "~www/myDB.db",
-          location: "Library"
-        },
-        this.openCB,
-        this.errorCB
-      );
-    else
-      db = SQLite.openDatabase(
-        { name: "_myDB.db", createFromLocation: "~myDB.db" },
-        this.openCB,
-        this.errorCB
-      );
     let array = [];
     db.transaction(tx => {
       tx.executeSql(
@@ -155,7 +131,7 @@ export default class ChonTaiKhoanDich extends Component {
             ))}
           </Card>
         </Content>
-       <MyFooter navigation={this.props.navigation}></MyFooter>
+        <MyFooter navigation={this.props.navigation} />
       </Container>
     );
   }

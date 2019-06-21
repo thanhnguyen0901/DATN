@@ -14,13 +14,10 @@ import {
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MyFooter from "../MyFooter";
-
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import db from "../../connectionDB";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class TaiKhoan extends Component {
   constructor(props) {
@@ -34,22 +31,6 @@ export default class TaiKhoan extends Component {
     this.formatMoney = this.formatMoney.bind(this);
   }
   componentDidMount() {
-    if (Platform.OS === "ios")
-      db = SQLite.openDatabase(
-        {
-          name: "_myDB.db",
-          createFromLocation: "~www/myDB.db",
-          location: "Library"
-        },
-        this.openCB,
-        this.errorCB
-      );
-    else
-      db = SQLite.openDatabase(
-        { name: "_myDB.db", createFromLocation: "~myDB.db" },
-        this.openCB,
-        this.errorCB
-      );
     this.props.navigation.addListener("didFocus", payload => {
       let taiKhoanDangSuDung = [];
       let taiKhoanNgungSuDung = [];

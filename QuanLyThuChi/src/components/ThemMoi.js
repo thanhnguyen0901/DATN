@@ -1,33 +1,21 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions } from "react-native";
 import {
   Button,
   Body,
-  Card,
-  CardItem,
   Container,
   Content,
-  DatePicker,
-  Footer,
-  FooterTab,
   Header,
-  Input,
-  InputGroup,
-  Item,
   Left,
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
-import MyFooter from './../MyFooter';
-
-// Database:
-let SQLite = require("react-native-sqlite-storage");
+import MyFooter from "./../MyFooter";
 
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
-var db;
 
 export default class ThemMoi extends Component {
   render() {
@@ -46,9 +34,7 @@ export default class ThemMoi extends Component {
           <Right style={{ flex: 2 }} />
         </Header>
 
-        <Content
-          style={styles.content}
-        >
+        <Content style={styles.content}>
           <Button
             onPress={() => navigation.navigate("ChiTieu")}
             block
@@ -82,12 +68,10 @@ export default class ThemMoi extends Component {
             info
             style={styles.buttonCardItem}
           >
-            <Text style={styles.textButton}>
-              Điều chỉnh số dư
-            </Text>
+            <Text style={styles.textButton}>Điều chỉnh số dư</Text>
           </Button>
         </Content>
-        <MyFooter navigation={this.props.navigation}></MyFooter>
+        <MyFooter navigation={this.props.navigation} />
       </Container>
     );
   }
