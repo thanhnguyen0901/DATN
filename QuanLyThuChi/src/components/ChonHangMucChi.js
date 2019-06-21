@@ -80,11 +80,7 @@ export default class ChonHangMucChi extends Component {
     return (
       <Container>
         <Header
-          style={{
-            backgroundColor: "rgb(76,171,242)",
-            height: 40,
-            borderBottomColor: "#757575"
-          }}
+          style={styles.header}
         >
           <Left style={{ flex: 2 }}>
             <Button transparent>
@@ -121,13 +117,7 @@ export default class ChonHangMucChi extends Component {
                   params.returnDataHangMuc(item.icon, item.ma_chi, item.ten);
                   goBack();
                 }}
-                style={{
-                  borderColor: "grey",
-                  borderBottomWidth: 0.7,
-                  height: 50,
-                  marginTop: 5,
-                  backgroundColor: "rgb(76,171,242)"
-                }}
+                style={styles.buttonCardItem}
               >
                 <Left style={{ flex: 1 }}>
                   <MateIcon
@@ -228,3 +218,83 @@ export default class ChonHangMucChi extends Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  buttonCardItem: {
+    // js
+    borderColor: "grey",
+    borderBottomWidth: 0.7,
+    height: 50,
+    marginTop: 5,
+    backgroundColor: "rgb(76,171,242)"
+  },
+  card: {
+    marginLeft: 5,
+    marginRight: 5
+  },
+  cardItem: {
+    borderColor: "grey",
+    borderBottomWidth: 1,
+    height: 50,
+    marginTop: 5
+  },
+  content: {
+    backgroundColor: "#F1F1F1",
+    height: height - 104,
+    left: 0,
+    // position: "absolute",
+    right: 0,
+
+  },
+  footer: {
+    backgroundColor: "#3a455c",
+    color: "white",
+    height: 40
+  },
+  header: {
+    backgroundColor: "rgb(76,171,242)",
+    borderBottomColor: "#757575",
+    height: 40
+  },
+  icon: {
+    color: "#3a455c",
+    fontSize: 18
+  },
+  iconHeader: {
+    color: "white",
+    fontSize: 18
+  },
+  iconPlusCircle: {
+    color: "white",
+    fontSize: 30
+  },
+  input: {
+    color: "#3a455c",
+    fontSize: 20,
+    textAlign: "right"
+  },
+  textContent: {
+    color: "#3a455c",
+    fontSize: 20,
+    paddingLeft: 10
+  },
+  textContentMoney: {
+    color: "white",
+    fontSize: 20
+  },
+  textHeader: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  textFooter: {
+    color: "white",
+    fontSize: 10,
+    fontFamily: "Times New Roman"
+  },
+  titleContent: { fontWeight: "bold", color: "black" }
+});

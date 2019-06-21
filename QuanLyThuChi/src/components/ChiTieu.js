@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
     height: 40
   },
   header: {
-    backgroundColor: "#3a445c",
+    backgroundColor: "rgb(76,171,242)",
     borderBottomColor: "#757575",
     height: 40
   },

@@ -34,13 +34,7 @@ export default class ThemMoi extends Component {
     const { navigation } = this.props;
     return (
       <Container>
-        <Header
-          style={{
-            backgroundColor: "#3a455c",
-            height: 40,
-            borderBottomColor: "#757575"
-          }}
-        >
+        <Header style={styles.header}>
           <Left style={{ flex: 2 }}>
             <Button transparent>
               <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
@@ -53,68 +47,42 @@ export default class ThemMoi extends Component {
         </Header>
 
         <Content
-          style={{
-            // position: 'absolute',
-            left: 0,
-            right: 0,
-            height: height - 104,
-            backgroundColor: "#ffffff"
-          }}
+          style={styles.content}
         >
           <Button
             onPress={() => navigation.navigate("ChiTieu")}
             block
             info
-            style={{
-              height: 40,
-              backgroundColor: "rgb(76,171,242)",
-              marginBottom: 2,
-              borderBottomEndRadius: 20
-            }}
+            style={styles.buttonCardItem}
           >
-            <Text style={{ color: "white", marginLeft: 5 }}>Chi tiêu</Text>
+            <Text style={styles.textButton}>Chi tiêu</Text>
           </Button>
 
           <Button
             onPress={() => navigation.navigate("ThuNhap")}
             block
             info
-            style={{
-              height: 40,
-              backgroundColor: "rgb(76,171,242)",
-              marginBottom: 2,
-              borderBottomEndRadius: 20
-            }}
+            style={styles.buttonCardItem}
           >
-            <Text style={{ color: "white", marginLeft: 5 }}>Thu nhập</Text>
+            <Text style={styles.textButton}>Thu nhập</Text>
           </Button>
 
           <Button
             onPress={() => navigation.navigate("ChuyenKhoan")}
             block
             info
-            style={{
-              height: 40,
-              backgroundColor: "rgb(76,171,242)",
-              marginBottom: 2,
-              borderBottomEndRadius: 20
-            }}
+            style={styles.buttonCardItem}
           >
-            <Text style={{ color: "white", marginLeft: 5 }}>Chuyển khoản</Text>
+            <Text style={styles.textButton}>Chuyển khoản</Text>
           </Button>
 
           <Button
             onPress={() => navigation.navigate("DieuChinhSoDu")}
             block
             info
-            style={{
-              height: 40,
-              backgroundColor: "rgb(76,171,242)",
-              marginBottom: 2,
-              borderBottomEndRadius: 20
-            }}
+            style={styles.buttonCardItem}
           >
-            <Text style={{ color: "white", marginLeft: 5 }}>
+            <Text style={styles.textButton}>
               Điều chỉnh số dư
             </Text>
           </Button>
@@ -124,3 +92,32 @@ export default class ThemMoi extends Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  iconHeader: {
+    color: "white",
+    fontSize: 18
+  },
+  header: {
+    backgroundColor: "rgb(76,171,242)",
+    height: 40,
+    borderBottomColor: "#757575",
+    marginBottom: 2
+  },
+  content: {
+    // position: 'absolute',
+    left: 0,
+    right: 0,
+    height: height - 104,
+    backgroundColor: "#ffffff"
+  },
+  buttonCardItem: {
+    height: 40,
+    backgroundColor: "rgb(76,171,242)",
+    marginBottom: 2,
+    borderBottomEndRadius: 20
+  },
+  textButton: {
+    color: "white",
+    marginLeft: 5
+  }
+});
