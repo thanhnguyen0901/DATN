@@ -198,7 +198,9 @@ export default class TaiKhoan extends Component {
                       name="ellipsis-v"
                       style={{
                         ...styles.icon,
-                        marginLeft: 5
+                        marginLeft: 5,
+                        backgroundColor: "red",
+                        width: 20
                       }}
                       onPress={() =>
                         navigation.navigate("ChinhSuaTaiKhoan", {
