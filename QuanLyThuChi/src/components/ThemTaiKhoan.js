@@ -33,7 +33,7 @@ export default class ThemTaiKhoan extends React.Component {
     this.state = {
       soTien: "",
       moTa: "",
-      tenTaiKhoan: "Tên tài khoản",
+      tenTaiKhoan: "",
       loaiTaiKhoan: ""
     };
     this.buttonOnClick = this.buttonOnClick.bind(this);
@@ -123,7 +123,6 @@ export default class ThemTaiKhoan extends React.Component {
 
   async buttonOnClick() {
     // Kiểm tra đầy đủ:
-    const { goBack } = this.props.navigation;
     if (this.state.soTien == "") {
       Alert.alert(
         "Thông báo",
@@ -135,7 +134,7 @@ export default class ThemTaiKhoan extends React.Component {
         ],
         { cancelable: false }
       );
-    } else if (this.state.tenTaiKhoan == "Tên tài khoản") {
+    } else if (this.state.tenTaiKhoan == "") {
       Alert.alert(
         "Thông báo",
         "Bạn chưa nhập tên tài khoản!",
@@ -165,7 +164,6 @@ export default class ThemTaiKhoan extends React.Component {
       let sotien = Number(moneyTmp);
       let loaitaikhoan = this.state.loaiTaiKhoan;
       let mota = this.state.moTa;
-      console.log(mataikhoan, tentaikhoan, sotien, loaitaikhoan, mota);
       // Thêm chi tiêu vào bảng chitieu
       db.transaction(function(tx) {
         tx.executeSql(
@@ -190,8 +188,6 @@ export default class ThemTaiKhoan extends React.Component {
         );
       });
     }
-    console.log("renderThemTaiKhoan");
-    goBack();
   }
 
   chonLoaiTaiKhoan(value) {

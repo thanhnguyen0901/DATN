@@ -34,18 +34,21 @@ export default class ChinhSuaTaiKhoan extends React.Component {
       soTien: "",
       moTa: "",
       taiKhoan: "",
-      tenTaiKhoan: "Tên tài khoản",
-      loaiTaiKhoan: ""
+      tenTaiKhoan: "",
+      loaiTaiKhoan: "",
+      dangSuDung: ""
     };
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
-    this.phatSinhMaTaiKhoan = this.phatSinhMaTaiKhoan.bind(this);
     this.chonLoaiTaiKhoan = this.chonLoaiTaiKhoan.bind(this);
     this.XoaTaiKhoan = this.XoaTaiKhoan.bind(this);
+    this.NgungSuDung = this.NgungSuDung.bind(this);
+    this.SuDungLai = this.SuDungLai.bind(this);
   }
 
   // Function
   componentDidMount() {
+    const { params } = this.props.navigation.state;
     if (Platform.OS === "ios")
       db = SQLite.openDatabase(
         {
@@ -62,6 +65,14 @@ export default class ChinhSuaTaiKhoan extends React.Component {
         this.openCB,
         this.errorCB
       );
+    this.setState({
+      soTien: this.formatMoney(params.so_tien + ""),
+      moTa: params.mo_ta,
+      taiKhoan: params.ma_tai_khoan,
+      tenTaiKhoan: params.ten_tai_khoan,
+      loaiTaiKhoan: params.loai_tai_khoan,
+      dangSuDung: params.dang_su_dung
+    });
   }
 
   errorCB(err) {
@@ -83,49 +94,8 @@ export default class ChinhSuaTaiKhoan extends React.Component {
     return y;
   }
 
-  phatSinhMaTaiKhoan() {
-    let query = "SELECT * FROM taikhoan;";
-    return new Promise((resolve, reject) =>
-      db.transaction(tx => {
-        tx.executeSql(
-          query,
-          [],
-          (tx, results) => {
-            var soDong = results.rows.length;
-            if (soDong == 0) {
-              resolve("tk0001");
-            } else {
-              let soHienTai;
-              let data;
-              let maCT = "tk";
-              db.transaction(tx => {
-                tx.executeSql(
-                  "SELECT ma_tai_khoan FROM taikhoan WHERE ma_tai_khoan like (SELECT MAX(ma_tai_khoan) FROM taikhoan)",
-                  [],
-                  (tx, results) => {
-                    data = results.rows.item(0).ma_tai_khoan;
-                    soHienTai = parseInt(data.slice(2, 6), 10) + 1;
-                    let str = "" + soHienTai;
-                    let pad = "0000";
-                    maCT =
-                      maCT + pad.substring(0, pad.length - str.length) + str;
-                    resolve(maCT);
-                  }
-                );
-              });
-            }
-          },
-          function(tx, error) {
-            reject(error);
-          }
-        );
-      })
-    );
-  }
-
   async buttonOnClick() {
     // Kiểm tra đầy đủ:
-    const { goBack } = this.props.navigation;
     if (this.state.soTien == "") {
       Alert.alert(
         "Thông báo",
@@ -137,7 +107,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
         ],
         { cancelable: false }
       );
-    } else if (this.state.tenTaiKhoan == "Tên tài khoản") {
+    } else if (this.state.tenTaiKhoan == "") {
       Alert.alert(
         "Thông báo",
         "Bạn chưa nhập tên tài khoản!",
@@ -160,24 +130,22 @@ export default class ChinhSuaTaiKhoan extends React.Component {
         { cancelable: false }
       );
     } else {
-      let mataikhoan = "";
-      mataikhoan = await this.phatSinhMaTaiKhoan();
+      const { goBack } = this.props.navigation;
+      let mataikhoan = this.state.taiKhoan;
       let tentaikhoan = this.state.tenTaiKhoan;
       let moneyTmp = this.state.soTien.replace(/,/g, "");
       let sotien = Number(moneyTmp);
       let loaitaikhoan = this.state.loaiTaiKhoan;
       let mota = this.state.moTa;
-      console.log(mataikhoan, tentaikhoan, sotien, loaitaikhoan, mota);
-      // Thêm chi tiêu vào bảng chitieu
       db.transaction(function(tx) {
         tx.executeSql(
-          "INSERT INTO taikhoan(ma_tai_khoan, ten_tai_khoan, so_tien, loai_tai_khoan, mo_ta, dang_su_dung, xoa) VALUES (?,?,?,?,?,?,?)",
-          [mataikhoan, tentaikhoan, sotien, loaitaikhoan, mota, "y", "n"],
+          "UPDATE taikhoan SET ten_tai_khoan = ?, so_tien = ?, loai_tai_khoan = ?, mo_ta = ? WHERE ma_tai_khoan = ?",
+          [tentaikhoan, sotien, loaitaikhoan, mota, mataikhoan],
           (tx, results) => {
             if (results.rowsAffected > 0) {
               Alert.alert(
                 "Thành công",
-                "Bạn đã thêm thành công",
+                "Bạn đã cập nhật thành công",
                 [
                   {
                     text: "Ok"
@@ -185,23 +153,143 @@ export default class ChinhSuaTaiKhoan extends React.Component {
                 ],
                 { cancelable: false }
               );
+              goBack();
             } else {
-              alert("Bạn đã thêm không thành công");
+              alert("Bạn đã cập nhật không thành công");
             }
           }
         );
       });
     }
-    console.log("renderThemTaiKhoan");
-    goBack();
   }
 
   XoaTaiKhoan() {
-    db.transaction(tx => {
-      tx.executeSql("UPDATE taikhoan SET xoa='y' where ma_tai_khoan like ?", [
-        this.state.taiKhoan
-      ]);
-    });
+    Alert.alert(
+      "Thông báo",
+      "Bạn có chắc chắn muốn xóa tài khoản",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel"
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            db.transaction(tx => {
+              tx.executeSql(
+                "UPDATE taikhoan SET xoa='y' WHERE ma_tai_khoan like ?",
+                [this.state.taiKhoan],
+                (tx, results) => {
+                  if (results.rowsAffected > 0) {
+                    Alert.alert(
+                      "Thành công",
+                      "Bạn đã xóa tài khoản",
+                      [
+                        {
+                          text: "Ok"
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                    goBack();
+                  } else {
+                    alert("Bạn chưa thể xóa tài khoản này hiện tại");
+                  }
+                }
+              );
+            });
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  }
+
+  NgungSuDung() {
+    Alert.alert(
+      "Thông báo",
+      "Bạn có chắc chắn muốn ngưng sử dụng tài khoản",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel"
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            db.transaction(tx => {
+              tx.executeSql(
+                "UPDATE taikhoan SET dang_su_dung='n' WHERE ma_tai_khoan like ?",
+                [this.state.taiKhoan],
+                (tx, results) => {
+                  if (results.rowsAffected > 0) {
+                    Alert.alert(
+                      "Thành công",
+                      "Bạn đã ngưng sử dụng tài khoản",
+                      [
+                        {
+                          text: "Ok"
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                    goBack();
+                  } else {
+                    alert("Bạn chưa thể ngưng sử dụng tài khoản này hiện tại");
+                  }
+                }
+              );
+            });
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  }
+
+  SuDungLai() {
+    Alert.alert(
+      "Thông báo",
+      "Bạn có chắc chắn muốn sử dụng lại tài khoản",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel"
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            db.transaction(tx => {
+              tx.executeSql(
+                "UPDATE taikhoan SET dang_su_dung='y' WHERE ma_tai_khoan like ?",
+                [this.state.taiKhoan],
+                (tx, results) => {
+                  if (results.rowsAffected > 0) {
+                    Alert.alert(
+                      "Thành công",
+                      "Bạn đã sử dụng lại tài khoản",
+                      [
+                        {
+                          text: "Ok"
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                    goBack();
+                  } else {
+                    alert("Bạn chưa thể sử dụng lại tài khoản này hiện tại");
+                  }
+                }
+              );
+            });
+          }
+        }
+      ],
+      { cancelable: false }
+    );
   }
 
   chonLoaiTaiKhoan(value) {
@@ -210,7 +298,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { params } = this.props.navigation.state;
+    console.log(this.state);
     return (
       <Container>
         <Header style={styles.header}>
@@ -220,7 +308,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
             </Button>
           </Left>
           <Body style={{ flex: 8 }}>
-            <Text style={styles.textHeader}>THÊM TÀI KHOẢN</Text>
+            <Text style={styles.textHeader}>SỬA TÀI KHOẢN</Text>
           </Body>
           <Right style={{ flex: 2 }}>
             <Button transparent>
@@ -264,6 +352,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
                   placeholderTextColor="#3a455c"
                   style={{ ...styles.textContent, paddingLeft: 28 }}
                   onChangeText={tenTaiKhoan => this.setState({ tenTaiKhoan })}
+                  value={this.state.tenTaiKhoan}
                 />
               </Item>
             </CardItem>
@@ -321,6 +410,20 @@ export default class ChinhSuaTaiKhoan extends React.Component {
                 Ghi
               </Text>
             </Button>
+
+            <Button
+              block
+              info
+              style={{ height: 40, backgroundColor: "#3a455c", marginTop: 10 }}
+              onPress={
+                this.state.dangSuDung == "y" ? this.NgungSuDung : this.SuDungLai
+              }
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                {this.state.dangSuDung == "y" ? "Ngưng Sử Dụng" : "Sử Dụng Lại"}
+              </Text>
+            </Button>
+
             <Button
               block
               info

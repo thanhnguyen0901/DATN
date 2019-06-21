@@ -1,6 +1,6 @@
 // Import thư viện
 import React, { Component } from "react";
-import { Text, StyleSheet, Dimensions, Alert, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, Platform } from "react-native";
 import {
   Button,
   Body,
@@ -8,12 +8,7 @@ import {
   CardItem,
   Container,
   Content,
-  Footer,
-  FooterTab,
   Header,
-  Input,
-  InputGroup,
-  Item,
   Left,
   Right
 } from "native-base";
@@ -120,7 +115,10 @@ export default class TaiKhoan extends Component {
             <Text style={styles.textHeader}>TÀI KHOẢN</Text>
           </Body>
           <Right style={{ flex: 2 }}>
-            <Button transparent>
+            <Button
+              transparent
+              onPress={() => navigation.navigate("ThemTaiKhoan")}
+            >
               <Icon name="plus" style={styles.iconHeader} />
             </Button>
           </Right>
@@ -198,6 +196,16 @@ export default class TaiKhoan extends Component {
                         ...styles.icon,
                         marginLeft: 5
                       }}
+                      onPress={() =>
+                        navigation.navigate("ChinhSuaTaiKhoan", {
+                          ma_tai_khoan: item.ma_tai_khoan,
+                          ten_tai_khoan: item.ten_tai_khoan,
+                          so_tien: item.so_tien,
+                          loai_tai_khoan: item.loai_tai_khoan,
+                          mo_ta: item.mo_ta,
+                          dang_su_dung: item.dang_su_dung
+                        })
+                      }
                     />
                   </Button>
                 </Right>
@@ -255,6 +263,16 @@ export default class TaiKhoan extends Component {
                         ...styles.icon,
                         marginLeft: 5
                       }}
+                      onPress={() =>
+                        navigation.navigate("ChinhSuaTaiKhoan", {
+                          ma_tai_khoan: item.ma_tai_khoan,
+                          ten_tai_khoan: item.ten_tai_khoan,
+                          so_tien: item.so_tien,
+                          loai_tai_khoan: item.loai_tai_khoan,
+                          mo_ta: item.mo_ta,
+                          dang_su_dung: item.dang_su_dung
+                        })
+                      }
                     />
                   </Button>
                 </Right>
@@ -262,7 +280,7 @@ export default class TaiKhoan extends Component {
             ))}
           </Card>
         </Content>
-        <MyFooter navigation={this.props.navigation}></MyFooter>    
+        <MyFooter navigation={this.props.navigation} />
       </Container>
     );
   }
