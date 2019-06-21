@@ -28,8 +28,6 @@ export default class TaiKhoan extends Component {
     this.state = {
       taiKhoanDangSuDung: [],
       taiKhoanNgungSuDung: [],
-      soTaiKhoanDangSuDung: 0,
-      soTaiKhoanNgungSuDung: 0,
       tongTienTaiKhoanDangSuDung: 0,
       tongTienTaiKhoanNgungSuDung: 0
     };
@@ -56,6 +54,8 @@ export default class TaiKhoan extends Component {
       let taiKhoanDangSuDung = [];
       let taiKhoanNgungSuDung = [];
       this.setState({
+        taiKhoanDangSuDung: [],
+        taiKhoanNgungSuDung: [],
         tongTienTaiKhoanDangSuDung: 0,
         tongTienTaiKhoanNgungSuDung: 0
       });
@@ -65,7 +65,6 @@ export default class TaiKhoan extends Component {
           [],
           (tx, results) => {
             var len = results.rows.length;
-            this.setState({ soTaiKhoanDangSuDung: len });
             for (let i = 0; i < len; i++) {
               let row = results.rows.item(i);
               let tongTienTaiKhoanDangSuDung =
@@ -85,7 +84,6 @@ export default class TaiKhoan extends Component {
           [],
           (tx, results) => {
             var len = results.rows.length;
-            this.setState({ soTaiKhoanNgungSuDung: len });
             for (let i = 0; i < len; i++) {
               let row = results.rows.item(i);
               let tongTienTaiKhoanNgungSuDung =
