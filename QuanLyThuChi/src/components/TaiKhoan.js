@@ -52,47 +52,53 @@ export default class TaiKhoan extends Component {
         this.openCB,
         this.errorCB
       );
-    let taiKhoanDangSuDung = [];
-    let taiKhoanNgungSuDung = [];
-    db.transaction(tx => {
-      tx.executeSql(
-        "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
-        [],
-        (tx, results) => {
-          var len = results.rows.length;
-          this.setState({ soTaiKhoanDangSuDung: len });
-          for (let i = 0; i < len; i++) {
-            let row = results.rows.item(i);
-            let tongTienTaiKhoanDangSuDung =
-              this.state.tongTienTaiKhoanDangSuDung + row.so_tien;
-            this.setState({
-              tongTienTaiKhoanDangSuDung: tongTienTaiKhoanDangSuDung
-            });
-            taiKhoanDangSuDung.push(row);
+    this.props.navigation.addListener("didFocus", payload => {
+      let taiKhoanDangSuDung = [];
+      let taiKhoanNgungSuDung = [];
+      this.setState({
+        tongTienTaiKhoanDangSuDung: 0,
+        tongTienTaiKhoanNgungSuDung: 0
+      });
+      db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM taikhoan WHERE dang_su_dung like 'y' and xoa like 'n'",
+          [],
+          (tx, results) => {
+            var len = results.rows.length;
+            this.setState({ soTaiKhoanDangSuDung: len });
+            for (let i = 0; i < len; i++) {
+              let row = results.rows.item(i);
+              let tongTienTaiKhoanDangSuDung =
+                this.state.tongTienTaiKhoanDangSuDung + row.so_tien;
+              this.setState({
+                tongTienTaiKhoanDangSuDung: tongTienTaiKhoanDangSuDung
+              });
+              taiKhoanDangSuDung.push(row);
+            }
+            this.setState({ taiKhoanDangSuDung: taiKhoanDangSuDung });
           }
-          this.setState({ taiKhoanDangSuDung: taiKhoanDangSuDung });
-        }
-      );
-    });
-    db.transaction(tx => {
-      tx.executeSql(
-        "SELECT * FROM taikhoan WHERE dang_su_dung like 'n' and xoa like 'n'",
-        [],
-        (tx, results) => {
-          var len = results.rows.length;
-          this.setState({ soTaiKhoanNgungSuDung: len });
-          for (let i = 0; i < len; i++) {
-            let row = results.rows.item(i);
-            let tongTienTaiKhoanNgungSuDung =
-              this.state.tongTienTaiKhoanNgungSuDung + row.so_tien;
-            this.setState({
-              tongTienTaiKhoanNgungSuDung: tongTienTaiKhoanNgungSuDung
-            });
-            taiKhoanNgungSuDung.push(row);
+        );
+      });
+      db.transaction(tx => {
+        tx.executeSql(
+          "SELECT * FROM taikhoan WHERE dang_su_dung like 'n' and xoa like 'n'",
+          [],
+          (tx, results) => {
+            var len = results.rows.length;
+            this.setState({ soTaiKhoanNgungSuDung: len });
+            for (let i = 0; i < len; i++) {
+              let row = results.rows.item(i);
+              let tongTienTaiKhoanNgungSuDung =
+                this.state.tongTienTaiKhoanNgungSuDung + row.so_tien;
+              this.setState({
+                tongTienTaiKhoanNgungSuDung: tongTienTaiKhoanNgungSuDung
+              });
+              taiKhoanNgungSuDung.push(row);
+            }
+            this.setState({ taiKhoanNgungSuDung: taiKhoanNgungSuDung });
           }
-          this.setState({ taiKhoanNgungSuDung: taiKhoanNgungSuDung });
-        }
-      );
+        );
+      });
     });
   }
 

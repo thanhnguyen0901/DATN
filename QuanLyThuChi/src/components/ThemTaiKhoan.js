@@ -157,6 +157,7 @@ export default class ThemTaiKhoan extends React.Component {
         { cancelable: false }
       );
     } else {
+      const { goBack } = this.props.navigation;
       let mataikhoan = "";
       mataikhoan = await this.phatSinhMaTaiKhoan();
       let tentaikhoan = this.state.tenTaiKhoan;
@@ -187,6 +188,7 @@ export default class ThemTaiKhoan extends React.Component {
           }
         );
       });
+      goBack();
     }
   }
 
