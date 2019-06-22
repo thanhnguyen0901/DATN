@@ -44,6 +44,7 @@ export default class ChuyenKhoan extends React.Component {
     this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
     this.showDateTimePicker = this.showDateTimePicker.bind(this);
     this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
+    this.phatSinhMaThuNhap = this.phatSinhMaThuNhap.bind(this);
     this.phatSinhMaChuyenKhoan = this.phatSinhMaChuyenKhoan.bind(this);
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
@@ -104,6 +105,46 @@ export default class ChuyenKhoan extends React.Component {
                     maCK =
                       maCK + pad.substring(0, pad.length - str.length) + str;
                     resolve(maCK);
+                  }
+                );
+              });
+            }
+          },
+          function(tx, error) {
+            reject(error);
+          }
+        );
+      })
+    );
+  }
+
+  phatSinhMaThuNhap() {
+    let query = "SELECT * FROM thunhap;";
+    return new Promise((resolve, reject) =>
+      db.transaction(tx => {
+        tx.executeSql(
+          query,
+          [],
+          (tx, results) => {
+            var soDong = results.rows.length;
+            if (soDong == 0) {
+              resolve("tn0001");
+            } else {
+              let soHienTai;
+              let data;
+              let maTN = "tn";
+              db.transaction(tx => {
+                tx.executeSql(
+                  "SELECT ma_thu_nhap FROM thunhap WHERE ma_thu_nhap like (SELECT MAX(ma_thu_nhap) FROM thunhap)",
+                  [],
+                  (tx, results) => {
+                    data = results.rows.item(0).ma_thu_nhap;
+                    soHienTai = parseInt(data.slice(2, 6), 10) + 1;
+                    let str = "" + soHienTai;
+                    let pad = "0000";
+                    maTN =
+                      maTN + pad.substring(0, pad.length - str.length) + str;
+                    resolve(maTN);
                   }
                 );
               });
@@ -247,6 +288,23 @@ export default class ChuyenKhoan extends React.Component {
         );
       });
 
+      // Thêm vào bảng chi tiêu
+      let machitieu = "";
+      machitieu = await this.phatSinhMaChiTieu();
+      db.transaction(function(tx) {
+        tx.executeSql(
+          "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,mo_ta) VALUES (?,?,?,?,?,?)",
+          [
+            machitieu,
+            mataikhoannguon,
+            sotien,
+            "hmc0004",
+            ngay,
+            "Chuyển cho ví " + this.state.tenTaiKhoanDich
+          ]
+        );
+      });
+
       // Trừ tiền trong ví nguồn
       let soTienViNguon = await new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -266,6 +324,23 @@ export default class ChuyenKhoan extends React.Component {
         tx.executeSql(
           "UPDATE taikhoan set so_tien=? where ma_tai_khoan like ?",
           [soTienViNguon, this.state.taiKhoanNguon]
+        );
+      });
+
+      // Thêm vào bảng thu nhập
+      let mathunhap = "";
+      mathunhap = await this.phatSinhMaThuNhap();
+      db.transaction(function(tx) {
+        tx.executeSql(
+          "INSERT INTO thunhap(ma_thu_nhap, ma_tai_khoan, so_tien, ma_hang_muc_thu,ngay,mo_ta) VALUES (?,?,?,?,?,?)",
+          [
+            mathunhap,
+            mataikhoandich,
+            sotien,
+            "hmt0003",
+            ngay,
+            "Nhận từ ví " + this.state.tenTaiKhoanNguon
+          ]
         );
       });
 

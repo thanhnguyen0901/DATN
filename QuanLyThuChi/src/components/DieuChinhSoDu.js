@@ -50,6 +50,8 @@ export default class DieuChinhSoDu extends React.Component {
     this.formatMoneySoTienTaiKhoan = this.formatMoneySoTienTaiKhoan.bind(this);
     this.formatMoneySoDu = this.formatMoneySoDu.bind(this);
     this.phatSinhMaDieuChinh = this.phatSinhMaDieuChinh.bind(this);
+    this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
+    this.phatSinhMaThuNhap = this.phatSinhMaThuNhap.bind(this);
   }
 
   // Function
@@ -142,6 +144,86 @@ export default class DieuChinhSoDu extends React.Component {
                     maDC =
                       maDC + pad.substring(0, pad.length - str.length) + str;
                     resolve(maDC);
+                  }
+                );
+              });
+            }
+          },
+          function(tx, error) {
+            reject(error);
+          }
+        );
+      })
+    );
+  }
+
+  phatSinhMaThuNhap() {
+    let query = "SELECT * FROM thunhap;";
+    return new Promise((resolve, reject) =>
+      db.transaction(tx => {
+        tx.executeSql(
+          query,
+          [],
+          (tx, results) => {
+            var soDong = results.rows.length;
+            if (soDong == 0) {
+              resolve("tn0001");
+            } else {
+              let soHienTai;
+              let data;
+              let maTN = "tn";
+              db.transaction(tx => {
+                tx.executeSql(
+                  "SELECT ma_thu_nhap FROM thunhap WHERE ma_thu_nhap like (SELECT MAX(ma_thu_nhap) FROM thunhap)",
+                  [],
+                  (tx, results) => {
+                    data = results.rows.item(0).ma_thu_nhap;
+                    soHienTai = parseInt(data.slice(2, 6), 10) + 1;
+                    let str = "" + soHienTai;
+                    let pad = "0000";
+                    maTN =
+                      maTN + pad.substring(0, pad.length - str.length) + str;
+                    resolve(maTN);
+                  }
+                );
+              });
+            }
+          },
+          function(tx, error) {
+            reject(error);
+          }
+        );
+      })
+    );
+  }
+
+  phatSinhMaChiTieu() {
+    let query = "SELECT * FROM chitieu;";
+    return new Promise((resolve, reject) =>
+      db.transaction(tx => {
+        tx.executeSql(
+          query,
+          [],
+          (tx, results) => {
+            var soDong = results.rows.length;
+            if (soDong == 0) {
+              resolve("ct0001");
+            } else {
+              let soHienTai;
+              let data;
+              let maCT = "ct";
+              db.transaction(tx => {
+                tx.executeSql(
+                  "SELECT ma_chi_tieu FROM chitieu WHERE ma_chi_tieu like (SELECT MAX(ma_chi_tieu) FROM chitieu)",
+                  [],
+                  (tx, results) => {
+                    data = results.rows.item(0).ma_chi_tieu;
+                    soHienTai = parseInt(data.slice(2, 6), 10) + 1;
+                    let str = "" + soHienTai;
+                    let pad = "0000";
+                    maCT =
+                      maCT + pad.substring(0, pad.length - str.length) + str;
+                    resolve(maCT);
                   }
                 );
               });
@@ -252,6 +334,41 @@ export default class DieuChinhSoDu extends React.Component {
           [sotienthucte, this.state.taiKhoan]
         );
       });
+
+      if (this.state.loaiDieuChinh == "chitieu") {
+        // Thêm vào bảng chi tiêu
+        let machitieu = "";
+        machitieu = await this.phatSinhMaChiTieu();
+        let mataikhoan = this.state.taiKhoan;
+        let moneyTmp = this.state.soDu.replace(/,/g, "");
+        let sotien = Number(moneyTmp);
+        let mahangmuc = this.state.hangMuc;
+        let ngay = moment(this.state.ngayDieuChinh).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        db.transaction(function(tx) {
+          tx.executeSql(
+            "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,mo_ta) VALUES (?,?,?,?,?,?)",
+            [machitieu, mataikhoan, sotien, mahangmuc, ngay, "Điều chỉnh số dư"]
+          );
+        });
+      } else {
+        let mathunhap = "";
+        mathunhap = await this.phatSinhMaThuNhap();
+        let mataikhoan = this.state.taiKhoan;
+        let moneyTmp = this.state.soDu.replace(/,/g, "");
+        let sotien = Number(moneyTmp);
+        let mahangmuc = this.state.hangMuc;
+        let ngay = moment(this.state.ngayDieuChinh).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        db.transaction(function(tx) {
+          tx.executeSql(
+            "INSERT INTO thunhap(ma_thu_nhap, ma_tai_khoan, so_tien, ma_hang_muc_thu,ngay,mo_ta) VALUES (?,?,?,?,?,?)",
+            [mathunhap, mataikhoan, sotien, mahangmuc, ngay, "Điều chỉnh số dư"]
+          );
+        });
+      }
     }
     this.forceUpdate();
   }
