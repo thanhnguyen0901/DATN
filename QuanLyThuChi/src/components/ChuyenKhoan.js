@@ -364,7 +364,6 @@ export default class ChuyenKhoan extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { params } = this.props.navigation.state;
     return (
       <Container>
         <Header style={styles.header}>

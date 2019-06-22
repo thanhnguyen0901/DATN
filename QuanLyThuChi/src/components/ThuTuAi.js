@@ -44,7 +44,6 @@ export default class ChonHangMucChi extends Component {
     });
   }
   render() {
-    const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     const { goBack } = this.props.navigation;
     return (

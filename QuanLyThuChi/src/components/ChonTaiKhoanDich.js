@@ -55,7 +55,6 @@ export default class ChonTaiKhoanDich extends Component {
     return y;
   }
   render() {
-    const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     const { goBack } = this.props.navigation;
     return (

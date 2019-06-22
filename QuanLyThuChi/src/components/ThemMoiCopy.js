@@ -18,7 +18,6 @@ const { height, width } = Dimensions.get("window");
 
 export default class ThemMoiCopy extends Component {
   render() {
-    console.log("Them Moi Copy");
     const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     return (

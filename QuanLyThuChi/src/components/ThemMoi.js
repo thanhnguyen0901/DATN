@@ -18,7 +18,6 @@ const { height, width } = Dimensions.get("window");
 
 export default class ThemMoi extends Component {
   render() {
-    console.log("Them Moi");
     const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     return (

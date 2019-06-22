@@ -18,7 +18,6 @@ const { height, width } = Dimensions.get("window");
 
 export default class HanMucChi extends Component {
   render() {
-    const { navigation } = this.props;
     return (
       <Container>
         <Header style={styles.header}>

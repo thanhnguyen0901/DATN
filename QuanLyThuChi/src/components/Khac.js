@@ -18,7 +18,6 @@ const { height, width } = Dimensions.get("window");
 
 export default class KHAC extends Component {
   render() {
-    const { navigation } = this.props;
     return (
       <Container>
         <Header style={styles.header}>

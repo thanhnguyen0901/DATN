@@ -55,7 +55,6 @@ export default class ChonTaiKhoanNguon extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     const { goBack } = this.props.navigation;
     return (

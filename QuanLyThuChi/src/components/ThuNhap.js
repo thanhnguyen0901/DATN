@@ -226,7 +226,6 @@ export default class ThuNhap extends React.Component {
   }
 
   render() {
-    console.log("Thu Nhap");
     const { navigation } = this.props;
     return (
       <Container>

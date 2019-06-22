@@ -18,10 +18,8 @@ import {
   Right
 } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import MateIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import MyFooter from "./../MyFooter";
 import db from "../../connectionDB";
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
@@ -234,7 +232,6 @@ export default class ThuNhapCopy extends React.Component {
   }
 
   render() {
-    console.log("Thu Nhap Copy");
     const { navigation } = this.props;
     return (
       <Container>

@@ -59,14 +59,12 @@ export default class DieuChinhSoDu extends React.Component {
     var x = money.replace(/,/g, "");
     var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     await this.setState({ soTienThucTe: y });
-    console.log(this.state.soTienThucTe);
     let soTienTaiKhoanTmp = this.state.soTienTaiKhoan.replace(/,/g, "");
     let soTienThucTeTmp = this.state.soTienThucTe.replace(/,/g, "");
 
     let soTienTaiKhoan = Number(soTienTaiKhoanTmp);
     let soTienThucTe = Number(soTienThucTeTmp);
     let soDu = soTienThucTe - soTienTaiKhoan;
-    console.log(soTienTaiKhoan, soTienThucTe, soDu);
     if (soDu > 0) {
       soDu += "";
       await this.setState({
