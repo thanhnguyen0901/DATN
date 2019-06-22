@@ -149,6 +149,16 @@ export default class TaiKhoan extends Component {
                 key={i}
                 button
                 onPress={() => {}}
+                onLongPress={() =>
+                  navigation.navigate("ChinhSuaTaiKhoan", {
+                    ma_tai_khoan: item.ma_tai_khoan,
+                    ten_tai_khoan: item.ten_tai_khoan,
+                    so_tien: item.so_tien,
+                    loai_tai_khoan: item.loai_tai_khoan,
+                    mo_ta: item.mo_ta,
+                    dang_su_dung: item.dang_su_dung
+                  })
+                }
                 style={styles.cardItem}
               >
                 <Left style={{ flex: 1 }}>
@@ -157,14 +167,7 @@ export default class TaiKhoan extends Component {
                 <Body style={{ flex: 6 }}>
                   <Text style={styles.textContent}>{item.ten_tai_khoan}</Text>
                 </Body>
-                <Right
-                  style={{
-                    flex: 6,
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    alignItems: "center"
-                  }}
-                >
+                <Right style={{ flex: 6 }}>
                   <Text
                     style={{
                       ...styles.textContentMoney,
@@ -173,27 +176,6 @@ export default class TaiKhoan extends Component {
                   >
                     {this.formatMoney(item.so_tien)}đ
                   </Text>
-                  <Button style={{ backgroundColor: "white" }}>
-                    <Icon
-                      name="ellipsis-v"
-                      style={{
-                        ...styles.icon,
-                        marginLeft: 5,
-                        backgroundColor: "red",
-                        width: 20
-                      }}
-                      onPress={() =>
-                        navigation.navigate("ChinhSuaTaiKhoan", {
-                          ma_tai_khoan: item.ma_tai_khoan,
-                          ten_tai_khoan: item.ten_tai_khoan,
-                          so_tien: item.so_tien,
-                          loai_tai_khoan: item.loai_tai_khoan,
-                          mo_ta: item.mo_ta,
-                          dang_su_dung: item.dang_su_dung
-                        })
-                      }
-                    />
-                  </Button>
                 </Right>
               </CardItem>
             ))}
