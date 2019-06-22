@@ -26,7 +26,7 @@ import db from "../../connectionDB";
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
 
-export default class ThuNhap extends React.Component {
+export default class ThuNhapCopy extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +51,15 @@ export default class ThuNhap extends React.Component {
     this.resetNguoiThu = this.resetNguoiThu.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
+    this.setState({
+      soTien: params.so_tien,
+      moTa: params.mo_ta,
+      taiKhoan: params.ma_tai_khoan,
+      tenTaiKhoan: params.ten_tai_khoan
+    });
+  }
 
   formatMoney(money) {
     var x = money.replace(/,/g, "");
@@ -226,7 +234,7 @@ export default class ThuNhap extends React.Component {
   }
 
   render() {
-    console.log("Thu Nhap");
+    console.log("Thu Nhap Copy");
     const { navigation } = this.props;
     return (
       <Container>

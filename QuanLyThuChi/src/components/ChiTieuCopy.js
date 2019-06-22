@@ -23,51 +23,49 @@ import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import MyFooter from "./../MyFooter";
 import db from "../../connectionDB";
+
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
 
-export default class ThuNhap extends React.Component {
+export default class ChiTieuCopy extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       soTien: "",
-      iconHangMuc: "question-circle",
+      iconHangMuc: "comment-question",
       hangMuc: "",
       tenHangMuc: "Chọn hạng mục",
       moTa: "",
-      ngayThu: new Date(),
+      ngayChi: new Date(),
       taiKhoan: "",
       tenTaiKhoan: "Chọn tài khoản",
-      nguoiThu: "",
-      tenNguoiThu: "Thu từ ai",
+      nguoiChi: "",
+      tenNguoiChi: "Chi cho ai",
       soTienTrongVi: 0,
       isDateTimePickerVisible: false
     };
-    this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
-    this.showDateTimePicker = this.showDateTimePicker.bind(this);
     this.buttonOnClick = this.buttonOnClick.bind(this);
     this.formatMoney = this.formatMoney.bind(this);
-    this.phatSinhMaThuNhap = this.phatSinhMaThuNhap.bind(this);
-    this.resetNguoiThu = this.resetNguoiThu.bind(this);
+    this.phatSinhMaChiTieu = this.phatSinhMaChiTieu.bind(this);
+    this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
+    this.showDateTimePicker = this.showDateTimePicker.bind(this);
+    this.resetNguoiChi = this.resetNguoiChi.bind(this);
   }
 
-  componentDidMount() {}
-
-  formatMoney(money) {
-    var x = money.replace(/,/g, "");
-    var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    this.setState({ soTien: y });
-    return y;
-  }
-  resetNguoiThu() {
+  // Function
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
     this.setState({
-      nguoiThu: "",
-      tenNguoiThu: "Thu từ ai"
+      soTien: params.so_tien,
+      moTa: params.mo_ta,
+      taiKhoan: params.ma_tai_khoan,
+      tenTaiKhoan: params.ten_tai_khoan
     });
   }
+
   hideDateTimePicker = datetime => {
     this.setState({ isDateTimePickerVisible: false });
-    this.setState({ ngayThu: datetime });
+    this.setState({ ngayChi: datetime });
     moment(this.state.ngayChi).format("YYYY/MM/DD HH:mm:ss");
   };
 
@@ -75,8 +73,15 @@ export default class ThuNhap extends React.Component {
     this.setState({ isDateTimePickerVisible: true });
   };
 
-  phatSinhMaThuNhap() {
-    let query = "SELECT * FROM thunhap;";
+  formatMoney(money) {
+    var x = money.replace(/,/g, "");
+    var y = x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    this.setState({ soTien: y });
+    return y;
+  }
+
+  phatSinhMaChiTieu() {
+    let query = "SELECT * FROM chitieu;";
     return new Promise((resolve, reject) =>
       db.transaction(tx => {
         tx.executeSql(
@@ -85,23 +90,23 @@ export default class ThuNhap extends React.Component {
           (tx, results) => {
             var soDong = results.rows.length;
             if (soDong == 0) {
-              resolve("tn0001");
+              resolve("ct0001");
             } else {
               let soHienTai;
               let data;
-              let maTN = "tn";
+              let maCT = "ct";
               db.transaction(tx => {
                 tx.executeSql(
-                  "SELECT ma_thu_nhap FROM thunhap WHERE ma_thu_nhap like (SELECT MAX(ma_thu_nhap) FROM thunhap)",
+                  "SELECT ma_chi_tieu FROM chitieu WHERE ma_chi_tieu like (SELECT MAX(ma_chi_tieu) FROM chitieu)",
                   [],
                   (tx, results) => {
-                    data = results.rows.item(0).ma_thu_nhap;
+                    data = results.rows.item(0).ma_chi_tieu;
                     soHienTai = parseInt(data.slice(2, 6), 10) + 1;
                     let str = "" + soHienTai;
                     let pad = "0000";
-                    maTN =
-                      maTN + pad.substring(0, pad.length - str.length) + str;
-                    resolve(maTN);
+                    maCT =
+                      maCT + pad.substring(0, pad.length - str.length) + str;
+                    resolve(maCT);
                   }
                 );
               });
@@ -114,7 +119,12 @@ export default class ThuNhap extends React.Component {
       })
     );
   }
-
+  resetNguoiChi() {
+    this.setState({
+      nguoiChi: "",
+      tenNguoiChi: "Chi cho ai"
+    });
+  }
   async buttonOnClick() {
     // Kiểm tra đầy đủ:
     if (this.state.soTien == "") {
@@ -151,20 +161,20 @@ export default class ThuNhap extends React.Component {
         { cancelable: false }
       );
     } else {
-      let mathunhap = "";
-      mathunhap = await this.phatSinhMaThuNhap();
+      let machitieu = "";
+      machitieu = await this.phatSinhMaChiTieu();
       let mataikhoan = this.state.taiKhoan;
       let moneyTmp = this.state.soTien.replace(/,/g, "");
       let sotien = Number(moneyTmp);
-      let mahangmucthu = this.state.hangMuc;
-      let ngay = moment(this.state.ngayThu).format("YYYY-MM-DD HH:mm:ss");
-      let manguoithu = this.state.nguoiThu;
+      let mahangmucchi = this.state.hangMuc;
+      let ngay = moment(this.state.ngayChi).format("YYYY/MM/DD HH:mm:ss");
+      let manguoichi = this.state.nguoiChi;
       let mota = this.state.moTa;
       // Thêm chi tiêu vào bảng chitieu
       db.transaction(function(tx) {
         tx.executeSql(
-          "INSERT INTO thunhap(ma_thu_nhap, ma_tai_khoan, so_tien, ma_hang_muc_thu,ngay,ma_nguoi_thu,mo_ta) VALUES (?,?,?,?,?,?,?)",
-          [mathunhap, mataikhoan, sotien, mahangmucthu, ngay, manguoithu, mota],
+          "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,ma_nguoi_chi,mo_ta) VALUES (?,?,?,?,?,?,?)",
+          [machitieu, mataikhoan, sotien, mahangmucchi, ngay, manguoichi, mota],
           (tx, results) => {
             if (results.rowsAffected > 0) {
               Alert.alert(
@@ -184,7 +194,7 @@ export default class ThuNhap extends React.Component {
         );
       });
 
-      // Thêm tiền vào ví.
+      // Trừ tiền trong ví.
       let duLieu = await new Promise((resolve, reject) => {
         db.transaction(tx => {
           tx.executeSql(
@@ -197,7 +207,7 @@ export default class ThuNhap extends React.Component {
           );
         });
       });
-      duLieu += sotien;
+      duLieu -= sotien;
       this.setState({ soTienTrongVi: duLieu });
       db.transaction(tx => {
         tx.executeSql(
@@ -221,68 +231,50 @@ export default class ThuNhap extends React.Component {
     this.setState({ taiKhoan: taiKhoan, tenTaiKhoan: tenTaiKhoan });
   }
 
-  returnDataNguoiThu(nguoiThu, tenNguoiThu) {
-    this.setState({ nguoiThu: nguoiThu, tenNguoiThu: tenNguoiThu });
+  returnDataNguoiChi(nguoiChi, tenNguoiChi) {
+    this.setState({ nguoiChi: nguoiChi, tenNguoiChi: tenNguoiChi });
   }
 
   render() {
-    console.log("Thu Nhap");
+    console.log("Chi Tieu Copy");
     const { navigation } = this.props;
+    const { params } = this.props.navigation.state;
     return (
       <Container>
         <Header style={styles.header}>
-          <Left style={{ flexDirection: "row" }}>
+          <Left style={{ flex: 2 }}>
             <Button transparent>
-              <Icon name="bars" style={{ color: "white", fontSize: 18 }} />
+              <Icon name="bars" style={styles.iconHeader} />
             </Button>
           </Left>
-          <Right>
+          <Body style={{ flex: 8 }}>
+            <Text style={styles.textHeader}>THÊM CHI TIÊU</Text>
+          </Body>
+          <Right style={{ flex: 2 }}>
             <Button transparent>
-              <Icon name="check" style={{ color: "white", fontSize: 18 }} />
+              <Icon name="check" style={styles.iconHeader} />
             </Button>
           </Right>
         </Header>
 
-        <Content
-          style={{
-            // position: 'absolute',
-            left: 0,
-            right: 0,
-            height: height - 104,
-            backgroundColor: "#F1F1F1"
-          }}
-        >
+        <Content style={styles.content}>
           <Card>
             <CardItem header>
-              <Text style={{ fontWeight: "bold", color: "black" }}>
-                Số tiền
-              </Text>
+              <Text style={styles.titleContent}>Số tiền</Text>
             </CardItem>
             <CardItem>
               <InputGroup borderType="underline">
-                <Icon
-                  name="money"
-                  style={{ color: "#3a455c", fontSize: 18, fontWeight: "bold" }}
-                />
+                <Icon name="money" style={styles.icon} />
                 <Input
                   placeholder="0"
-                  style={{
-                    fontSize: 20,
-                    color: "green",
-                    textAlign: "right",
-                    fontWeight: "bold"
-                  }}
-                  placeholderTextColor="green"
+                  style={{ ...styles.input, color: "red", fontWeight: "bold" }}
+                  placeholderTextColor="red"
                   keyboardType="numeric"
                   selectTextOnFocus
                   onChangeText={this.formatMoney}
                   value={this.state.soTien}
                 />
-                <Text
-                  style={{ fontSize: 18, color: "#3a455c", fontWeight: "bold" }}
-                >
-                  đ
-                </Text>
+                <Text style={styles.textContent}>đ</Text>
               </InputGroup>
             </CardItem>
           </Card>
@@ -291,60 +283,32 @@ export default class ThuNhap extends React.Component {
             <CardItem
               button
               onPress={() =>
-                navigation.navigate("ChonHangMucThu", {
+                navigation.navigate("ChonHangMucChi", {
                   returnDataHangMuc: this.returnDataHangMuc.bind(this)
                 })
               }
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50
-              }}
+              style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon
-                  name="question-circle"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <MateIcon name={this.state.iconHangMuc} style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 20, color: "black", paddingLeft: 10 }}>
-                  {this.state.tenHangMuc}
-                </Text>
+                <Text style={styles.textContent}>{this.state.tenHangMuc}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon
-                  name="chevron-circle-right"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="chevron-circle-right" style={styles.icon} />
               </Right>
             </CardItem>
 
-            <CardItem
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50
-              }}
-            >
+            <CardItem style={styles.cardItem}>
               <Item>
-                <Icon
-                  active
-                  name="comments"
-                  style={{ fontSize: 18, color: "#3a455c", flex: 1 }}
-                />
+                <Icon active name="comments" style={styles.icon} />
                 <Input
                   placeholder="Mô tả"
-                  placeholderTextColor="#3a445c"
-                  style={{
-                    flex: 9,
-                    borderBottomWidth: 0.1,
-                    fontSize: 18,
-                    color: "black",
-                    paddingLeft: 12
-                  }}
-                  value={this.state.moTa}
+                  placeholderTextColor="#3a455c"
                   selectTextOnFocus
+                  style={{ ...styles.textContent, paddingLeft: 22 }}
+                  value={this.state.moTa}
                   onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>
@@ -353,14 +317,10 @@ export default class ThuNhap extends React.Component {
             <CardItem
               button
               onPress={() => this.setState({ isDateTimePickerVisible: true })}
-              style={{ borderColor: "grey", borderBottomWidth: 0.7 }}
+              style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon
-                  active
-                  name="calendar"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon active name="calendar" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
                 <DateTimePicker
@@ -382,7 +342,7 @@ export default class ThuNhap extends React.Component {
                   cancelTextIOS={"Hủy"}
                 />
                 <Text style={styles.textContent}>
-                  {moment(this.state.ngayThu).format("DD/MM/YYYY HH:mm:ss")}
+                  {moment(this.state.ngayChi).format("DD/MM/YYYY HH:mm:ss")}
                 </Text>
               </Body>
               <Right style={{ flex: 1 }} />
@@ -395,46 +355,33 @@ export default class ThuNhap extends React.Component {
                   returnDataTaiKhoan: this.returnDataTaiKhoan.bind(this)
                 })
               }
-              style={{
-                borderColor: "grey",
-                borderBottomWidth: 0.7,
-                height: 50
-              }}
+              style={styles.cardItem}
             >
               <Left style={{ flex: 1 }}>
-                <Icon
-                  name="credit-card"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="credit-card" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 15, color: "black", paddingLeft: 10 }}>
-                  {this.state.tenTaiKhoan}
-                </Text>
+                <Text style={styles.textContent}>{this.state.tenTaiKhoan}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
-                <Icon
-                  name="chevron-circle-right"
-                  style={{ fontSize: 18, color: "#3a455c" }}
-                />
+                <Icon name="chevron-circle-right" style={styles.icon} />
               </Right>
             </CardItem>
 
             <CardItem
               button
               onPress={() =>
-                navigation.navigate("ThuTuAi", {
-                  returnDataNguoiThu: this.returnDataNguoiThu.bind(this)
+                navigation.navigate("ChiChoAi", {
+                  returnDataNguoiChi: this.returnDataNguoiChi.bind(this)
                 })
               }
+              style={{ ...styles.cardItem, marginRight: 0 }}
             >
               <Left style={{ flex: 1 }}>
-                <Icon name="user" style={{ fontSize: 18, color: "#3a455c" }} />
+                <Icon name="user" style={styles.icon} />
               </Left>
               <Body style={{ flex: 8 }}>
-                <Text style={{ fontSize: 18, color: "black", paddingLeft: 10 }}>
-                  {this.state.tenNguoiThu}
-                </Text>
+                <Text style={styles.textContent}>{this.state.tenNguoiChi}</Text>
               </Body>
               <Right style={{ flex: 1 }}>
                 <Button
@@ -443,7 +390,7 @@ export default class ThuNhap extends React.Component {
                     backgroundColor: "white",
                     marginTop: 0
                   }}
-                  onPress={this.resetNguoiThu}
+                  onPress={this.resetNguoiChi}
                 >
                   <Icon
                     name="times"
@@ -459,15 +406,18 @@ export default class ThuNhap extends React.Component {
             <Button
               block
               info
-              style={{ height: 40, backgroundColor: "rgb(76,171,242)" }}
+              style={{ height: 40, backgroundColor: "#3a455c" }}
               onPress={this.buttonOnClick}
             >
-              <Icon name="save" style={{ fontSize: 18, color: "white" }} />
-              <Text style={{ color: "white", marginLeft: 5 }}>Ghi</Text>
+              <Icon name="save" style={styles.iconHeader} />
+              <Text
+                style={{ color: "white", marginLeft: 10, fontWeight: "bold" }}
+              >
+                Ghi
+              </Text>
             </Button>
           </Card>
         </Content>
-
         <Footer style={stylesFooter.footer}>
           <FooterTab style={stylesFooter.footer}>
             <Button vertical onPress={() => navigation.navigate("TongQuan")}>
@@ -505,6 +455,7 @@ export default class ThuNhap extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   buttonCardItem: {
     backgroundColor: "#3a455c",

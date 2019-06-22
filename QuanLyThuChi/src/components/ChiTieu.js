@@ -8,6 +8,8 @@ import {
   CardItem,
   Container,
   Content,
+  Footer,
+  FooterTab,
   Header,
   Input,
   InputGroup,
@@ -21,6 +23,7 @@ import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import MyFooter from "./../MyFooter";
 import db from "../../connectionDB";
+
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
 
@@ -225,6 +228,7 @@ export default class ChiTieu extends React.Component {
   }
 
   render() {
+    console.log("Chi Tieu");
     const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     return (
@@ -296,6 +300,7 @@ export default class ChiTieu extends React.Component {
                   placeholderTextColor="#3a455c"
                   selectTextOnFocus
                   style={{ ...styles.textContent, paddingLeft: 22 }}
+                  value={this.state.moTa}
                   onChangeText={moTa => this.setState({ moTa })}
                 />
               </Item>
@@ -405,7 +410,39 @@ export default class ChiTieu extends React.Component {
             </Button>
           </Card>
         </Content>
-        <MyFooter navigation={this.props.navigation} />
+        <Footer style={stylesFooter.footer}>
+          <FooterTab style={stylesFooter.footer}>
+            <Button vertical onPress={() => navigation.navigate("TongQuan")}>
+              <Icon name="home" style={stylesFooter.iconFooter} />
+              <Text style={stylesFooter.textFooter}>Tổng quan</Text>
+            </Button>
+            <Button vertical onPress={() => navigation.navigate("TaiKhoan")}>
+              <Icon name="credit-card" style={stylesFooter.iconFooter} />
+              <Text style={stylesFooter.textFooter}>Tài khoản</Text>
+            </Button>
+            <Button
+              vertical
+              onPress={() =>
+                navigation.navigate("ThemMoiCopy", {
+                  so_tien: this.state.soTien,
+                  mo_ta: this.state.moTa,
+                  ma_tai_khoan: this.state.taiKhoan,
+                  ten_tai_khoan: this.state.tenTaiKhoan
+                })
+              }
+            >
+              <Icon name="plus-circle" style={stylesFooter.iconPlusCircle} />
+            </Button>
+            <Button vertical onPress={() => navigation.navigate("HanMucChi")}>
+              <Icon name="filter" style={stylesFooter.iconFooter} />
+              <Text style={stylesFooter.textFooter}>Hạn mức chi</Text>
+            </Button>
+            <Button vertical onPress={() => navigation.navigate("Khac")}>
+              <Icon name="ellipsis-h" style={stylesFooter.iconFooter} />
+              <Text style={stylesFooter.textFooter}>Khác</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }
@@ -483,4 +520,28 @@ const styles = StyleSheet.create({
     fontFamily: "Times New Roman"
   },
   titleContent: { fontWeight: "bold", color: "black" }
+});
+const stylesFooter = StyleSheet.create({
+  iconHeader: {
+    color: "white",
+    fontSize: 18
+  },
+  iconFooter: {
+    color: "rgb(76,171,242)",
+    fontSize: 18
+  },
+  iconPlusCircle: {
+    color: "rgb(76,171,242)",
+    fontSize: 30
+  },
+  footer: {
+    backgroundColor: "rgb(235,239,242)",
+    color: "rgb(235,239,242)",
+    height: 40
+  },
+  textFooter: {
+    color: "rgb(76,171,242)",
+    fontSize: 10,
+    fontFamily: "Times New Roman"
+  }
 });

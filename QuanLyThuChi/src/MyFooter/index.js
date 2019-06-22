@@ -1,2 +1,2 @@
-import MyFooter from './MyFooter';
-export default MyFooter
+import MyFooter from "./MyFooter";
+export default MyFooter;

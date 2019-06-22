@@ -16,9 +16,9 @@ import MyFooter from "./../MyFooter";
 // Const & Variable:
 const { height, width } = Dimensions.get("window");
 
-export default class ThemMoi extends Component {
+export default class ThemMoiCopy extends Component {
   render() {
-    console.log("Them Moi");
+    console.log("Them Moi Copy");
     const { navigation } = this.props;
     const { params } = this.props.navigation.state;
     return (
@@ -37,7 +37,14 @@ export default class ThemMoi extends Component {
 
         <Content style={styles.content}>
           <Button
-            onPress={() => navigation.navigate("ChiTieu")}
+            onPress={() => {
+              navigation.navigate("ChiTieuCopy", {
+                so_tien: params.so_tien,
+                mo_ta: params.mo_ta,
+                ma_tai_khoan: params.ma_tai_khoan,
+                ten_tai_khoan: params.ten_tai_khoan
+              });
+            }}
             block
             info
             style={styles.buttonCardItem}
@@ -46,7 +53,14 @@ export default class ThemMoi extends Component {
           </Button>
 
           <Button
-            onPress={() => navigation.navigate("ThuNhap")}
+            onPress={() =>
+              navigation.navigate("ThuNhapCopy", {
+                so_tien: params.so_tien,
+                mo_ta: params.mo_ta,
+                ma_tai_khoan: params.ma_tai_khoan,
+                ten_tai_khoan: params.ten_tai_khoan
+              })
+            }
             block
             info
             style={styles.buttonCardItem}

@@ -1,7 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import ChiTieu from "./src/components/ChiTieu";
+import ChiTieuCopy from "./src/components/ChiTieuCopy";
 import ThuNhap from "./src/components/ThuNhap";
+import ThuNhapCopy from "./src/components/ThuNhapCopy";
 import ChuyenKhoan from "./src/components/ChuyenKhoan";
 import DieuChinhSoDu from "./src/components/DieuChinhSoDu";
 import ChonHangMucChi from "./src/components/ChonHangMucChi";
@@ -16,6 +18,7 @@ import HanMucChi from "./src/components/HanMucChi";
 import Khac from "./src/components/Khac";
 import TaiKhoan from "./src/components/TaiKhoan";
 import ThemMoi from "./src/components/ThemMoi";
+import ThemMoiCopy from "./src/components/ThemMoiCopy";
 import TongQuan from "./src/components/TongQuan";
 import ThemTaiKhoan from "./src/components/ThemTaiKhoan";
 import ChinhSuaTaiKhoan from "./src/components/ChinhSuaTaiKhoan";
@@ -23,8 +26,11 @@ import ChinhSuaTaiKhoan from "./src/components/ChinhSuaTaiKhoan";
 const AppNavigator = createStackNavigator(
   {
     ThemMoi: { screen: ThemMoi },
+    ThemMoiCopy: { screen: ThemMoiCopy },
     ChiTieu: { screen: ChiTieu },
+    ChiTieuCopy: { screen: ChiTieuCopy },
     ThuNhap: { screen: ThuNhap },
+    ThuNhapCopy: { screen: ThuNhapCopy },
     ChuyenKhoan: { screen: ChuyenKhoan },
     DieuChinhSoDu: { screen: DieuChinhSoDu },
     ChonHangMucChi: { screen: ChonHangMucChi },
