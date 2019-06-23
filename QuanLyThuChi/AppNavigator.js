@@ -22,7 +22,7 @@ import ThemMoiCopy from "./src/components/ThemMoiCopy";
 import TongQuan from "./src/components/TongQuan";
 import ThemTaiKhoan from "./src/components/ThemTaiKhoan";
 import ChinhSuaTaiKhoan from "./src/components/ChinhSuaTaiKhoan";
-
+import GhiChepCuaTaiKhoan from "./src/components/GhiChepCuaTaiKhoan";
 const AppNavigator = createStackNavigator(
   {
     ThemMoi: { screen: ThemMoi },
@@ -46,7 +46,8 @@ const AppNavigator = createStackNavigator(
     ChonTaiKhoanNguon: { screen: ChonTaiKhoanNguon },
     ChonTaiKhoanDCSD: { screen: ChonTaiKhoanDCSD },
     ThemTaiKhoan: { screen: ThemTaiKhoan },
-    ChinhSuaTaiKhoan: { screen: ChinhSuaTaiKhoan }
+    ChinhSuaTaiKhoan: { screen: ChinhSuaTaiKhoan },
+    GhiChepCuaTaiKhoan: { screen: GhiChepCuaTaiKhoan }
   },
   {
     headerMode: "none"

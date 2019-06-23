@@ -106,7 +106,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
       let sotien = Number(moneyTmp);
       let loaitaikhoan = this.state.loaiTaiKhoan;
       let mota = this.state.moTa;
-      db.transaction(function(tx) {
+      db.transaction(function (tx) {
         tx.executeSql(
           "UPDATE taikhoan SET ten_tai_khoan = ?, so_tien = ?, loai_tai_khoan = ?, mo_ta = ? WHERE ma_tai_khoan = ?",
           [tentaikhoan, sotien, loaitaikhoan, mota, mataikhoan],
@@ -139,7 +139,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
       [
         {
           text: "Cancel",
-          onPress: () => {},
+          onPress: () => { },
           style: "cancel"
         },
         {
@@ -182,7 +182,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
       [
         {
           text: "Cancel",
-          onPress: () => {},
+          onPress: () => { },
           style: "cancel"
         },
         {
@@ -225,7 +225,7 @@ export default class ChinhSuaTaiKhoan extends React.Component {
       [
         {
           text: "Cancel",
-          onPress: () => {},
+          onPress: () => { },
           style: "cancel"
         },
         {

@@ -24,7 +24,6 @@ export default class ChonTaiKhoan extends Component {
     super(props);
     this.state = {
       taiKhoan: [],
-      soTaiKhoan: 0
     };
     this.formatMoney = this.formatMoney.bind(this);
   }
@@ -37,7 +36,6 @@ export default class ChonTaiKhoan extends Component {
         [],
         (tx, results) => {
           var len = results.rows.length;
-          this.setState({ soTaiKhoan: len });
           for (let i = 0; i < len; i++) {
             let row = results.rows.item(i);
             array.push(row);

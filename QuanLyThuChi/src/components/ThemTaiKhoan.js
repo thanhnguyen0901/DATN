@@ -40,7 +40,7 @@ export default class ThemTaiKhoan extends React.Component {
   }
 
   // Function
-  componentDidMount() {}
+  componentDidMount() { }
 
   formatMoney(money) {
     var x = money.replace(/,/g, "");
@@ -81,7 +81,7 @@ export default class ThemTaiKhoan extends React.Component {
               });
             }
           },
-          function(tx, error) {
+          function (tx, error) {
             reject(error);
           }
         );
@@ -134,10 +134,10 @@ export default class ThemTaiKhoan extends React.Component {
       let loaitaikhoan = this.state.loaiTaiKhoan;
       let mota = this.state.moTa;
       // Thêm chi tiêu vào bảng chitieu
-      db.transaction(function(tx) {
+      db.transaction(function (tx) {
         tx.executeSql(
-          "INSERT INTO taikhoan(ma_tai_khoan, ten_tai_khoan, so_tien, loai_tai_khoan, mo_ta, dang_su_dung, xoa) VALUES (?,?,?,?,?,?,?)",
-          [mataikhoan, tentaikhoan, sotien, loaitaikhoan, mota, "y", "n"],
+          "INSERT INTO taikhoan(ma_tai_khoan, ten_tai_khoan, so_tien, so_du_ban_dau, loai_tai_khoan, mo_ta, dang_su_dung, xoa) VALUES (?,?,?,?,?,?,?,?)",
+          [mataikhoan, tentaikhoan, sotien, sotien, loaitaikhoan, mota, "y", "n"],
           (tx, results) => {
             if (results.rowsAffected > 0) {
               Alert.alert(

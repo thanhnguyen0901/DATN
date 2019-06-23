@@ -55,7 +55,7 @@ export default class DieuChinhSoDu extends React.Component {
   }
 
   // Function
-  componentDidMount() {}
+  componentDidMount() { }
 
   async formatMoney(money) {
     var x = money.replace(/,/g, "");
@@ -149,7 +149,7 @@ export default class DieuChinhSoDu extends React.Component {
               });
             }
           },
-          function(tx, error) {
+          function (tx, error) {
             reject(error);
           }
         );
@@ -189,7 +189,7 @@ export default class DieuChinhSoDu extends React.Component {
               });
             }
           },
-          function(tx, error) {
+          function (tx, error) {
             reject(error);
           }
         );
@@ -229,7 +229,7 @@ export default class DieuChinhSoDu extends React.Component {
               });
             }
           },
-          function(tx, error) {
+          function (tx, error) {
             reject(error);
           }
         );
@@ -293,10 +293,10 @@ export default class DieuChinhSoDu extends React.Component {
       let sotienthucteTmp = this.state.soTienThucTe.replace(/,/g, "");
       let sotienthucte = Number(sotienthucteTmp);
       let mahangmuc = this.state.hangMuc;
-      let ngay = moment(this.state.ngayDieuChinh).format("YYYY-MM-DD HH:mm:ss");
+      let ngay = moment(this.state.ngayDieuChinh).format("YYYY/MM/DD HH:mm:ss");
       let mota = this.state.moTa;
       // Thêm điều chỉnh vào bảng dieuchinh
-      db.transaction(function(tx) {
+      db.transaction(function (tx) {
         tx.executeSql(
           "INSERT INTO dieuchinhsodu(ma_dieu_chinh, ma_tai_khoan, loai_dieu_chinh, so_tien, ma_hang_muc, ngay, mo_ta) VALUES (?,?,?,?,?,?,?)",
           [
@@ -344,9 +344,9 @@ export default class DieuChinhSoDu extends React.Component {
         let sotien = Number(moneyTmp);
         let mahangmuc = this.state.hangMuc;
         let ngay = moment(this.state.ngayDieuChinh).format(
-          "YYYY-MM-DD HH:mm:ss"
+          "YYYY/MM/DD HH:mm:ss"
         );
-        db.transaction(function(tx) {
+        db.transaction(function (tx) {
           tx.executeSql(
             "INSERT INTO chitieu(ma_chi_tieu, ma_tai_khoan, so_tien, ma_hang_muc_chi,ngay,mo_ta) VALUES (?,?,?,?,?,?)",
             [machitieu, mataikhoan, sotien, mahangmuc, ngay, "Điều chỉnh số dư"]
@@ -360,9 +360,9 @@ export default class DieuChinhSoDu extends React.Component {
         let sotien = Number(moneyTmp);
         let mahangmuc = this.state.hangMuc;
         let ngay = moment(this.state.ngayDieuChinh).format(
-          "YYYY-MM-DD HH:mm:ss"
+          "YYYY/MM/DD HH:mm:ss"
         );
-        db.transaction(function(tx) {
+        db.transaction(function (tx) {
           tx.executeSql(
             "INSERT INTO thunhap(ma_thu_nhap, ma_tai_khoan, so_tien, ma_hang_muc_thu,ngay,mo_ta) VALUES (?,?,?,?,?,?)",
             [mathunhap, mataikhoan, sotien, mahangmuc, ngay, "Điều chỉnh số dư"]

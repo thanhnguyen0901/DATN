@@ -117,7 +117,7 @@ export default class TaiKhoan extends Component {
                   color:
                     this.state.tongTienTaiKhoanDangSuDung +
                       this.state.tongTienTaiKhoanNgungSuDung >=
-                    0
+                      0
                       ? "black"
                       : "red"
                 }}
@@ -125,7 +125,7 @@ export default class TaiKhoan extends Component {
                 Tổng tiền:{" "}
                 {this.formatMoney(
                   this.state.tongTienTaiKhoanDangSuDung +
-                    this.state.tongTienTaiKhoanNgungSuDung
+                  this.state.tongTienTaiKhoanNgungSuDung
                 )}
                 đ
               </Text>
@@ -148,7 +148,7 @@ export default class TaiKhoan extends Component {
               <CardItem
                 key={i}
                 button
-                onPress={() => {}}
+                onPress={() => { navigation.navigate('GhiChepCuaTaiKhoan', { ma_tai_khoan: item.ma_tai_khoan, so_tien: item.so_tien, so_du_ban_dau: item.so_du_ban_dau, ten_tai_khoan: item.ten_tai_khoan }) }}
                 onLongPress={() =>
                   navigation.navigate("ChinhSuaTaiKhoan", {
                     ma_tai_khoan: item.ma_tai_khoan,
@@ -199,7 +199,17 @@ export default class TaiKhoan extends Component {
               <CardItem
                 key={i}
                 button
-                onPress={() => {}}
+                onPress={() => { navigation.navigate('GhiChepCuaTaiKhoan', { ma_tai_khoan: item.ma_tai_khoan, so_tien: item.so_tien, so_du_ban_dau: item.so_du_ban_dau, ten_tai_khoan: item.ten_tai_khoan }) }}
+                onLongPress={() =>
+                  navigation.navigate("ChinhSuaTaiKhoan", {
+                    ma_tai_khoan: item.ma_tai_khoan,
+                    ten_tai_khoan: item.ten_tai_khoan,
+                    so_tien: item.so_tien,
+                    loai_tai_khoan: item.loai_tai_khoan,
+                    mo_ta: item.mo_ta,
+                    dang_su_dung: item.dang_su_dung
+                  })
+                }
                 style={styles.cardItem}
               >
                 <Left style={{ flex: 1 }}>
@@ -224,32 +234,13 @@ export default class TaiKhoan extends Component {
                   >
                     {this.formatMoney(item.so_tien)}đ
                   </Text>
-                  <Button style={{ backgroundColor: "white" }}>
-                    <Icon
-                      name="ellipsis-v"
-                      style={{
-                        ...styles.icon,
-                        marginLeft: 5
-                      }}
-                      onPress={() =>
-                        navigation.navigate("ChinhSuaTaiKhoan", {
-                          ma_tai_khoan: item.ma_tai_khoan,
-                          ten_tai_khoan: item.ten_tai_khoan,
-                          so_tien: item.so_tien,
-                          loai_tai_khoan: item.loai_tai_khoan,
-                          mo_ta: item.mo_ta,
-                          dang_su_dung: item.dang_su_dung
-                        })
-                      }
-                    />
-                  </Button>
                 </Right>
               </CardItem>
             ))}
           </Card>
         </Content>
         <MyFooter navigation={this.props.navigation} />
-      </Container>
+      </Container >
     );
   }
 }

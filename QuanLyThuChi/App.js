@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { createAppContainer } from "react-navigation";
 import AppNavigator from "./AppNavigator";
-
 // Const
 const AppContainer = createAppContainer(AppNavigator);
 
